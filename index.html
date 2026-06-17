@@ -959,34 +959,89 @@ function marathonProjection(){
   q.forEach((e,i)=>{const w=e.w*(1+i*0.4);num+=e.sec*w;den+=w;trend.push(num/den);});
   return{sec:num/den,n:q.length,sources:q,trend:trend};
 }
+/* Boule de cristal → Semi-marathon de Lyon (4 oct.) */
+function _semiEquiv(se){
+  const r=se.realise;if(!r||(r.statut!=='fait'&&r.statut!=='partiel'))return null;
+  const t=se.type,sub=(se.metriques||{}).Type||'',pace=_pace2s(r.allure);
+  if(t==='Test / recalibrage'){
+    const km=parseFloat(String(r.km).replace(',','.'))||10;let tot=null;
+    if(r.temps&&/^\d{1,3}:\d{2}$/.test(String(r.temps).trim()))tot=_pace2s(r.temps);else if(pace)tot=pace*km;
+    if(!tot)return null;return{sec:tot*Math.pow(21.097/km,1.07),w:3,label:`Test ${km} km`,sub:r.allure||r.temps};
+  }
+  if(!pace)return null;
+  if(t==='Seuil (puissance aérobie)'){const f=sub==='Seuil 60'?1.03:1.08;return{sec:pace*f*21.097,w:1.5,label:sub||'Seuil',sub:r.allure};}
+  return null;
+}
+function semiProjection(){
+  const SEMI_BASE=5760,SEMI_BASE_LABEL='forme de départ (réf. fractionnés S25)';
+  const q=[];Object.values(SEANCES_BY_WEEK).flat().forEach(se=>{const e=_semiEquiv(se);if(e){e.date=se.date;q.push(e);}});
+  q.sort((a,b)=>String(a.date||'').localeCompare(String(b.date||'')));
+  let num=SEMI_BASE,den=1;const trend=[SEMI_BASE];
+  q.forEach((e,i)=>{const w=e.w*(1+i*0.4);num+=e.sec*w;den+=w;trend.push(num/den);});
+  return{sec:num/den,n:q.length,sources:q,trend,base:SEMI_BASE,base_label:SEMI_BASE_LABEL};
+}
 function renderCrystalBall(){
-  const P=marathonProjection();const goal=PROJ.goal,gmin=PROJ.gmin,gmax=PROJ.gmax;
+  const P=semiProjection();
+  const goal=6240,gmin=5400,gmax=7200;
+  const _sm=s=>{s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor((s%3600)/60);return h+'h'+String(m).padStart(2,'0');};
   const clamp=v=>Math.max(0,Math.min(100,v));
   const pos=clamp((P.sec-gmin)/(gmax-gmin)*100);
   const goalPos=clamp((goal-gmin)/(gmax-gmin)*100);
   const ahead=goal-P.sec;
   const ahMin=Math.round(Math.abs(ahead)/60);
-  const deltaTxt=ahead>=0?`<strong style="color:#22c55e">${ahMin} min d\u2019avance</strong> sur l\u2019objectif 3h45`
-    :`<strong style="color:#f97316">+${ahMin} min</strong> au-dessus de 3h45`;
-  const deltaShort=ahead>=0?`${ahMin} min d'avance sur l'objectif 3h45`:`${ahMin} min au-dessus de 3h45 — le bloc va combler l'écart`;
+  const deltaTxt=ahead>=0
+    ?`<strong style="color:#22c55e">${ahMin} min d\u2019avance</strong> sur l\u2019objectif 1h44`
+    :`<strong style="color:#f97316">+${ahMin} min</strong> au-dessus de 1h44`;
   let clarte;
-  if(P.n===0)clarte=`<div class="cb-clarte">🌫️ <strong>Boule encore voilée.</strong> La projection part de ta forme actuelle (${PROJ.base_label}). Elle s'affinera à chaque séance qualité loguée — le <strong>test 10 km de la S32</strong> sera le premier gros recalibrage, puis chaque seuil et chaque séance d'allure marathon.</div>`;
-  else clarte=`<div class="cb-clarte">🔮 <strong>${P.n} séance${P.n>1?'s':''} qualité intégrée${P.n>1?'s':''}.</strong> Plus tu logues de qualité, plus la projection se précise.</div>`;
-  const sources=P.n?`<div class="cb-src"><div class="cb-src-t">Ce qui nourrit la projection</div>${P.sources.map(s=>`<div class="cb-src-l"><span>${s.label}${s.sub?` · ${s.sub}`:''}</span><span class="cb-src-v">${_s2hm(s.sec)}</span></div>`).join('')}<div class="cb-src-l cb-src-base"><span>Forme de départ (référence)</span><span class="cb-src-v">${_s2hm(PROJ.base)}</span></div></div>`:'';
-  const trend=P.trend.length>=2?`<div class="cb-trend"><div class="cb-src-t">Affinage de la projection séance après séance</div>${chartLine(P.trend.map(v=>v/60),{color:'#8b5cf6',h:120,fmtY:v=>_s2hm(v*60),baseline:goal/60,annotate:true})}</div>`:'';
+  if(P.n===0)clarte=`<div class="cb-clarte">\u{1F32B}\uFE0F <strong>Boule encore voil\u00e9e.</strong> La projection part de ta forme actuelle (${P.base_label}). Elle s'affinera \u00e0 chaque s\u00e9ance qualit\u00e9 logu\u00e9e \u2014 le <strong>test 10 km de la S31</strong> sera le premier vrai recalibrage.</div>`;
+  else clarte=`<div class="cb-clarte">\u{1F52E} <strong>${P.n} s\u00e9ance${P.n>1?'s':''} qualit\u00e9 int\u00e9gr\u00e9e${P.n>1?'s':''}.</strong> Plus tu logues de qualit\u00e9, plus la projection se pr\u00e9cise.</div>`;
+  const sources=P.n?`<div class="cb-src"><div class="cb-src-t">Ce qui nourrit la projection</div>${P.sources.map(s=>`<div class="cb-src-l"><span>${s.label}${s.sub?` \u00b7 ${s.sub}`:''}</span><span class="cb-src-v">${_sm(s.sec)}</span></div>`).join('')}<div class="cb-src-l cb-src-base"><span>Forme de d\u00e9part (r\u00e9f\u00e9rence)</span><span class="cb-src-v">${_sm(P.base)}</span></div></div>`:'';
+  const trend=P.trend.length>=2?`<div class="cb-trend"><div class="cb-src-t">Affinage de la projection s\u00e9ance apr\u00e8s s\u00e9ance</div>${chartLine(P.trend.map(v=>v/60),{color:'#8b5cf6',h:120,fmtY:v=>_sm(v*60),baseline:goal/60,annotate:true})}</div>`:'';
   return `<div class="kpi cb">
-    <div class="cb-head"><span class="cb-orb">🔮</span><div><div class="kpi-t" style="margin:0">Projection marathon — boule de cristal</div><div class="kpi-r" style="margin:2px 0 0">Temps projeté sur Nice, recalculé à chaque séance qualité loguée.</div></div></div>
-    <div class="cb-big"><div class="cb-time">${_s2hm(P.sec)}</div><div class="cb-delta">${deltaTxt}</div></div>
+    <div class="cb-head"><span class="cb-orb">\u{1F52E}</span><div><div class="kpi-t" style="margin:0">Projection semi-marathon \u2014 boule de cristal</div><div class="kpi-r" style="margin:2px 0 0">Temps projet\u00e9 sur le Semi de Lyon (4 oct.), recalcul\u00e9 \u00e0 chaque s\u00e9ance qualit\u00e9 logu\u00e9e.</div></div></div>
+    <div class="cb-big"><div class="cb-time">${_sm(P.sec)}</div><div class="cb-delta">${deltaTxt}</div></div>
     <div class="cb-gauge">
       <div class="cb-bar"><div class="cb-fill" style="width:${pos}%"></div>
-        <div class="cb-goal" style="left:${goalPos}%"><span>🎯 3h45</span></div>
-        <div class="cb-needle" style="left:${pos}%"><span>${_s2hm(P.sec)}</span></div></div>
-      <div class="cb-scale"><span>3h30</span><span>4h00</span></div>
+        <div class="cb-goal" style="left:${goalPos}%"><span>\u{1F3AF} 1h44</span></div>
+        <div class="cb-needle" style="left:${pos}%"><span>${_sm(P.sec)}</span></div></div>
+      <div class="cb-scale"><span>1h30</span><span>2h00</span></div>
     </div>
     ${clarte}${trend}${sources}
-    <div class="cb-method">Méthode : mélange pondéré de ta forme de départ et de tes séances qualité loguées — test 10 km via Riegel (exp. 1,07), allure marathon ×1,015, seuil 30 ×1,12 / seuil 60 ×1,06, projetés sur 42,195 km. Les séances récentes pèsent davantage.</div>
+    <div class="cb-method">M\u00e9thode : m\u00e9lange pond\u00e9r\u00e9 de ta forme de d\u00e9part et de tes s\u00e9ances qualit\u00e9 logu\u00e9es \u2014 test 10 km via Riegel (exp. 1,07) projet\u00e9 sur 21,097 km, seuil 30 \u00d71,08 / seuil 60 \u00d71,03. Les s\u00e9ances r\u00e9centes p\u00e8sent davantage.</div>
   </div>`;
 }
+
+/* ===== Widget météo Saint-Étienne (Open-Meteo) ===== */
+function renderMeteo(){
+  const el=document.getElementById('meteo-widget');if(!el)return;
+  const lat=45.4347,lon=4.3900;
+  el.innerHTML='<div style="color:var(--texte-trois);font-size:.82rem;padding:6px 0">\u23F3 Chargement m\u00e9t\u00e9o\u2026</div>';
+  fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code&timezone=Europe%2FParis&forecast_days=5')
+    .then(r=>r.json()).then(d=>{
+      const c=d.current,cur=d.daily;
+      const wIco=code=>{
+        if(code===0)return'\u2600\uFE0F';if(code<=2)return'\u26C5';if(code<=3)return'\u2601\uFE0F';
+        if(code<=49)return'\u{1F32B}\uFE0F';if(code<=67)return'\u{1F327}\uFE0F';if(code<=77)return'\u2744\uFE0F';
+        if(code<=82)return'\u26C8\uFE0F';return'\u26A1';
+      };
+      const days=cur.time.slice(0,5).map((t,i)=>{
+        const date=new Date(t);const j=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'][date.getDay()];
+        return '<div style="display:flex;flex-direction:column;align-items:center;gap:3px;min-width:52px">'
+          +'<div style="font-size:.7rem;color:var(--texte-trois);font-weight:700">'+j+'</div>'
+          +'<div style="font-size:1.3rem">'+wIco(cur.weather_code[i])+'</div>'
+          +'<div style="font-size:.8rem;font-weight:800;color:var(--texte)">'+Math.round(cur.temperature_2m_max[i])+'\u00b0</div>'
+          +'<div style="font-size:.72rem;color:var(--texte-trois)">'+Math.round(cur.temperature_2m_min[i])+'\u00b0</div>'
+          +(cur.precipitation_sum[i]>0?'<div style="font-size:.65rem;color:#60a5fa">'+cur.precipitation_sum[i].toFixed(1)+' mm</div>':'')
+          +'</div>';
+      }).join('');
+      el.innerHTML='<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">'
+        +'<div style="font-size:2.4rem">'+wIco(c.weather_code)+'</div>'
+        +'<div><div style="font-size:1.6rem;font-weight:900;color:var(--texte)">'+Math.round(c.temperature_2m)+'\u00b0C</div>'
+        +'<div style="font-size:.78rem;color:var(--texte-trois)">Ressenti '+Math.round(c.apparent_temperature)+'\u00b0C \u00b7 '+c.wind_speed_10m+' km/h \u00b7 '+c.relative_humidity_2m+'% humidit\u00e9</div></div></div>'
+        +'<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px">'+days+'</div>';
+    }).catch(()=>{el.innerHTML='<div style="color:var(--texte-trois);font-size:.82rem">M\u00e9t\u00e9o indisponible (connexion requise)</div>';});
+}
+
 function renderDash(){const el=document.getElementById('dash-contenu');
   const today=new Date();const cd=RACES.map(r=>Math.max(0,Math.ceil((new Date(r.date)-today)/86400000)));
   const allSe=Object.values(SEANCES_BY_WEEK).flat();const total=allSe.length;
@@ -1021,7 +1076,8 @@ function renderDash(){const el=document.getElementById('dash-contenu');
     const al=g.km>900?`<div class="shoe-alert">⚠ ${g.km} km — remplacement à envisager</div>`:'';
     return `<div><div class="shoe-row"><div class="shoe-name">${g.marque} ${g.modele}</div><div class="shoe-track"><div class="shoe-fill" style="width:${g.km/maxShKm*100}%;background:${col}"></div></div><div class="shoe-km">${g.km} km</div></div>${al}</div>`;}).join('');
 
-  el.innerHTML=dashNav()+dgrpHead('cal','📅',"Aujourd'hui & calendrier")+`
+  setTimeout(renderMeteo,200);
+  el.innerHTML=dashNav()+`<div class="kpi" style="margin:0 0 2px"><div class="kpi-t">\u{1F324}\uFE0F M\u00e9t\u00e9o Saint-\u00c9tienne \u2014 5 jours</div><div class="kpi-r">Conditions actuelles et pr\u00e9visions pour planifier tes sorties</div><div id="meteo-widget"></div></div>`+dgrpHead('cal','📅',"Aujourd'hui & calendrier")+`
   <!-- 0. Calendrier -->
   <div class="kpi cal-block">
     <div class="kpi-t">🗓️ Calendrier d'entraînement</div>
@@ -1317,7 +1373,7 @@ const COACH_THEORY={
  longue:{nom:'Sortie longue',
    pourquoi:"La séance reine du marathon. Elle apprend à ton corps à <em>durer</em> : étend tes réserves de glycogène, densifie les capillaires, et entraîne la tête à tenir l'effort long. Avec finish allure marathon, elle simule la fin de course quand ça pique.",
    comment:"Corps en EF (≤ 144), finish AM si prévu. Mange et bois AVANT d'avoir faim ou soif — c'est l'entraînement du fueling autant que des jambes. Sur le finish, garde du jus : tu dois finir solide, pas cramé.",
-   theorie:"<p><strong>Pourquoi c'est la séance reine.</strong> Le marathon se gagne sur l'endurance, et l'endurance se construit sur la durée. La sortie longue étend tes réserves de glycogène, multiplie les capillaires, et surtout muscle ta tête : apprendre à rester efficace quand c'est long et inconfortable.</p><p><strong>Le fueling, ta priorité n°1.</strong> C'est ton limiteur identifié — l'effondrement de La Circaète (km 21) venait d'un déficit d'eau et d'électrolytes par forte chaleur. La sortie longue est <em>l'</em>occasion de répéter ton plan : électrolytes réguliers, gels testés (4Endurance, Nduranz), boire avant la soif. Ne jamais découvrir son fueling le jour de la course.</p><p><strong>Le finish allure marathon.</strong> Courir les derniers km à 5:20 sur des jambes déjà fatiguées, c'est répéter <em>exactement</em> le 35e km de Nice. C'est dur, c'est volontaire, et c'est ce qui fait la différence entre finir fort et marcher.</p>",
+   theorie:"<p><strong>Pourquoi c'est la séance reine.</strong> Le marathon se gagne sur l'endurance, et l'endurance se construit sur la durée. La sortie longue étend tes réserves de glycogène, multiplie les capillaires, et surtout muscle ta tête : apprendre à rester efficace quand c'est long et inconfortable.</p><p><strong>Le fueling, ta priorité n°1.</strong> C'est ton limiteur identifié — l'effondrement de La Circaète (km 21) venait d'un déficit d'eau et d'électrolytes par forte chaleur. La sortie longue est <em>l'</em>occasion de répéter ton plan : électrolytes réguliers, gels testés et validés en training, boire avant la soif. Ne jamais découvrir son fueling le jour de la course.</p><p><strong>Le finish allure marathon.</strong> Courir les derniers km à 5:20 sur des jambes déjà fatiguées, c'est répéter <em>exactement</em> le 35e km de Nice. C'est dur, c'est volontaire, et c'est ce qui fait la différence entre finir fort et marcher.</p>",
    lecture:{fcBand:[0,150],fcLabel:"corps ≤ 144, finish ~155-163"}},
  test:{nom:'Test / recalibrage',
    pourquoi:"Recalibrer objectivement. Un test mesure ta forme réelle et permet d'ajuster tes zones, tes allures cibles et la projection marathon. C'est ton juge de paix périodique — la vérité du terrain.",
@@ -1455,11 +1511,11 @@ const RICH_THEORY={
    {h:'Le mur, expliqué',html:`<p>« Le mur » du marathon (souvent vers 30-35 km) n'est pas une faiblesse mentale : c'est <strong>l'épuisement du glycogène</strong>. Ton cerveau et tes muscles manquent brutalement de carburant rapide, l'allure s'effondre. La séance d'allure marathon, en répétant l'intensité exacte de la course, repousse ce seuil — et te force à roder ton plan nutrition.</p>`},
    {h:'Pourquoi 5:20/km, à la seconde près',html:`<p>Pour viser <strong>3h45</strong>, il faut tenir <strong>5:20/km</strong>. L'erreur la plus coûteuse du marathon, c'est de partir 10 sec/km trop vite : tu « gagnes » 2 minutes au début que tu rends au prix de 5-6 minutes à la fin. Répéter 5:20 jusqu'à ce que ce soit gravé dans tes jambes, c'est ta meilleure assurance.</p><table class="theo-tab"><tr><th>Point</th><th>Temps cible</th></tr><tr><td>5 km</td><td>26:40</td></tr><tr><td>10 km</td><td>53:20</td></tr><tr><td>Semi (21,1)</td><td>1:52:30</td></tr><tr><td>30 km</td><td>2:40:00</td></tr><tr><td>Arrivée</td><td>3:45:00</td></tr></table>`},
    {h:'La dérive cardiaque',html:`<p>Sur un effort prolongé, ta FC peut <strong>monter alors que ton allure reste constante</strong> : c'est le découplage. Plus il survient tôt, plus c'est un signal de fatigue, de chaleur ou de déshydratation.</p>`+svgDerive()+`<p class="theo-perso">📌 <strong>Pour toi :</strong> surveille ce découplage sur tes séances AM. S'il apparaît vite, c'est ton signal hydratation/électrolytes — exactement le mécanisme de La Circaète.</p>`}],
-   coach:`<p>Yannis, chaque séance d'allure marathon est un <strong>test de calibrage</strong> : est-ce que 5:20/km « coule » ou est-ce que ça force déjà ? Plus tu avances dans le bloc, plus ces séances s'allongent (1×4 km en reprise, puis 3×4, puis 2×6 km au cœur du spécifique) — c'est là que se joue 3h45. Profites-en <strong>systématiquement pour roder ton fueling de course</strong> : un gel testé (4Endurance ou Nduranz) même sur les formats courts, pour habituer l'estomac. Rien de nouveau le jour J.</p>`},
+   coach:`<p>Yannis, chaque séance d'allure marathon est un <strong>test de calibrage</strong> : est-ce que 5:20/km « coule » ou est-ce que ça force déjà ? Plus tu avances dans le bloc, plus ces séances s'allongent (1×4 km en reprise, puis 3×4, puis 2×6 km au cœur du spécifique) — c'est là que se joue 3h45. Profites-en <strong>systématiquement pour roder ton fueling de course</strong> : un gel testé (tes marques habituelles) même sur les formats courts, pour habituer l'estomac. Rien de nouveau le jour J.</p>`},
  longue:{titre:'Sortie longue',icone:'⛰️',sections:[
    {h:'La séance reine',html:`<p>Si tu ne devais garder qu'une séance par semaine, ce serait celle-ci. Le marathon se gagne sur l'endurance, et l'endurance se construit sur la <strong>durée</strong>. La sortie longue étend tes réserves de glycogène, multiplie tes capillaires, renforce tendons et articulations dans la durée, et surtout muscle ta tête : rester efficace quand c'est long et que ça devient inconfortable.</p>`},
    {h:'Glycogène, capillaires, durée',html:`<p>Passé ~90 minutes, ton corps s'adapte : il apprend à stocker plus de glycogène et à mieux brûler les graisses pour l'épargner. C'est l'adaptation clé du marathonien.</p>`+svgGlycogen()+`<p>C'est aussi pour ça que la durée compte plus que l'allure : courir lentement <strong>longtemps</strong> bat courir vite <strong>court</strong>.</p>`},
-   {h:'Le fueling, ton limiteur n°1',html:`<p class="theo-perso">📌 C'est <strong>ton</strong> point faible identifié. À La Circaète, tu t'es effondré au km 20-21 : pas par manque de jambes, mais par <strong>déficit d'eau et d'électrolytes</strong> par 26-31°C. Yannis t'a relancé avec une pastille de sodium.</p><p>La sortie longue est <em>l'</em>occasion de répéter ton plan, jamais de l'improviser le jour J :</p><p><strong>• Électrolytes :</strong> 1 pastille toutes les 45 min sur effort long ou par chaleur, sans attendre.<br><strong>• Hydratation :</strong> boire <strong>avant</strong> d'avoir soif (~500-600 ml/h).<br><strong>• Glucides :</strong> 1 gel testé toutes les 40-45 min (4Endurance Pro, Nduranz NRGY — déjà validés en training).<br><strong>• Règle d'or :</strong> rien de nouveau le jour de la course.</p>`},
+   {h:'Le fueling, ton limiteur n°1',html:`<p class="theo-perso">📌 C'est <strong>ton</strong> point faible identifié. À La Circaète, tu t'es effondré au km 20-21 : pas par manque de jambes, mais par <strong>déficit d'eau et d'électrolytes</strong> par 26-31°C. Une pastille de sodium a permis de relancer la machine.</p><p>La sortie longue est <em>l'</em>occasion de répéter ton plan, jamais de l'improviser le jour J :</p><p><strong>• Électrolytes :</strong> 1 pastille toutes les 45 min sur effort long ou par chaleur, sans attendre.<br><strong>• Hydratation :</strong> boire <strong>avant</strong> d'avoir soif (~500-600 ml/h).<br><strong>• Glucides :</strong> 1 gel testé toutes les 40-45 min (tes gels habituels — validés en training).<br><strong>• Règle d'or :</strong> rien de nouveau le jour de la course.</p>`},
    {h:'L\'endurance mentale (la durabilité)',html:`<p>Au-delà du physique, la sortie longue entraîne ta <strong>durabilité</strong> : ta capacité à garder une foulée efficace quand la fatigue s'installe. Deux coureurs avec le même VO2max ne finissent pas pareil un marathon — c'est la durabilité qui les sépare. Et ça, ça ne se travaille qu'en accumulant des kilomètres fatigués.</p>`},
    {h:'Le finish allure marathon',html:`<p>Quand la sortie longue se termine par quelques km à 5:20/km sur des jambes déjà entamées, tu répètes <strong>exactement le 35e km de Nice</strong>. C'est dur, c'est volontaire, et c'est ce qui fait la différence entre finir solide et marcher. Garde toujours du jus pour ce finish : tu dois le terminer en contrôle, pas cramé.</p>`}],
    coach:`<p>Yannis, sur tes sorties longues, deux non-négociables. <strong>Un : le fueling, dès le départ et même sans « besoin »</strong> — c'est l'automatisme à graver après ta défaillance de juin (pastilles d'électrolytes + gels testés, boire avant la soif). <strong>Deux : la régularité de l'allure</strong>, en EF (≤ 144) sur le corps. Quand un finish allure marathon est prévu, garde du jus pour le tenir en contrôle : c'est la répétition exacte du 35e km de Nice. Plus tard, ces longues iront jusqu'à 30 km avec 14 km de finish AM — la vraie séance reine de ta prépa.</p>`},
