@@ -638,6 +638,63 @@ body.nuit .theo-sec.tts-reading{background:#2e1065}
 /* barre vocale dans la fiche séance */
 .tts-bar-seance{border-bottom:none;border:1px solid var(--gris-clair);border-radius:12px;margin-bottom:6px}
 body.nuit .tts-bar-seance{background:var(--gris-fond)}
+
+/* ===== Dossiers de course ===== */
+.cds-clic{cursor:pointer;transition:transform .12s,box-shadow .15s}
+.cds-clic:hover{box-shadow:0 3px 10px rgba(194,65,12,.22)}
+.cds-clic:active{transform:scale(.98)}
+.cds-go{font-weight:800;color:#c2410c;flex:0 0 auto;margin-left:1px}
+body.nuit .cds-go{color:#fb923c}
+.dos-head{text-align:center;padding:6px 0 18px;border-bottom:1px solid var(--gris-clair);margin-bottom:18px}
+.dos-eyebrow{font-size:.66rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.dos-nom{font-family:Georgia,'Times New Roman',serif;font-size:2rem;font-weight:700;line-height:1.05;margin:8px 0 4px;letter-spacing:-.01em}
+.dos-sous{font-size:.96rem;color:var(--texte-deux);font-weight:600}
+.dos-meta{font-size:.8rem;color:var(--texte-trois);margin-top:9px;line-height:1.5}
+.dos-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;background:var(--ac);border-radius:14px;padding:12px 8px;margin-bottom:18px}
+.dos-stat{text-align:center;color:#fff;min-width:0}
+.dos-stat-v{font-family:Georgia,serif;font-size:1.02rem;font-weight:700;line-height:1.1}
+.dos-stat-l{font-size:.56rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;opacity:.86;margin-top:3px}
+.dos-intro{font-size:.92rem;line-height:1.6;color:var(--texte-deux);margin-bottom:14px}
+.dos-intro strong,.dos-p strong,.dos-note strong,.dos-hydra strong{color:var(--texte);font-weight:700}
+.dos-phrase{font-size:.92rem;line-height:1.55;background:var(--gris-fond);border-left:4px solid var(--ac);border-radius:0 12px 12px 0;padding:13px 15px;color:var(--texte-deux);margin-bottom:6px}
+.dos-h3{font-family:Georgia,serif;font-size:1.18rem;font-weight:700;margin:26px 0 12px;padding-bottom:7px;border-bottom:2px solid var(--ac)}
+.dos-prof{width:100%;height:auto;display:block;background:var(--blanc);border:1px solid var(--gris-clair);border-radius:12px}
+.dos-prof-cap{font-size:.72rem;color:var(--texte-trois);font-style:italic;margin:7px 2px 0}
+.dos-p{font-size:.9rem;line-height:1.6;color:var(--texte-deux);margin:12px 0}
+.dos-note{font-size:.86rem;line-height:1.55;color:var(--texte-deux);margin:12px 0;font-style:italic}
+.dos-seg{background:var(--blanc);border:1px solid var(--gris-clair);border-radius:13px;padding:12px 14px;margin-bottom:9px}
+.dos-seg-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:5px}
+.dos-seg-t{font-weight:800;font-size:.94rem}
+.dos-seg-km{font-size:.72rem;font-weight:700;color:var(--ac);white-space:nowrap;text-transform:uppercase;letter-spacing:.03em}
+.dos-seg-f{font-size:.86rem;line-height:1.5;color:var(--texte-deux)}
+.dos-plan{background:var(--blanc);border:1px solid var(--gris-clair);border-left:4px solid var(--pc);border-radius:0 13px 13px 0;padding:12px 14px;margin-bottom:10px}
+.dos-plan-h{display:flex;align-items:center;gap:9px;margin-bottom:6px;flex-wrap:wrap}
+.dos-plan-n{font-family:Georgia,serif;font-weight:700;font-size:1rem;color:var(--pc);flex:0 0 auto}
+.dos-plan-titre{font-weight:800;font-size:.96rem;flex:1;min-width:0}
+.dos-plan-tag{font-size:.58rem;font-weight:800;letter-spacing:.05em;color:#fff;background:var(--pc);padding:3px 9px;border-radius:99px;white-space:nowrap}
+.dos-plan-txt{font-size:.86rem;line-height:1.5;color:var(--texte-deux);margin-bottom:8px}
+.dos-plan-fuel{font-size:.8rem;font-weight:600;color:var(--texte);background:var(--gris-fond);border-radius:9px;padding:7px 10px;line-height:1.4}
+.dos-nut{display:grid;grid-template-columns:1.4fr 1.3fr 1fr;gap:8px;align-items:center;background:var(--blanc);border:1px solid var(--gris-clair);border-radius:11px;padding:10px 12px;margin-bottom:7px}
+.dos-nut-n{font-weight:800;font-size:.84rem}
+.dos-nut-d{font-size:.78rem;color:var(--texte-deux)}
+.dos-nut-r{font-size:.72rem;font-weight:700;color:var(--ac);text-align:right}
+.dos-hydra{font-size:.88rem;line-height:1.55;background:#ecfeff;border:1px solid #a5f3fc;border-radius:12px;padding:13px 15px;margin:12px 0;color:#155e75}
+.dos-zone{display:grid;grid-template-columns:1fr auto;gap:4px 12px;background:var(--blanc);border:1px solid var(--gris-clair);border-radius:11px;padding:10px 13px;margin-bottom:7px}
+.dos-zone-n{font-weight:800;font-size:.86rem}
+.dos-zone-fc{font-family:Georgia,serif;font-weight:700;font-size:.92rem;color:var(--ac);text-align:right}
+.dos-zone-o{grid-column:1/-1;font-size:.78rem;color:var(--texte-deux);line-height:1.4}
+.dos-prat{display:flex;gap:12px;padding:9px 2px;border-bottom:1px solid var(--gris-clair)}
+.dos-prat-l{flex:0 0 38%;font-weight:700;font-size:.84rem}
+.dos-prat-v{flex:1;font-size:.84rem;color:var(--texte-deux);line-height:1.45}
+.dos-err{margin:6px 0 0;padding-left:20px}
+.dos-err li{font-size:.86rem;line-height:1.5;color:var(--texte-deux);margin-bottom:8px}
+.dos-err li::marker{color:#dc2626}
+.dos-sources{font-size:.72rem;line-height:1.5;color:var(--texte-trois);font-style:italic;margin-top:22px;padding-top:14px;border-top:1px solid var(--gris-clair)}
+.dos-bloc{display:flex;gap:12px;border-radius:13px;padding:13px 15px;margin:12px 0;font-size:.86rem;line-height:1.55;color:var(--texte-deux)}
+.dos-av{background:#fefce8;border:1px solid #fde68a}
+.dos-ap{background:#f0fdf4;border:1px solid #bbf7d0}
+.dos-bloc-ico{font-size:1.1rem;flex:0 0 auto;line-height:1.5}
+.dos-bloc strong{color:var(--texte);font-weight:800;display:block;margin-bottom:4px}
 </style></head>
 <body>
 <a href="#main" class="skip-link">Aller au contenu</a>
@@ -663,7 +720,148 @@ const PHASES=[{"id": "reprise", "nom": "Reprise & mise en jambes Sapins", "c": "
 const COUL={"reprise": "#22c55e", "sapins": "#ef4444", "transition": "#14b8a6", "general": "#3b82f6", "semi": "#8b5cf6", "trail": "#f97316", "saintexpress": "#eab308"};
 const SEMAINES=[{"num": 25, "phase": "reprise", "theme": "Reprise douce — ischios first", "km": 42, "statut": "courante", "charge": "Légère", "repartition": "≈ 92 % facile · 8 % vivacité", "objectif": "EF ≥ 6:05/km, renfo excentrique ischios, aucune intensité structurée. Laisser la Circaète partir."}, {"num": 26, "phase": "reprise", "theme": "Mise en jambes Sapins", "km": 50, "statut": "ouverte", "charge": "Modérée", "repartition": "≈ 85 % facile · 15 % spécif trail", "objectif": "Rappel D+ léger, descentes courtes et contrôlées (TFL), longue 16 km terrain varié. On arrive frais au 5 juil."}, {"num": 27, "phase": "sapins", "theme": "Trail des Sapins — COURSE", "km": 40, "statut": "ouverte", "charge": "Course", "repartition": "—", "objectif": "Mise en jambes (8 km) + Trail des Sapins 24k / 900 m D+ le dimanche 5 juil. Objectif B · au plaisir et en tête."}, {"num": 28, "phase": "transition", "theme": "Récupération post-Sapins", "km": 28, "statut": "ouverte", "charge": "Légère", "repartition": "100 % facile", "objectif": "Récup trail : footings EF très lents, mobilité ischios/TFL, pas de D+ cette semaine."}, {"num": 29, "phase": "transition", "theme": "Reprise route", "km": 42, "statut": "ouverte", "charge": "Légère", "repartition": "≈ 90 % facile · 10 % qualité légère", "objectif": "Retour sur route, vivacité légère, cadence. Transition trail → prépa semi."}, {"num": 30, "phase": "general", "theme": "Fondation aérobie", "km": 55, "statut": "ouverte", "charge": "Modérée", "repartition": "≈ 85 % facile · 15 % qualité", "objectif": "EF + côtes pyramide (force sans impact ischios) + première longue 18 km."}, {"num": 31, "phase": "general", "theme": "Seuil découverte", "km": 60, "statut": "ouverte", "charge": "Soutenue", "repartition": "≈ 82 % facile · 18 % qualité", "objectif": "Premier vrai seuil route (2×10 min), pyramide côtes, longue 20 km."}, {"num": 32, "phase": "general", "theme": "Allègement", "km": 46, "statut": "ouverte", "charge": "Légère", "repartition": "≈ 88 % facile · 12 % qualité", "objectif": "Récupération : assimiler, les ischios et le TFL respirent."}, {"num": 33, "phase": "general", "theme": "Test 10 km — benchmark", "km": 58, "statut": "ouverte", "charge": "Soutenue", "repartition": "≈ 82 % facile · test", "objectif": "Test 10 km en conditions de course pour calibrer toutes les allures du semi."}, {"num": 34, "phase": "general", "theme": "Volume + seuil", "km": 65, "statut": "ouverte", "charge": "Soutenue", "repartition": "≈ 80 % facile · 20 % qualité", "objectif": "Seuil 3 blocs (3×12 min), longue 22 km avec bloc final allure semi."}, {"num": 35, "phase": "general", "theme": "Pic développement", "km": 70, "statut": "ouverte", "charge": "Élevée", "repartition": "≈ 80 % facile · 20 % qualité", "objectif": "Seuil long (2×15 min) + longue 24 km dont 8 km allure semi."}, {"num": 36, "phase": "general", "theme": "Allègement pré-affûtage", "km": 52, "statut": "ouverte", "charge": "Modérée", "repartition": "≈ 85 % facile · 15 % qualité", "objectif": "Décharge avant l'affûtage. Qualité courte maintenue, volume en baisse."}, {"num": 37, "phase": "semi", "theme": "Affûtage 1", "km": 48, "statut": "ouverte", "charge": "Modérée", "repartition": "≈ 82 % facile · 18 % qualité", "objectif": "Décharge nette (Bosquet) : volume -25%, intensité courte 2×8 min allure semi."}, {"num": 38, "phase": "semi", "theme": "Affûtage 2 — fraîcheur", "km": 36, "statut": "ouverte", "charge": "Légère", "repartition": "≈ 85 % facile · 15 % qualité", "objectif": "Réduire encore le volume. Quelques allures semi courtes. Confiance."}, {"num": 39, "phase": "semi", "theme": "Semaine course", "km": 38, "statut": "ouverte", "charge": "Course", "repartition": "—", "objectif": "Mise en jambes (12 km) + Semi-marathon de Lyon le 4 oct. Objectif B route."}, {"num": 40, "phase": "semi", "theme": "Récup post-semi", "km": 22, "statut": "ouverte", "charge": "Légère", "repartition": "100 % facile", "objectif": "Récupération semi : footings EF, mobilité, zéro stress articulaire."}, {"num": 41, "phase": "trail", "theme": "Retour trail — douceur", "km": 48, "statut": "ouverte", "charge": "Modérée", "repartition": "≈ 85 % facile trail · 15 % côtes", "objectif": "Bascule trail : terrain, D+ progressif, descentes contrôlées (TFL vigilance)."}, {"num": 42, "phase": "trail", "theme": "Volume D+ + nocturne", "km": 58, "statut": "ouverte", "charge": "Soutenue", "repartition": "≈ 80 % facile · 20 % qualitatif trail", "objectif": "Sortie nocturne (lampe frontale), D+ 500-700 m/sortie, longue 22 km terrain."}, {"num": 43, "phase": "trail", "theme": "Allègement", "km": 42, "statut": "ouverte", "charge": "Légère", "repartition": "≈ 88 % facile", "objectif": "Récupération intermédiaire. On assimile, les ischios/TFL en priorité."}, {"num": 44, "phase": "trail", "theme": "Bloc D+ culminant", "km": 65, "statut": "ouverte", "charge": "Élevée", "repartition": "≈ 78 % facile · 22 % spécif trail", "objectif": "Grosse sortie trail 28 km / 1200 m D+. Longue nocturne en reco Sainté si possible."}, {"num": 45, "phase": "trail", "theme": "Spécifique Sainté Express", "km": 60, "statut": "ouverte", "charge": "Élevée", "repartition": "≈ 80 % facile · 20 % spécif", "objectif": "Sortie longue 25 km terrain Sainté Express si possible + trail rythme nocturne."}, {"num": 46, "phase": "trail", "theme": "Allègement pré-course", "km": 44, "statut": "ouverte", "charge": "Modérée", "repartition": "≈ 85 % facile", "objectif": "Décharge : sorties courtes, D+ limité, TFL/ischios frais pour la course."}, {"num": 47, "phase": "trail", "theme": "Affûtage final", "km": 28, "statut": "ouverte", "charge": "Très légère", "repartition": "≈ 90 % facile", "objectif": "Dernière semaine : deux petites sorties, quelques accélérations, récup maximale."}, {"num": 48, "phase": "saintexpress", "theme": "Sainté Express 45k — COURSE", "km": 55, "statut": "ouverte", "charge": "Course", "repartition": "—", "objectif": "Mise en jambes (10 km) + Sainté Express 45 km nocturne le 28 nov. Objectif A saison. 🌙"}];
 const GEAR=[{"marque": "Non renseigné", "modele": "Chaussures trail", "km": 0}, {"marque": "Non renseigné", "modele": "Chaussures route", "km": 0}];
-const RACES=[{"nom": "Trail des Sapins 24k / 900 m D+", "date": "2026-07-05"}, {"nom": "Semi-marathon de Lyon", "date": "2026-10-04"}, {"nom": "Sainté Express 45 km", "date": "2026-11-28"}];
+
+/* ===== Dossiers de course Yannis ===== */
+const DOSSIERS={
+"sapins":{
+  "nom":"Trail des Sapins 24 km",
+  "soustitre":"Lac des Sapins — Cublize (69), Beaujolais Vert",
+  "date":"Dimanche 5 juillet 2026",
+  "depart":"Départ ≈ 8 h 30 · Salle des sports de Cublize",
+  "format":"24 km · 900 m D+ · 5ᵉ manche Trail Tour Beaujolais",
+  "accent":"#0d9488",
+  "stats":[["24","km"],["+900","D+ (m)"],["-900","D− (m)"],["897","sommet (m)"],["2h30–3h","cible"]],
+  "intro":"Boucle dans le Beaujolais Vert autour du Lac des Sapins. <strong>900 m de D+ concentrés en deux montées</strong>, départ et arrivée au lac (447 m), sommet à 897 m. Single en forêt, quelques passages techniques entre sapins et genêts. Une vraie gestion d'effort à tenir.",
+  "phrase":"Course <strong>plaisir</strong>. L'objectif : bien gérer l'effort et appliquer ta stratégie hydratation depuis le départ. Pas de chrono à aller chercher.",
+  "profil":"Le D+ tombe en deux temps. <strong>Montée 1 (km 2→8)</strong> : la grosse ascension d'entrée, +360 m. <strong>Plateau ondulé (km 8→12)</strong>. <strong>Montée 2 (km 12→16)</strong> : remontée jusqu'au sommet 897 m sur jambes entamées — le crux. Puis <strong>longue descente finale (km 16→22)</strong>, -415 m roulante. La faute classique : cramer la Montée 1 et exploser sur la remontée du km 13.",
+  "profil_dist":24.06,
+  "profil_pts":[447,449,449,499,519,534,544,506,530,566,595,617,614,660,688,713,740,765,758,734,727,747,772,789,837,836,786,777,796,798,797,841,819,802,776,772,776,777,723,697,772,818,833,864,893,878,845,843,870,865,861,834,780,725,716,725,696,663,637,613,584,578,556,562,544,525,523,507,474,461,441,446,449,450,448,440,442,447,447],
+  "segments":[
+    {"t":"1 · Départ & Montée 1","km":"km 0 → 8","faire":"Faux-plat de départ au lac (km 0-2), puis LA grosse montée : ~+360 m jusqu'au km 8. Marche active sur les raidillons, FC ≤ 165. Tu dois te sentir trop sage — personne ne gagne sa course ici."},
+    {"t":"2 · Plateau ondulé","km":"km 8 → 12","faire":"Replat d'altitude vallonné (~800 m) avec un creux vers le km 11-12. Relâche, roule, et surtout bois : c'est le moment de faire le plein avant la remontée."},
+    {"t":"3 · Montée 2 — le crux","km":"km 12 → 16","faire":"Remontée jusqu'au sommet 897 m sur jambes déjà entamées. Le juge de paix. Marche assumée, petits pas, accepte la lenteur."},
+    {"t":"4 · Descente finale","km":"km 16 → 22","faire":"Longue descente roulante, ~-415 m. Contrôlé en haut, puis plein gaz sur le roulant : ton feu vert pour te faire plaisir."},
+    {"t":"5 · Retour au lac","km":"km 22 → 24","faire":"Faux-plat final le long du lac. Vide le réservoir sur les derniers hectomètres."}
+  ],
+  "plan":[
+    {"n":"1","tag":"CONSERVATEUR","c":"#16a34a","titre":"Montée 1 — freiner l'ego","txt":"La grosse montée d'entrée (km 2-8, +360 m), jambes fraîches : le piège classique. Marche active aux raidillons, FC plafond 165. Tu dois te sentir presque trop sage. Tout se joue ici en négatif : trop vite = explosion au km 13.","fuel":"Eau et hydratation dès le départ — ne pas attendre d'avoir soif."},
+    {"n":"2","tag":"FAIRE LE PLEIN","c":"#ea580c","titre":"Plateau — rouler et boire","txt":"Replat ondulé d'altitude (km 8-12) avec un creux vers le km 11. Relâche, foulée courte cadence haute, profite de cette accalmie pour boire et t'alimenter avant la remontée.","fuel":"Recharge l'eau à fond au ravito du plateau."},
+    {"n":"3","tag":"VIGILANCE","c":"#dc2626","titre":"Crux — survivre, marcher","txt":"Remontée au sommet 897 m (km 12-16) sur jambes entamées. C'est ici que les gens explosent. Marche assumée, petits pas, on survit, on ne brille pas.","fuel":"Un gel ou une barre selon ce que tu as testés à l'entraînement."},
+    {"n":"4","tag":"POUSSER","c":"#0d9488","titre":"Descente finale — lâcher les chevaux","txt":"Longue descente roulante (km 16-22, -415 m). Contrôlé en haut le temps de te remettre en jambes, puis plein gaz sur le roulant et le retour au lac.","fuel":"Dernier gel si besoin pour la relance."}
+  ],
+  "zones":[
+    ["Endurance fond.","130–155","Croisière : faux-plats, descentes courues, plat roulant"],
+    ["Tempo / bascule","155–167","Montées : plafond 165. Au-delà → marche active"],
+    ["Seuil +","> 167","Réservé à la relance finale, jamais avant"]
+  ],
+  "terrain":"Single en forêt (terre, herbe, racines), roulant par endroits, avec des passages plus techniques sur cailloux et sentes étroites. Juillet = chaleur garantie : hydrate tôt et souvent.",
+  "pratique":[
+    ["🅿️ Départ / arrivée","Salle des sports de Cublize — parking, vestiaires, douches sur place"],
+    ["🏊 Après la course","Lac des Sapins : baignade possible — récup' active idéale par temps chaud"],
+    ["🥾 Bâtons","Autorisés. Utiles sur les raidillons, mais optionnels vu le D+ modéré"]
+  ],
+  "erreurs":[
+    "Partir trop vite sur l'enthousiasme du départ de masse — le relief te le fera payer plus tard.",
+    "Attendre d'avoir soif pour boire : en juillet, c'est déjà trop tard.",
+    "Vouloir performer : c'est une course plaisir, pas un objectif chrono.",
+    "Courir tous les raidillons : la marche active est plus économique et te garde des jambes.",
+    "Zapper un ravito : recharge l'eau systématiquement, même si tu te sens bien."
+  ],
+  "sources":"Données : trace GPX officielle du 24 km (tracedetrail.fr) — 24,06 km, sommet 897 m, départ/arrivée 447 m. D+ officiel ~900 m. Trail Tour Beaujolais, organisateur Y'A.C.A. Courir. Zones FC basées sur FCmax ~180."
+},
+"semi":{
+  "nom":"Semi-Marathon de Lyon",
+  "soustitre":"Parcours centre-ville Lyon · plat et rapide",
+  "date":"Dimanche 4 octobre 2026",
+  "depart":"Départ matin · centre de Lyon",
+  "format":"21,097 km · plat · épreuve urbaine",
+  "accent":"#3b82f6",
+  "stats":[["21,1","km"],["~+100","D+ (m)"],["1h44","objectif A"],["1h48","objectif B"],["4:58/km","allure cible"]],
+  "intro":"Semi-marathon urbain sur les quais et rues de Lyon. <strong>Parcours plat et rapide</strong>, idéal pour faire une bonne performance. C'est ton <strong>Objectif A de l'automne</strong> avant le Marathon de Nice. La cible : <strong>1h44 (4:56/km)</strong>. L'objectif B de repli : 1h48 (5:07/km).",
+  "phrase":"Le semi est un exercice de précision : <strong>pars à 5:00/km</strong> les 7 premiers kilomètres, et accélère progressivement si les sensations sont là. Un départ trop vite se paie au km 16.",
+  "profil":"Parcours quasi plat au niveau du Rhône et de la Saône. Quelques légères ondulations en centre-ville. Le défi n'est pas le relief mais la <strong>gestion d'allure sur 21 km</strong>.",
+  "profil_dist":21.097,
+  "profil_pts":[170,171,172,171,170,169,170,171,172,173,172,171,170,171,172,173,174,173,172,171,170,169,170,171,172,173,172,171,170,171,172,171,170,169,170,171,172,173,172,171,170,169,168,169,170,171,172,171,170,169,170,171,172,173,172,171,170,169,170,171,172,173,172,171,170,171,172,171,170,169,170,171,172,171,170,169,168,167,168,169,170],
+  "segments":[
+    {"t":"1 · Mise en route","km":"km 0 → 7","faire":"Pars <strong>conservateur</strong> : 5:00-5:05/km, jambes fraîches, atmosphère de course. Si tu passes le km 5 en moins de 24:30, tu es trop rapide. Le piège classique."},
+    {"t":"2 · Croisière","km":"km 7 → 14","faire":"Allure cible 4:56-5:00/km. Le corps est lancé, tu dois être dans ton rythme. Si ça coule, c'est parfait. Si tu souffres déjà : c'est que tu es parti trop vite."},
+    {"t":"3 · Finale","km":"km 14 → 21","faire":"Les 7 derniers km sont ceux qui font la course. Si tu as bien géré : tiens l'allure et accélère légèrement sur les 3 derniers. Le km 18-21 : vide le réservoir, la ligne arrive."}
+  ],
+  "plan":[
+    {"n":"1","tag":"PATIENT","c":"#3b82f6","titre":"km 0-7 — freiner l'euphorie","txt":"Départ de masse, adrénaline, tout le monde part trop vite. Ta cible : <strong>5:00-5:05/km</strong>. Tu dois avoir l'impression que c'est trop lent. C'est normal — continue.","fuel":"Eau si disponible km 5. Gel si tu en emportes : pas avant le km 7."},
+    {"n":"2","tag":"MAINTENIR","c":"#2563eb","titre":"km 7-14 — la longue ligne droite","txt":"Le cœur du semi. <strong>4:56/km</strong> en métronome. C'est ici que le semi se court, pas se gagne encore. Restez dans ta bulle, régulier.","fuel":"Gel km 10-11 si format semi avec ravito. Eau à chaque table."},
+    {"n":"3","tag":"LÂCHER","c":"#1d4ed8","titre":"km 14-21 — tout donner","txt":"C'est maintenant. Si tu as été patient, tu peux accélérer : <strong>4:50-4:55/km</strong> si les jambes suivent. Les km 18-21 : vide le réservoir, la ligne arrive.","fuel":"Eau seule sur les derniers km."}
+  ],
+  "zones":[
+    ["Zone semi","148–162","L'allure 1h44 doit tenir dans cette plage. FC > 165 avant km 10 = trop vite"],
+    ["Tempo final","162–170","Km 14-21 si les jambes le permettent"],
+    ["Danger","> 170","Avant km 14 = risque d'explosion"]
+  ],
+  "terrain":"Route bitumée, rue et quais lyonnais. Chaussures de route avec amorti — tes ASICS ou HOKA selon tes habitudes. Octobre à Lyon : 10-18°C, conditions idéales.",
+  "pratique":[
+    ["📋 Dossard","Retrait avant la course selon les indications de l'organisateur"],
+    ["🕐 Timing","Départ le matin — vérifier l'heure exacte sur le site officiel"],
+    ["🎯 Lièvre","Un lièvre 1h44 peut être présent — check sur le site"],
+    ["🚇 Accès","Lyon centre, bien desservi en transport en commun"]
+  ],
+  "erreurs":[
+    "Partir trop vite dans l'euphorie du départ — c'est l'erreur n°1.",
+    "Passer le km 5 sous 24:00 : si c'est le cas, tu vas payer entre le km 14 et 18.",
+    "Sauter les ravitos en se sentant bien — bois même quand tu n'as pas soif.",
+    "Accélérer au km 10 au lieu du km 14 : sois patient.",
+    "Sous-estimer les 7 derniers km : le semi ne finit pas à la mi-course."
+  ],
+  "sources":"Semi-Marathon de Lyon. Objectifs basés sur le profil de Yannis (FCmax 180, best effort 10 km ~47 min projeté via Riegel sur 21,097 km → ~1h44)."
+},
+"saintexpress":{
+  "nom":"SaintExpress 45 km",
+  "soustitre":"Sainte-Catherine (757 m) → Lyon · Halle Tony Garnier · Monts du Lyonnais",
+  "date":"Samedi 28 novembre 2026 — départ 23 h 00",
+  "depart":"Départ nocturne 23 h 00 · Sainte-Catherine (757 m)",
+  "format":"45 km · 900 m D+ · 1 400 m D− · maratrail nocturne",
+  "accent":"#8b5cf6",
+  "stats":[["45","km"],["+900","D+ (m)"],["-1 400","D− (m)"],["757","alt. départ (m)"],["6h–7h","cible réaliste"]],
+  "intro":"Course emblématique de la SaintéLyon. <strong>45 km de nuit complète</strong> dans les Monts du Lyonnais, de Sainte-Catherine à la Halle Tony Garnier de Lyon. Plus de descentes que de montées (1 400 m de D− pour 900 m de D+), terrain <strong>60% chemins / 40% bitume</strong>, et une nuit de fin novembre. <strong>Course plaisir, 20 jours après le Marathon de Nice.</strong>",
+  "phrase":"<strong>Course plaisir, objectif B — cible 6h à 7h.</strong> Tu arrives 20 jours après Nice. L'objectif : finir debout, bien équipé, et profiter de la nuit dans les Monts du Lyonnais.",
+  "profil":"Le D+ ne tombe pas que dans la première moitié. Les 900 m de D+ se répartissent presque équitablement entre les deux sections. La première section (km 0-27) est <strong>la plus technique</strong> : pistes forestières pentues, monotraces, descentes raides. Après ~km 27, terrain plus roulant.",
+  "profil_dist":45.0,
+  "profil_pts":[757,783,810,824,802,778,748,720,695,718,742,724,698,720,695,670,688,712,685,660,678,695,670,648,625,640,658,635,610,628,614,598,575,590,610,598,575,558,542,560,578,555,535,518,498,480,462,478,492,470,452,435,420,408,392,375,362,378,365,350,362,348,335,320,308,322,335,318,302,288,275,262,250,238,248,260,270,255,240,228,215,205,215,228,242,258,272,280,268,252,235,218,200,188,180,175],
+  "segments":[
+    {"t":"1 · Sainte-Catherine → km 14","km":"km 0 → 14","faire":"<strong>Terrain inconnu</strong> — la section la plus technique. Départ nocturne sur pistes forestières pentues. Ne jamais forcer : gérer la frontale, les appuis, la descente de nuit. FC ≤ 160 sur les montées."},
+    {"t":"2 · km 14 → km 27","km":"km 14 → 27","faire":"<strong>Terrain inconnu</strong> — section encore technique, descentes importantes. Les quads accumulent. Foulée courte, cadence haute. À ~km 27 : terrain plus roulant, point de bascule mental fort."},
+    {"t":"3 · km 27 → km 38","km":"km 27 → 38","faire":"Terrain plus roulant. Creux circadien probable vers 2h du matin : si tu as de la caféine, c'est ici. Tu peux relâcher l'hyper-vigilance et gérer à l'instinct."},
+    {"t":"4 · km 38 → Lyon","km":"km 38 → 45","faire":"La montée finale est dure sur jambes fatiguées — marche-la franchement. Ensuite la descente finale, les faubourgs, la Halle Tony Garnier. Vide le réservoir."}
+  ],
+  "plan":[
+    {"n":"1","tag":"TERRAIN INCONNU","c":"#8b5cf6","titre":"km 0-27 — prudence absolue","txt":"Les 27 premiers km sont du terrain inédit. Pas de repère, pas d'anticipation possible — tu gères à l'effort, à la sensation et à la frontale. <strong>Plus conservateur que d'habitude</strong>, surtout sur les descentes techniques de nuit.","fuel":"Hydratation régulière depuis le départ. Gels et barres selon tes habitudes d'entraînement."},
+    {"n":"2","tag":"TERRAIN ROULANT","c":"#16a34a","titre":"km 27-45 — gérer l'arrivée","txt":"Terrain plus roulant sur la seconde moitié. Tu peux relâcher l'hyper-vigilance. <strong>Pas d'accélération brutale</strong>, mais tu peux gérer à l'instinct. La Halle Tony Garnier est au bout.","fuel":"Si caféine (gel ou autre) : autour du km 27-30 pour le creux nocturne, et avant la montée finale km 38."},
+    {"n":"3","tag":"QUADS FIRST","c":"#dc2626","titre":"Préserver les quads — 1400 m de D−","txt":"Course de descente avant tout. <strong>1400 m de descente sur terrain technique de nuit</strong> : foulée courte, appuis rapides, regard 3-4 m devant la frontale.","fuel":"Hydratation régulière. Ne jamais attendre la soif dans le froid."},
+    {"n":"4","tag":"VIGILANCE NUIT","c":"#ea580c","titre":"Creux circadien 1h-3h du matin","txt":"Entre 1h et 3h du matin, la vigilance baisse. <strong>C'est là que les chutes arrivent.</strong> La caféine autour du km 27-30 est calculée pour couvrir ce creux.","fuel":"Gel caféiné à Soucieu si tu en as → pic en 30-35 min = plein creux nocturne couvert."}
+  ],
+  "zones":[
+    ["Confort nocturne","130–152","L'allure de référence pour la majeure partie du parcours"],
+    ["Montées","152–162","FC plafond 160 sur les montées — si tu dépasses, marche"],
+    ["Danger","> 162","Avant km 30 de nuit = risque d'explosion"]
+  ],
+  "terrain":"<strong>60% chemins, 40% bitume</strong>. Les premiers 27 km sont les plus techniques : single trails forestiers, descentes raides, racines et cailloux glissants possibles. Après : plus de routes et chemins larges. Verglas possible si T° < 0°C.",
+  "pratique":[
+    ["🚌 Navette","Navettes officielles depuis Lyon vers Sainte-Catherine. Retrait dossards : Halle Tony Garnier, vendredi 27 / samedi 28 nov."],
+    ["🔦 Frontale","Obligatoire. Batterie pleine + rechange. La nuit commence à 23h, tu arrives au lever du jour."],
+    ["🧥 Froid","Gants obligatoires, base-layer thermique, coupe-vent. Vise 0-8°C dans les Monts du Lyonnais."],
+    ["🎒 Matériel obligatoire","Frontale, couverture de survie, sifflet, réserve alimentaire, téléphone. Vérifier le règlement officiel."],
+    ["🏁 Arrivée","Halle Tony Garnier, Lyon. Repas d'arrivée pour tous les finishers."]
+  ],
+  "erreurs":[
+    "Partir trop vite dans l'euphorie du départ — l'énergie du soir est trompeuse.",
+    "Sous-estimer les descentes de nuit sur terrain inconnu (km 0-27) : les appuis sont moins sûrs qu'en terrain connu.",
+    "Vouloir performer 20 jours après Nice — cette course se court en plaisir.",
+    "Sauter les ravitos sans boire parce qu'on n'a pas soif : le froid masque la soif.",
+    "Sous-estimer le froid : 6h de course de nuit en sueur refroidit vite."
+  ],
+  "sources":"saintelyon.com (45 km, D+ 900 m, D- 1400 m, départ 23h00 Sainte-Catherine). Zones FC basées sur FCmax ~180."
+}
+};
+const RACES=[{"nom": "Trail des Sapins 24k / 900 m D+", "date": "2026-07-05", "dossier": "sapins"}, {"nom": "Semi-marathon de Lyon", "date": "2026-10-04", "dossier": "semi"}, {"nom": "Sainté Express 45 km", "date": "2026-11-28", "dossier": "saintexpress"}];
 const PROFIL={"prenom": "Yannis", "ville": "Saint-Étienne", "cible_marathon": "3h45", "marathon_projete": "~3h39-3h43", "cible_semi": "~1h44", "fcmax": 180, "poids": 84};
 const RECORDS=[{"label": "5 km meilleur effort", "val": "~24:00", "sub": "estimé depuis fractionnés"}, {"label": "10 km meilleur effort", "val": "~47:00", "sub": "4:42/km — à confirmer en test"}, {"label": "Marathon visé", "val": "3h45", "sub": "objectif · à préciser"}];
 const VIGILANCE=[{"t": "Ischios fragiles", "d": "Pas d'accélération à froid — échauff. dynamique obligatoire · Nordic curl + good morning 2×/sem"}, {"t": "TFL (bandelette IT)", "d": "Vigilance descentes (Trail Sapins, Sainté Express) · Foam roller TFL + fessiers post-sortie"}, {"t": "Zone grise", "d": "50% du volume en Z3 — corriger en priorité : EF ≥ 6:05/km sans négocier"}];
@@ -768,7 +966,8 @@ function renderHeader(){
   }
   let _cd='';
   if(RACES&&RACES.length){
-    const _it=RACES.map(r=>{const _dn=Math.max(0,Math.ceil((new Date(r.date)-_t)/86400000));return `<span class="cds-item"><span class="cds-n">J-${_dn}</span><span class="cds-l">${r.nom}</span></span>`;}).join('');
+    const _it=RACES.map(r=>{const _dn=Math.max(0,Math.ceil((new Date(r.date)-_t)/86400000));if(r.dossier){return `<span class="cds-item cds-clic" role="button" tabindex="0" onclick="ouvrirDossier('${r.dossier}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();ouvrirDossier('${r.dossier}')}"><span class="cds-n">J-${_dn}</span><span class="cds-l">${r.nom}</span><span class="cds-go">›</span></span>`;}
+      return `<span class="cds-item"><span class="cds-n">J-${_dn}</span><span class="cds-l">${r.nom}</span></span>`;}).join('');
     _cd=`${_it}`;
   }
   const _maj=`<div class="vdj-maj">Données à jour au ${MAJ}</div>`;
@@ -1648,6 +1847,65 @@ function svgRiegel(){
     <text x="150" y="122" text-anchor="middle" font-size="7.5" fill="#94a3b8">un 10 km bien couru prédit ton marathon (Riegel, exp. 1,07)</text>
   </svg>`;
 }
+
+function dosProfilSVG(D,ac){
+  const pts=D.profil_pts; if(!pts||!pts.length)return '';
+  const n=pts.length,dist=D.profil_dist||24.06;
+  const W=620,H=172,padL=32,padR=10,padT=18,padB=20;
+  const plotW=W-padL-padR,plotH=H-padT-padB;
+  const mn=Math.min(...pts),mx=Math.max(...pts);
+  const lo=Math.floor((mn-15)/100)*100,hi=Math.ceil((mx+15)/100)*100;
+  const X=i=>padL+i/(n-1)*plotW, Y=v=>padT+plotH-(v-lo)/(hi-lo)*plotH;
+  let d=`M ${X(0).toFixed(1)} ${Y(pts[0]).toFixed(1)}`;
+  for(let i=1;i<n;i++)d+=` L ${X(i).toFixed(1)} ${Y(pts[i]).toFixed(1)}`;
+  const area=d+` L ${X(n-1).toFixed(1)} ${(padT+plotH).toFixed(1)} L ${X(0).toFixed(1)} ${(padT+plotH).toFixed(1)} Z`;
+  const yl=[lo,hi].map(v=>`<line x1="${padL}" y1="${Y(v).toFixed(1)}" x2="${W-padR}" y2="${Y(v).toFixed(1)}" class="dp-grid"/><text x="${padL-5}" y="${(Y(v)+3).toFixed(1)}" class="dp-ax" text-anchor="end">${v}</text>`).join('');
+  const xl=[0,8,16,24].filter(k=>k<=dist).map(km=>{const xx=padL+Math.min(km,dist)/dist*plotW;return `<text x="${xx.toFixed(1)}" y="${H-5}" class="dp-ax" text-anchor="middle">${km}</text>`;}).join('');
+  let mi=0;for(let i=0;i<n;i++)if(pts[i]>pts[mi])mi=i;
+  const sx=X(mi),sy=Y(pts[mi]);
+  const sum=`<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="3.4" fill="${ac}"/><text x="${sx.toFixed(1)}" y="${(sy-7).toFixed(1)}" class="dp-mk" text-anchor="middle">${pts[mi]} m</text>`;
+  return `<svg class="dos-prof" viewBox="0 0 ${W} ${H}" role="img" aria-label="Profil du parcours"><style>.dp-ax{font:600 9px system-ui;fill:#94a3b8}.dp-grid{stroke:#e2e8f0;stroke-width:1}.dp-mk{font:700 9.5px system-ui;fill:${ac}}</style>${yl}<path d="${area}" fill="${ac}" opacity="0.13"/><path d="${d}" fill="none" stroke="${ac}" stroke-width="2.4" stroke-linejoin="round"/>${sum}${xl}</svg><div class="dos-prof-cap">Profil représentatif · altitude (m) en ordonnée, distance (km) en abscisse</div>`;
+}
+function ouvrirDossier(id){
+  const D=(typeof DOSSIERS!=='undefined')?DOSSIERS[id]:null; if(!D)return;
+  const ac=D.accent||'#0d9488';
+  const stats=D.stats.map(s=>`<div class="dos-stat"><div class="dos-stat-v">${s[0]}</div><div class="dos-stat-l">${s[1]}</div></div>`).join('');
+  const segs=D.segments.map(s=>`<div class="dos-seg"><div class="dos-seg-h"><span class="dos-seg-t">${s.t}</span><span class="dos-seg-km">${s.km}</span></div><div class="dos-seg-f">${s.faire}</div></div>`).join('');
+  const plan=D.plan.map(p=>`<div class="dos-plan" style="--pc:${p.c}"><div class="dos-plan-h"><span class="dos-plan-n">${p.n}</span><span class="dos-plan-titre">${p.titre}</span><span class="dos-plan-tag">${p.tag}</span></div><div class="dos-plan-txt">${p.txt}</div><div class="dos-plan-fuel">⛽ ${p.fuel}</div></div>`).join('');
+  const zones=D.zones.map(z=>`<div class="dos-zone"><span class="dos-zone-n">${z[0]}</span><span class="dos-zone-fc">${z[1]}</span><span class="dos-zone-o">${z[2]}</span></div>`).join('');
+  const prat=D.pratique.map(p=>`<div class="dos-prat"><div class="dos-prat-l">${p[0]}</div><div class="dos-prat-v">${p[1]}</div></div>`).join('');
+  const err=D.erreurs.map(e=>`<li>${e}</li>`).join('');
+  contenu.innerHTML=`
+   <div class="dos" style="--ac:${ac}">
+     <div class="dos-head">
+       <div class="dos-eyebrow">Dossier de course</div>
+       <h2 class="dos-nom">${D.nom}</h2>
+       <div class="dos-sous">${D.soustitre}</div>
+       <div class="dos-meta">${D.date} · ${D.format}<br>${D.depart}</div>
+     </div>
+     <div class="dos-stats">${stats}</div>
+     <div class="dos-intro">${D.intro}</div>
+     <div class="dos-phrase">${D.phrase}</div>
+     <h3 class="dos-h3">Le profil</h3>
+     ${dosProfilSVG(D,ac)}
+     <p class="dos-p">${D.profil}</p>
+     <h3 class="dos-h3">Le déroulé</h3>
+     ${segs}
+     <h3 class="dos-h3">Plan d'exécution</h3>
+     ${plan}
+     <h3 class="dos-h3">Zones d'effort (FC)</h3>
+     ${zones}
+     <h3 class="dos-h3">Terrain &amp; infos pratiques</h3>
+     <p class="dos-p">${D.terrain}</p>
+     ${prat}
+     <h3 class="dos-h3">Les erreurs à ne pas faire</h3>
+     <ul class="dos-err">${err}</ul>
+     <p class="dos-sources">${D.sources}</p>
+   </div>`;
+  topbar.innerHTML=`<span></span>${btnFermer}`;
+  ouvrir();
+}
+
 function ouvrirSeance(num,id){const se=(SEANCES_BY_WEEK[num]||[]).find(x=>x.id===id);if(!se)return;segActif=null;if(typeof ttsStop==='function')ttsStop();
   const ttsBarSeance=(typeof window!=='undefined'&&'speechSynthesis' in window)?`<div class="tts-bar tts-bar-seance" id="ttsBarSeance"><button class="tts-btn tts-play" onclick="ttsPlaySeance(${num},${se.id})">🔊 Lecture de la séance</button><span class="tts-hint">lecture vocale de la fiche, de haut en bas</span></div>`:'';
   topbar.innerHTML=`<button class="btn-nav" onclick="ouvrirSemaine(${num})">‹ Retour semaine ${num}</button>${btnFermer}`;
