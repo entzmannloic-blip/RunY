@@ -1994,81 +1994,71 @@ async function _fetchCreneaux(){
     const r=await fetch(u);if(!r.ok)throw 0;
     const j=await r.json();
     const now=new Date();
-    const nowH=now.getHours();
     const todayKey=now.toISOString().slice(0,10);
-    const jours={};
-    j.hourly.time.forEach((iso,idx)=>{
-      const d=new Date(iso);
-      const dayKey=iso.slice(0,10);
-      const h=d.getHours();
-      const matin=h>=5&&h<=10;
-      const soir=h>=18&&h<=21;
-      if(!matin&&!soir)return;
-      if(dayKey===todayKey&&h<=nowH)return;
-      const temp=j.hourly.temperature_2m[idx];
-      const app=j.hourly.apparent_temperature[idx];
-      const pluie=j.hourly.precipitation_probability[idx]||0;
-      if(!jours[dayKey])jours[dayKey]=[];
-      jours[dayKey].push({h,temp,app,pluie,matin});
+    const tom=new Date(now);tom.setDate(tom.getDate()+1);
+    const tomKey=tom.toISOString().slice(0,10);
+    const byDay={};
+    j.hourly.time.forEach((iso,i)=>{
+      const dk=iso.slice(0,10);
+      if(dk!==todayKey&&dk!==tomKey)return;
+      if(!byDay[dk])byDay[dk]=[];
+      byDay[dk].push({h:new Date(iso).getHours(),temp:j.hourly.temperature_2m[i],app:j.hourly.apparent_temperature[i],pluie:j.hourly.precipitation_probability[i]||0});
     });
-    const JNOMS=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-    const MOIS=['jan','fev','mar','avr','mai','jun','jul','aou','sep','oct','nov','dec'];
-    let out='<div class="creneaux-titre">\u{1F321}\uFE0F Cr\u00E9neaux d\u2019entra\u00EEnement</div>'
-      +'<div class="creneaux-sous">Saint-\u00C9tienne \u00B7 fen\u00EAtres matin et soir</div>';
-    const keys=Object.keys(jours).sort().slice(0,2);
-    if(!keys.length){out+='<div style="padding:20px;color:var(--texte-trois)">Aucun cr\u00E9neau disponible.</div>';}
-    keys.forEach(dayKey=>{
-      const d=new Date(dayKey+'T12:00:00');
-      const isToday=dayKey===todayKey;
-      const label=isToday
-        ?("Aujourd\u2019hui \u2014 "+JNOMS[d.getDay()])
-        :(JNOMS[d.getDay()]+' '+d.getDate()+' '+MOIS[d.getMonth()]);
-      out+='<div class="creneaux-jour"><div class="creneaux-jour-titre">'+label+'</div>';
-      jours[dayKey].forEach(slot=>{
-        const teff=Math.max(slot.temp,slot.app);
-        let badge,cls,conseil;
-        if(slot.pluie>=70){
-          badge='\u{1F327}\uFE0F Pluie';cls='cren-warn';
-          conseil='Forte pluie ('+slot.pluie+'%) \u2014 adapter la tenue.';
-        } else if(teff<24){
-          badge='\u2705 Id\u00E9al';cls='cren-ok';
-          conseil='Conditions optimales \u2014 allure cible normale.';
-        } else if(teff<28){
-          badge='\uD83D\uDC4C Bon';cls='cren-ok';
-          conseil='Conditions correctes \u2014 hydratation normale.';
-        } else if(teff<32){
-          badge='\u26A0\uFE0F Chaud';cls='cren-warn';
-          conseil='Allure +15s/km, eau toutes les 15 min.';
-        } else if(teff<36){
-          badge='\uD83D\uDFE0 Difficile';cls='cren-warn';
-          conseil='Allure \u221230 s/km, max 45 min, \u00E9lectrolytes obligatoires.';
-        } else {
-          badge='\uD83D\uDD34 D\u00E9conseill\u00E9';cls='cren-bad';
-          conseil='Report recommand\u00E9 ou renfo en int\u00E9rieur.';
-        }
-        const heure=(slot.h<10?'0':'')+slot.h+'h00';
-        const plage=slot.matin?'Matin':'Soir';
-        out+='<div class="cren-slot">'
-          +'<div class="cren-slot-heure">'+heure
-          +'<div style="font-size:.6rem;font-weight:600;color:var(--texte-trois);margin-top:1px">'+plage+'</div></div>'
-          +'<div class="cren-slot-info">'
-          +'<div class="cren-slot-temp">'+Math.round(slot.temp)+'\u00B0'
-          +' <span style="color:var(--texte-trois);font-size:.74rem">ressenti '+Math.round(slot.app)+'\u00B0</span>'
-          +(slot.pluie>20?' \u00B7 '+slot.pluie+'%':'')+'</div>'
-          +'<div class="cren-slot-conseil">'+conseil+'</div>'
-          +'</div>'
-          +'<span class="cren-slot-badge '+cls+'">'+badge+'</span>'
-          +'</div>';
-      });
-      out+='</div>';
-    });
-    out+='<div class="creneaux-note">Open-Meteo \u00B7 Saint-\u00C9tienne. Matin 5h\u219210h \u00B7 Soir 18h\u219221h.</div>';
-    ct.innerHTML=out;
-  } catch(e){
+    const tmaxToday=byDay[todayKey]?Math.max(...byDay[todayKey].map(s=>s.temp)):0;
+    const tmaxTom=byDay[tomKey]?Math.max(...byDay[tomKey].map(s=>s.temp)):0;
+    const barColor=t=>t>=36?"#dc2626":t>=32?"#ea580c":t>=28?"#f97316":t>=24?"#eab308":"#22c55e";
+    const getBadge=s=>{
+      const t=Math.max(s.temp,s.app);
+      if(s.pluie>=70)return["Pluie","cren-warn"];
+      if(t<24)return["\u2705 Id\u00e9al","cren-ok"];
+      if(t<28)return["\uD83D\uDC4C Bon","cren-ok"];
+      if(t<32)return["\u26A0\uFE0F Chaud","cren-warn"];
+      if(t<36)return["\uD83D\uDFE0 Difficile","cren-warn"];
+      return["\uD83D\uDD34 \u00c9viter","cren-bad"];
+    };
+    const renderDay=function(slots,tmax,isToday){
+      const peak=slots.reduce(function(a,b){return b.temp>a.temp?b:a;},slots[0]);
+      let resume="";
+      if(tmax>=32)resume="<div style=\"background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:10px 13px;margin:10px 14px 0;font-size:.82rem;color:#9a3412\"><strong>Acceptable : 5h\u201311h</strong> avec hydratation renforc\u00e9e. Pic \u00e0 "+Math.round(tmax)+"\u00b0 vers "+peak.h+"h.</div>";
+      else if(tmax>=28)resume="<div style=\"background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:10px 13px;margin:10px 14px 0;font-size:.82rem;color:#92400e\"><strong>Chaleur : pr\u00e9f\u00e9rer avant 9h ou apr\u00e8s 18h.</strong> Hydratation renforc\u00e9e.</div>";
+      const barMax=Math.max(...slots.map(function(s){return s.temp;}),35);
+      const barMin=Math.min(...slots.map(function(s){return s.temp;}),10);
+      const nowH=isToday?now.getHours():-1;
+      const rows=slots.map(function(s){
+        const past=isToday&&s.h<nowH;
+        const bg=getBadge(s);
+        const pct=Math.round((s.temp-barMin)/(barMax-barMin)*100);
+        const heure=(s.h<10?"0":"")+s.h+"h";
+        return "<div style=\"display:flex;align-items:center;gap:10px;padding:6px 14px;opacity:"+(past?".4":"1")+";border-bottom:1px solid var(--gris-clair)\">"
+          +"<span style=\"font-size:.82rem;font-weight:700;min-width:30px;color:var(--texte-deux)\">"+heure+"</span>"
+          +"<div style=\"flex:1;height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden\">"
+          +"<div style=\"width:"+pct+"%;height:100%;background:"+barColor(s.temp)+";border-radius:3px\"></div></div>"
+          +"<span style=\"font-size:.82rem;font-weight:800;min-width:28px;color:var(--texte);text-align:right\">"+Math.round(s.temp)+"\u00b0</span>"
+          +"<span style=\"font-size:.66rem;font-weight:800;padding:2px 7px;border-radius:99px;white-space:nowrap\" class=\""+bg[1]+"\">"+bg[0]+"</span>"
+          +"</div>";
+      }).join("");
+      return resume+"<div style=\"margin-top:8px\">"+rows+"</div>";
+    };
+    const JNOMS=["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"];
+    const todayLabel="Aujourd\u2019hui \u00b7 "+Math.round(tmaxToday)+"\u00b0";
+    const tomLabel=JNOMS[tom.getDay()]+" \u00b7 "+Math.round(tmaxTom)+"\u00b0";
+    const todayHtml=byDay[todayKey]?renderDay(byDay[todayKey],tmaxToday,true):"<p style=\"padding:20px;color:var(--texte-trois)\">Donn\u00e9es indisponibles.</p>";
+    const tomHtml=byDay[tomKey]?renderDay(byDay[tomKey],tmaxTom,false):"<p style=\"padding:20px;color:var(--texte-trois)\">Donn\u00e9es indisponibles.</p>";
+    ct.innerHTML=
+      "<div class=\"creneaux-titre\">\uD83C\uDF21\uFE0F Cr\u00e9neaux d\u2019entra\u00eenement</div>"
+      +"<div style=\"display:flex;gap:8px;padding:0 14px;margin-top:4px\">"
+        +"<button id=\"btn-today\" onclick=\"document.getElementById('tab-today').style.display='';document.getElementById('tab-tom').style.display='none';document.getElementById('btn-today').style.cssText='flex:1;padding:9px 12px;border-radius:10px;border:none;background:#f97316;color:#fff;font-weight:700;font-size:.82rem;cursor:pointer';document.getElementById('btn-tom').style.cssText='flex:1;padding:9px 12px;border-radius:10px;border:none;background:#f1f5f9;color:#64748b;font-weight:700;font-size:.82rem;cursor:pointer'\" style=\"flex:1;padding:9px 12px;border-radius:10px;border:none;background:#f97316;color:#fff;font-weight:700;font-size:.82rem;cursor:pointer\">"+todayLabel+"</button>"
+        +"<button id=\"btn-tom\" onclick=\"document.getElementById('tab-tom').style.display='';document.getElementById('tab-today').style.display='none';document.getElementById('btn-tom').style.cssText='flex:1;padding:9px 12px;border-radius:10px;border:none;background:#f97316;color:#fff;font-weight:700;font-size:.82rem;cursor:pointer';document.getElementById('btn-today').style.cssText='flex:1;padding:9px 12px;border-radius:10px;border:none;background:#f1f5f9;color:#64748b;font-weight:700;font-size:.82rem;cursor:pointer'\" style=\"flex:1;padding:9px 12px;border-radius:10px;border:none;background:#f1f5f9;color:#64748b;font-weight:700;font-size:.82rem;cursor:pointer\">"+tomLabel+"</button>"
+      +"</div>"
+      +"<div id=\"tab-today\">"+todayHtml+"</div>"
+      +"<div id=\"tab-tom\" style=\"display:none\">"+tomHtml+"</div>"
+      +"<button onclick=\"fermerCreneaux()\" style=\"display:block;width:calc(100% - 28px);margin:12px 14px;padding:12px;border-radius:12px;border:none;background:var(--gris-fond);color:var(--texte-deux);font-weight:700;font-size:.88rem;cursor:pointer\">Fermer</button>";
+  }catch(e){
     const ct2=document.getElementById('creneaux-contenu');
-    if(ct2)ct2.innerHTML='<div style="padding:20px;color:var(--texte-trois)">Cr\u00E9neaux indisponibles.</div>';
+    if(ct2)ct2.innerHTML="<div style=\"padding:20px;color:var(--texte-trois)\">Cr\u00e9neaux indisponibles.</div>";
   }
 }
+
 hydrateLogs();renderHeader();renderPlan();rwAuto();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
 
