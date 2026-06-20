@@ -869,6 +869,53 @@ body.nuit .mc-arr{color:#fb923c}
 .creneaux-note{font-size:.76rem;color:var(--texte-trois);padding:12px 20px;line-height:1.5;border-top:1px solid var(--gris-clair);margin-top:6px}
 body.nuit .creneaux-sheet{background:#0f172a}
 body.nuit .cren-slot{background:#1e293b;border-color:#334155}
+
+/* ===== Widget météo + créneaux (identique Loïc) ===== */
+.wx-chip{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;background:#fff7ed;border:1px solid #fed7aa;cursor:pointer;margin-top:8px;transition:background .15s}
+.wx-chip:hover{background:#ffedd5}.wx-chip:active{transform:scale(.98)}
+.wx-chip-ico{font-size:18px;flex:0 0 auto}
+.wx-chip-body{flex:1}
+.wx-chip-title{font-size:13px;font-weight:700;color:#c2410c}
+.wx-chip-sub{font-size:11px;color:#ea580c;margin-top:1px}
+.wx-chip-arr{font-size:18px;color:#f97316}
+#wx-ov{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:1000;align-items:flex-end}
+#wx-ov.open{display:flex}
+#wx-sheet{background:#ffffff;border-radius:18px 18px 0 0;width:100%;max-height:86vh;display:flex;flex-direction:column;animation:qlUp .22s ease;overflow:hidden}
+.wx-head{padding:16px 16px 10px;flex:0 0 auto;background:#ffffff}
+.wx-handle{width:36px;height:4px;background:#e2e8f0;border-radius:99px;margin:0 auto 14px}
+.wx-sheet-title{font-size:16px;font-weight:700;color:#0f172a;margin-bottom:12px}
+.wx-tabs{display:flex;gap:6px;margin-bottom:10px}
+.wx-tab{flex:1;padding:8px;border-radius:8px;border:.5px solid #e2e8f0;background:#f8fafc;font-size:12px;font-weight:600;color:#64748b;cursor:pointer;text-align:center;transition:all .15s}
+.wx-tab.active{background:#fff7ed;border-color:#fed7aa;color:#c2410c}
+.wx-reco{padding:10px 12px;border-radius:10px;background:#fff7ed;border:.5px solid #fed7aa;font-size:12px;color:#9a3412;line-height:1.55;margin-bottom:8px}
+.wx-strip{display:flex;gap:1.5px;border-radius:6px;overflow:hidden;height:7px}
+.wx-strip-seg{flex:1}
+.wx-hours{overflow-y:auto;flex:1;padding:4px 16px 0;background:#ffffff}
+.wx-hr{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:.5px solid #f1f5f9;background:#ffffff}
+.wx-hr:last-child{border:none}
+.wx-hr-hi{background:#f0fdf4!important;margin:0 -4px;padding:6px 4px;border-radius:7px;border:none}
+.wx-hr-t{font-size:13px;font-weight:700;color:#0f172a;min-width:30px}
+.wx-hr-bw{flex:1;height:5px;background:#f1f5f9;border-radius:99px;overflow:hidden}
+.wx-hr-b{height:100%;border-radius:99px}
+.wx-hr-temp{font-size:13px;font-weight:700;color:#0f172a;min-width:32px;text-align:right}
+.wx-hr-tag{font-size:11px;font-weight:600;padding:2px 7px;border-radius:99px;min-width:72px;text-align:center}
+.wx-ideal{background:#dcfce7;color:#15803d}.wx-ok{background:#fef9c3;color:#854d0e}
+.wx-dur{background:#ffedd5;color:#c2410c}.wx-evit{background:#fee2e2;color:#b91c1c}
+.wx-close{display:block;width:calc(100% - 32px);margin:10px 16px 16px;padding:11px;border-radius:10px;background:#f8fafc;border:.5px solid #e2e8f0;font-size:13px;color:#64748b;cursor:pointer;flex:0 0 auto}
+body.nuit #wx-sheet,.body.nuit .wx-head,body.nuit .wx-hours,body.nuit .wx-hr{background:#1e293b}
+/* Bannière canicule */
+#canicule-banner{display:none;align-items:center;justify-content:space-between;gap:10px;background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:10px 15px;font-size:.82rem;font-weight:700;color:#9a3412;margin-top:0}
+.can-tip{font-size:.78rem;color:#c2410c;font-weight:800;white-space:nowrap}
+/* Chip demain */
+.meteo-demain{font-size:.82rem;color:var(--texte-deux);padding:4px 0 2px;display:flex;align-items:center;gap:8px}
+.meteo-demain-t{font-weight:800;color:var(--texte)}
+.meteo-badge{font-size:.72rem;font-weight:800;padding:2px 9px;border-radius:99px}
+.meteo-badge.canicule{background:#ffedd5;color:#9a3412}
+.meteo-badge.chaud{background:#fefce8;color:#92400e}
+/* Bannière card séance */
+.vdj-heat{display:flex;align-items:center;gap:9px;background:rgba(194,65,12,.18);border-radius:11px;padding:8px 12px;margin-top:12px;font-size:.8rem;font-weight:700;color:#fcd9b6}
+.vdj-heat-ico{font-size:1rem;flex:0 0 auto}
+.vdj-heat-txt{flex:1;min-width:0}
 </style></head>
 <body>
 <a href="#main" class="skip-link">Aller au contenu</a>
@@ -885,9 +932,6 @@ body.nuit .cren-slot{background:#1e293b;border-color:#334155}
   <div id="vue-dash" style="display:none"><div id="dash-contenu"></div></div>
   <div class="maj-foot" id="maj-foot"></div>
 </div>
-<!-- Créneaux entraînement -->
-<div class="creneaux-overlay" id="creneauxOverlay" onclick="fermerCreneaux()"></div>
-<div class="creneaux-sheet" id="creneauxSheet"><div class="creneaux-handle"></div><div id="creneaux-contenu"></div></div>
 <div class="rw-overlay" id="rwoverlay"><div class="rw-card" id="rwcard" onclick="rwNext()"></div></div>
 <div class="modale-overlay" id="overlay"><div class="modale-boite" id="boite"><div class="modale-topbar" id="topbar"></div><div id="contenu"></div></div></div>
 <div class="theo-overlay" id="theoOverlay"><div class="theo-sheet" id="theoSheet"></div></div>
@@ -1149,7 +1193,7 @@ function renderHeader(){
   const _maj=`<div class="vdj-maj">Données à jour au ${MAJ}</div>`;
   document.getElementById('cd-strip').innerHTML=_cd;
   const _cw=`<button class="cw-link" onclick="jumpToWeek(${sc.num})"><span class="cw-pin">📍</span><span class="cw-txt">Tu es en <strong>S${sc.num} · ${sc.theme}</strong></span><span class="cw-arr">voir dans le plan →</span></button>`;
-  document.getElementById('hero-plan').innerHTML=`${_psCard}<div class="meteo-strip" id="meteo-strip-el" style="display:none"></div>${_cw}<div id="meteo-widget" class="meteo"><div style="padding:10px 14px;font-size:.75rem;color:var(--texte-trois)">⏳ Météo Saint-Étienne…</div></div>`;
+  document.getElementById('hero-plan').innerHTML=`${_psCard}<div id="canicule-banner" style="display:none"></div>${_cw}<div id="meteo-widget" class="meteo"><div style="padding:10px 14px;font-size:.75rem;color:var(--texte-trois)">⏳ Météo Saint-Étienne…</div></div>`;
   renderMeteo();
   document.getElementById('maj-foot').innerHTML=_maj;
   const _ab=document.getElementById('appbar');if(_ab&&document.documentElement)document.documentElement.style.setProperty('--appbar-h',_ab.offsetHeight+'px');
@@ -1467,364 +1511,138 @@ function _meteoAdaptHtml(level){
 function _meteoPaint(d){
   const el=document.getElementById('meteo-widget');if(!el)return;
   const t=(d.temp!==undefined&&!isNaN(+d.temp))?d.temp:d.app;
-  const tRound=Math.round(t);
-  const appRound=d.app!==undefined?Math.round(d.app):tRound;
-  const tempStr=tRound+'°'+(appRound!==tRound?' <small>ressenti '+appRound+'°</small>':'');
+  const tempStr=Math.round(t)+'°'+(d.app!==undefined&&Math.round(d.app)!==Math.round(t)?' <small>ressenti '+Math.round(d.app)+'°</small>':'');
   const precipStr=(d.precip!==undefined?d.precip.toFixed(1)+' mm · ':'')+Math.round(d.rain||0)+'%';
-
-  /* Demain canicule — chip sous la ligne météo */
-  const tmax=d.daily&&d.daily[0]?d.daily[0].tmax:null;
-  const tdem=d.daily&&d.daily[1]?d.daily[1].tmax:null;
-  let demainHtml='';
-  if(tdem!=null){
-    const tdemR=Math.round(tdem);
-    if(tdem>=38){
-      demainHtml='<div class="meteo-demain">Demain <strong>'+tdemR+'°</strong> <span class="meteo-chip meteo-chip-x">🚨 Canicule extrême</span></div>';
-    } else if(tdem>=32){
-      demainHtml='<div class="meteo-demain">Demain <strong>'+tdemR+'°</strong> <span class="meteo-chip meteo-chip-d">⚠️ Canicule</span></div>';
-    } else if(tdem>=28){
-      demainHtml='<div class="meteo-demain">Demain <strong>'+tdemR+'°</strong> <span class="meteo-chip meteo-chip-w">🟡 Chaleur</span></div>';
-    }
-  }
-
-  /* Créneaux d'entraînement — bloc orange si chaleur */
-  const teff=Math.max(tRound,appRound,tmax||0);
-  let creneauxHtml='';
-  if(teff>=28){
-    creneauxHtml='<div class="meteo-creneaux" onclick="ouvrirCreneaux()" role="button" tabindex="0">'
-      +'<span class="mc-ico">🌡️</span>'
-      +'<div><strong>Créneaux d\'entraînement</strong>'
-      +'<div class="mc-sub">Meilleures heures aujourd\'hui et demain</div></div>'
-      +'<span class="mc-arr">›</span>'
-      +'</div>';
-    /* Bannière dans la card prochaine séance */
-    const delta=teff>=36?'+45s/km':teff>=32?'+30s/km':'+20s/km';
-    const emoji=teff>=36?'🔴':teff>=32?'🟠':'🌡️';
-    const _vdjCard=document.getElementById('vdj-heat-badge');
-    if(_vdjCard){_vdjCard.style.display='flex';_vdjCard.innerHTML='<span class="vdj-heat-ico">'+emoji+'</span><span class="vdj-heat-txt">'+tRound+'° · allure cible <strong>'+delta+'</strong></span>';}
-    /* Strip canicule compact */
-    const emstrip=teff>=36?'🔴':teff>=32?'🟠':'☀️';
-    const msgstrip=teff>=36?'Canicule':teff>=32?'Canicule':teff>=28?'Canicule':'';
-    const _strip=document.getElementById('meteo-strip-el');
-    if(_strip){_strip.style.display='flex';_strip.innerHTML='<span>'+emstrip+' <strong>'+msgstrip+' · 10j chauds prévus</strong></span><span class="meteo-strip-r">Sorties avant 8h30</span>';}
-  } else {
-    const _vdjCard=document.getElementById('vdj-heat-badge');
-    if(_vdjCard)_vdjCard.style.display='none';
-    const _strip=document.getElementById('meteo-strip-el');
-    if(_strip)_strip.style.display='none';
-  }
-
+  const tmaxOk=d.tomorrow_max!==undefined&&!isNaN(d.tomorrow_max);
+  const demainHtml=tmaxOk?
+    '<div class="meteo-demain">Demain&nbsp;&nbsp;<span class="meteo-demain-t">'+d.tomorrow_max+'°</span>'+
+    (d.tomorrow_max>33?'&nbsp;<span class="meteo-badge canicule">⚠️ Canicule</span>':d.tomorrow_max>28?'&nbsp;<span class="meteo-badge chaud">🌡️ Chaud</span>':'')+'</div>':'';
+  const showChip=Math.round(t)>28||(tmaxOk&&d.tomorrow_max>28);
+  const chipHtml=showChip?
+    '<div class="wx-chip" onclick="openCreneaux()">'+
+      '<span class="wx-chip-ico">🌡️</span>'+
+      '<div class="wx-chip-body"><div class="wx-chip-title">Cr\u00e9neaux d\'entra\u00eenement</div><div class="wx-chip-sub">Meilleures heures aujourd\'hui et demain</div></div>'+
+      '<span class="wx-chip-arr">\u203a</span></div>':'';
   el.innerHTML=
-    '<div class="meteo-row">'
-      +'<span class="meteo-ico">'+_meteoEmoji(d.code)+'</span>'
-      +'<span class="meteo-temp">'+tempStr+'</span>'
-      +'<span class="meteo-metrics">'
-        +'<span class="meteo-m">💨 '+Math.round(d.wind||0)+' km/h</span>'
-        +'<span class="meteo-m">🌧️ '+precipStr+'</span>'
-      +'</span>'
-    +'</div>'
-    +demainHtml
-    +creneauxHtml;
+    '<div class="meteo-row">'+
+      '<span class="meteo-ico">'+_meteoEmoji(d.code)+'</span>'+
+      '<span class="meteo-temp">'+tempStr+'</span>'+
+      '<span class="meteo-metrics">'+
+        '<span class="meteo-m">\uD83D\uDCA8 '+Math.round(d.wind||0)+' km/h</span>'+
+        '<span class="meteo-m">\uD83C\uDF27\uFE0F '+precipStr+'</span>'+
+      '</span>'+
+    '</div>'+demainHtml+chipHtml;
+  if(d.hourly_today||d.hourly_tomorrow)window._wxHourly={today:d.hourly_today||[],tomorrow:d.hourly_tomorrow||[]};
+  /* Bannière canicule */
+  const canDays=d.canicule_days||0;
+  const canEl=document.getElementById('canicule-banner');
+  if(canEl){if(canDays>=3){canEl.innerHTML='\u2600\uFE0F <strong>Canicule \u00b7 '+canDays+'j chauds pr\u00e9vus</strong><span class="can-tip">Sorties avant 8h30</span>';canEl.style.display='flex';}else{canEl.style.display='none';}}
+  /* Bannière card s\u00e9ance */
+  const teff=Math.max(Math.round(t),d.app!==undefined?Math.round(d.app):0);
+  const _vdj=document.getElementById('vdj-heat-badge');
+  if(_vdj){if(teff>=28){const delta=teff>=36?'+45s/km':teff>=32?'+30s/km':'+20s/km';const em=teff>=36?'\uD83D\uDD34':teff>=32?'\uD83D\uDFE0':'\uD83C\uDF21\uFE0F';_vdj.style.display='flex';_vdj.innerHTML='<span class="vdj-heat-ico">'+em+'</span><span class="vdj-heat-txt">'+Math.round(t)+'\u00b0 \u00b7 allure cible <strong>'+delta+'</strong></span>';}else{_vdj.style.display='none';}}
 }
-
-
 async function renderMeteo(){
   let cached=null;
-  try{cached=JSON.parse(localStorage.getItem('meteo_cache_yannis_v2')||'null');}catch(e){}
-  const cacheOk=cached&&cached.temp!==undefined&&Date.now()-cached.ts<METEO_TTL;
+  try{cached=JSON.parse(localStorage.getItem('meteo_cache_yannis')||'null');}catch(e){}
+  const cacheOk=cached&&cached.temp!==undefined&&Date.now()-cached.ts<20*60*1000;
   if(cached)_meteoPaint(cached);
   if(cacheOk)return;
   try{
-    const u='https://api.open-meteo.com/v1/forecast?latitude='+METEO_LAT+'&longitude='+METEO_LON+
-      '&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation'+
-      '&hourly=precipitation_probability'+
-      '&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code'+
-      '&forecast_days=5&timezone=Europe%2FParis';
+    const u='https://api.open-meteo.com/v1/forecast?latitude=45.4347&longitude=4.3900'
+      +'&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation'
+      +'&hourly=temperature_2m,precipitation_probability&daily=temperature_2m_max&forecast_days=10&timezone=Europe%2FParis';
     const r=await fetch(u);if(!r.ok)throw 0;
     const j=await r.json();
-    /* Probabilité de pluie de l'heure courante */
-    let rain=0;
-    if(j.hourly&&j.hourly.time&&j.current&&j.current.time){
-      const h=j.current.time.slice(0,13);
-      const idx=j.hourly.time.findIndex(t=>t.slice(0,13)===h);
-      rain=idx>=0?(j.hourly.precipitation_probability[idx]||0):0;
+    const todayStr=new Date().toISOString().slice(0,10);
+    const tomorrowStr=new Date(Date.now()+86400000).toISOString().slice(0,10);
+    let rain=0;const hToday=[],hTomorrow=[];
+    if(j.hourly&&j.hourly.time){
+      const curH=j.current.time?j.current.time.slice(0,13):'';
+      j.hourly.time.forEach((tt,i)=>{
+        if(tt.slice(0,13)===curH)rain=j.hourly.precipitation_probability[i]||0;
+        const h=parseInt(tt.slice(11,13)),ds=tt.slice(0,10);
+        if(h>=5&&h<=22){const tp=Math.round(j.hourly.temperature_2m[i]);
+          if(ds===todayStr)hToday.push([h,tp]);
+          if(ds===tomorrowStr)hTomorrow.push([h,tp]);}
+      });
     }
-    /* Prévisions 5 jours */
-    let daily=[];
-    if(j.daily&&j.daily.time){
-      daily=j.daily.time.map((date,i)=>({
-        date,
-        tmax:j.daily.temperature_2m_max[i],
-        tmin:j.daily.temperature_2m_min[i],
-        code:j.daily.weather_code[i],
-        precip_sum:j.daily.precipitation_sum[i]||0
-      }));
-    }
-    const d={
-      ts:Date.now(),
-      temp:j.current.temperature_2m,
-      app:j.current.apparent_temperature,
-      wind:j.current.wind_speed_10m,
-      code:j.current.weather_code,
-      precip:j.current.precipitation||0,
-      rain,
-      daily
-    };
-    try{localStorage.setItem('meteo_cache_yannis_v2',JSON.stringify(d));}catch(e){}
+    const tMax=hTomorrow.length?Math.max(...hTomorrow.map(x=>x[1])):undefined;
+    let caniculeDays=0;
+    if(j.daily&&j.daily.temperature_2m_max){j.daily.temperature_2m_max.forEach(t=>{if(t>28)caniculeDays++;});}
+    const d={ts:Date.now(),temp:j.current.temperature_2m,app:j.current.apparent_temperature,wind:j.current.wind_speed_10m,code:j.current.weather_code,precip:j.current.precipitation||0,rain,tomorrow_max:tMax,hourly_today:hToday,hourly_tomorrow:hTomorrow,canicule_days:caniculeDays};
+    try{localStorage.setItem('meteo_cache_yannis',JSON.stringify(d));}catch(e){}
     _meteoPaint(d);
   }catch(e){
-    if(!cached){const el=document.getElementById('meteo-widget');if(el)el.innerHTML='<div style="padding:10px 14px;font-size:.75rem;color:var(--texte-trois)">🌡️ Météo indisponible</div>';}
+    if(!cached){const el=document.getElementById('meteo-widget');if(el)el.innerHTML='<div style="font-size:.75rem;color:var(--texte-trois)">\uD83C\uDF21\uFE0F M\u00e9t\u00e9o indisponible</div>';}
   }
 }
-
-function renderDash(){const el=document.getElementById('dash-contenu');
-  const today=new Date();const cd=RACES.map(r=>Math.max(0,Math.ceil((new Date(r.date)-today)/86400000)));
-  const allSe=Object.values(SEANCES_BY_WEEK).flat();const total=allSe.length;
-  const faites=allSe.filter(s=>s.realise&&(s.realise.statut==='fait'||s.realise.statut==='partiel')).length;
-  const planKm=1947;
-  const realKm=allSe.reduce((a,s)=>a+((s.realise&&s.realise.km)||0),0);
-  const planPct=faites>0?Math.round(faites/total*100):0;
-
-  // Graphe mensuel (barres SVG)
-  function svgMonthly(key,col,fmtV){
-    const vals=MONTHLY.map(m=>m[key]);const max=Math.max(...vals)||1;
-    const W=700,h=110,padL=36,padB=28,bw=60,gap=14;
-    const bars=MONTHLY.map((m,i)=>{const x=padL+i*(bw+gap);const bh=(m[key]/max)*(h-padB-10);const y=h-padB-bh;
-      return `<rect x="${x}" y="${y.toFixed(1)}" width="${bw}" height="${bh.toFixed(1)}" rx="5" fill="${col}" opacity=".85"/>
-        <text x="${(x+bw/2).toFixed(1)}" y="${(y-4).toFixed(1)}" font-size="9.5" font-weight="700" fill="#94a3b8" text-anchor="middle">${fmtV(m[key])}</text>
-        <text x="${(x+bw/2).toFixed(1)}" y="${h-10}" font-size="9" fill="#94a3b8" text-anchor="middle">${m.m}</text>`;}).join('');
-    return `<svg viewBox="0 0 ${W} ${h}" class="chart-svg">${bars}</svg>`;
-  }
-
-  // Donut polarisation
-  const pol=[{label:'Très facile',val:POLAR.tres_facile,color:'#86efac'},{label:'EF facile',val:POLAR.ef,color:'#22c55e'},{label:'Zone grise',val:POLAR.gris,color:'#f59e0b'},{label:'Qualité',val:POLAR.qualite,color:'#ef4444'}];
-  const histKm=HIST.map(h=>h.km);const histRe=HIST.map(h=>h.re);const histLab=HIST.map(h=>h.sem);
-
-  // Couleur ACWR
-  const acwr=ACWR_DATA.acwr;const acwrCol=acwr>1.5?'#ef4444':acwr<0.8?'#3b82f6':'#22c55e';
-  const acwrLabel=acwr>1.5?'Attention — charge élevée':acwr<0.8?'Frais / allègement':'Charge maîtrisée';
-
-  // Chaussures
-  const maxShKm=Math.max(...GEAR.map(g=>g.km));
-  const shoes=GEAR.slice().sort((a,b)=>b.km-a.km).map(g=>{
-    const col=g.km>900?'#ef4444':g.km>700?'#f97316':'#22c55e';
-    const al=g.km>900?`<div class="shoe-alert">⚠ ${g.km} km — remplacement à envisager</div>`:'';
-    return `<div><div class="shoe-row"><div class="shoe-name">${g.marque} ${g.modele}</div><div class="shoe-track"><div class="shoe-fill" style="width:${g.km/maxShKm*100}%;background:${col}"></div></div><div class="shoe-km">${g.km} km</div></div>${al}</div>`;}).join('');
-
-  setTimeout(renderMeteo,200);
-  setTimeout(renderCal,50);
-  el.innerHTML=dashNav()+`<div class="kpi" style="margin:0 0 2px"><div class="kpi-t">\u{1F324}\uFE0F M\u00e9t\u00e9o Saint-\u00c9tienne \u2014 5 jours</div><div class="kpi-r">Conditions actuelles et pr\u00e9visions pour planifier tes sorties</div><div id="meteo-widget"></div></div>`+dgrpHead('cal','📅',"Aujourd'hui & calendrier")+`
-  <!-- 0. Calendrier -->
-  <div class="kpi cal-block">
-    <div class="kpi-t">🗓️ Calendrier d'entraînement</div>
-    <div class="kpi-r">Clique un jour coloré pour ouvrir la séance. Vert : réalisé · Orange : prévu non réalisé · Gris : à venir.</div>
-    <div id="cal-widget"><div style="padding:10px;color:var(--texte-trois);font-size:.82rem">⏳ Chargement calendrier…</div></div>
-  </div>
-  </div></section>`+dgrpHead('coach','🧠','Analyse du coach')+`
-  <!-- 3. Analyse du coach : zone grise + consignes + journal -->
-  <div class="kpi">
-    <div class="kpi-t">🧠 L'analyse du coach</div>
-    <div class="kpi-r">Ta répartition d'intensité réelle sur les 6 derniers mois — le diagnostic central de ta préparation.</div>
-    <div class="donut-wrap">${svgDonut(pol)}<div class="donut-leg">${pol.map(p=>`<div><i style="background:${p.color}"></i>${p.label} — <strong>${p.val}%</strong></div>`).join('')}</div></div>
-    <div class="rev-coach" style="margin-top:14px">
-      <strong>Le verdict :</strong> ${POLAR.gris}% de tes km en « zone grise » — ni assez lent pour récupérer, ni assez rapide pour progresser. C'est le problème n°1 à corriger sur ta prépa marathon.<br><br>
-      <strong>Tes 3 règles pour la prépa :</strong><br>
-      ① <strong>Footings faciles : ≥ 6:05/km</strong>, sans négocier. Si tu cours à 5:30/km en « endurance fondamentale », tu es en zone grise.<br>
-      ② <strong>Qualité = 2 séances/semaine max</strong>, distinctes et délibérées (seuil, AM, fractionnés).<br>
-      ③ <strong>Facile vraiment facile, dur vraiment dur</strong> — la polarisation, c'est ça.
-    </div>
-    <div style="margin-top:14px"><div class="kpi-t" style="font-size:.88rem;margin-bottom:10px">📓 Journal du coach</div>
-    ${JOURNAL.map(j=>`<div class="jour-item"><div class="jour-h">${j.sem} — ${j.theme}</div><div class="jour-x">${j.texte}</div></div>`).join('')}</div>
-  </div>
-
-  </div></section>`+dgrpHead('annee','🔥','Année & trophées')+`
-  <!-- 0b. Heatmap annuelle -->
-  <div class="kpi">
-    <div class="kpi-t">🔥 Ton année en un coup d'oeil</div>
-    <div class="kpi-r" style="margin-bottom:12px">${hmStats()}</div>
-    <div class="hm-scroll">${renderHeatmap()}</div>
-    <div id="hm-cap" class="hm-cap">Touche une case pour le détail du jour.</div>
-    <div class="hm-legend">Moins<i class="hm-cell h1"></i><i class="hm-cell h2"></i><i class="hm-cell h3"></i><i class="hm-cell h4"></i>Plus</div>
-  </div>
-  <!-- 0c. Trophees -->
-  <div class="kpi">
-    <div class="kpi-t">🏆 Tes trophées 2026</div>
-    ${renderTrophees()}
-  </div>
-  </div></section>`+dgrpHead('saison','📊','Saison en chiffres')+`
-  <!-- 1. Saison en chiffres -->
-  <div class="kpi">
-    <div class="kpi-t">📅 Ta saison 2026 en chiffres</div>
-    <div class="kpi-r">Depuis mars 2026 · <strong>Run + Trail uniquement</strong>, aligné sur Strava (38 activités running/trail). Hikes et raquettes non inclus dans le compteur Strava running.</div>
-    <div class="dash-stats" style="margin-bottom:18px">
-      <div class="dstat" style="--accent:#3b82f6"><div class="dstat-l">Sorties</div><div class="dstat-v">${SAISON2026.sorties}</div><div class="dstat-s">en ${SAISON2026.mois} mois</div></div>
-      <div class="dstat" style="--accent:#22c55e"><div class="dstat-l">Kilométrage</div><div class="dstat-v">${SAISON2026.km}</div><div class="dstat-s">km parcourus</div></div>
-      <div class="dstat" style="--accent:#f97316"><div class="dstat-l">Dénivelé +</div><div class="dstat-v">${SAISON2026.elev.toLocaleString()}</div><div class="dstat-s">mètres</div></div>
-      <div class="dstat" style="--accent:#8b5cf6"><div class="dstat-l">Prépa plan</div><div class="dstat-v">${faites}/${total}</div><div class="dstat-s">séances réalisées</div></div>
-    </div>
-    <div class="kpi-t" style="font-size:.88rem;margin-bottom:8px">Volume mensuel (km)</div>
-    ${svgMonthly('km','#3b82f6',v=>Math.round(v))}
-    <div style="margin-top:14px">
-    <div class="kpi-t" style="font-size:.88rem;margin-bottom:8px">Dénivelé mensuel (m)</div>
-    ${svgMonthly('elev','#f97316',v=>v>=1000?(v/1000).toFixed(1)+'k':v)}</div>
-    <div style="margin-top:14px">
-    <div class="kpi-t" style="font-size:.88rem;margin-bottom:8px">Sorties par mois</div>
-    ${svgMonthly('sorties','#8b5cf6',v=>v)}</div>
-  </div>
-
-  </div></section>`+dgrpHead('charge','❤️','Charge & physiologie')+`
-<!-- 6. Zones FC + allures -->
-  <div class="kpi">
-    <div class="kpi-t">❤️ Zones FC & allures correspondantes</div>
-    <div class="kpi-r">Calculées sur ta FC max estimée (180 bpm · max enregistré 175). Les allures sont indicatives <strong>à plat</strong> — la FC reste le juge en côte ou par forte chaleur. À recaler après le test 10 km (S33).</div>
-    <div class="zfc">${ZONES_FC.map(z=>`<div class="zfc-row"><span class="zfc-z" style="background:${z.col}">${z.z}</span><span class="zfc-n">${z.nom}</span><span class="zfc-b">${z.bpm} bpm</span><span class="zfc-p">${z.pct}</span><span class="zfc-a">${z.allure}</span></div>`).join('')}</div>
-  </div>
-
-  
-  <!-- 4. Charge & fraîcheur -->
-  <div class="kpi">
-    <div class="kpi-t">❤️ Charge & fraîcheur</div>
-    <div class="kpi-r">Ratio aigu/chronique calculé en <strong>fenêtres glissantes réelles</strong> (charge 7 jours vs moyenne sur 28 jours). Au-dessus de 1,5 : risque de blessure. En-dessous de 0,8 : allègement.</div>
-    <div class="dash-stats">
-      <div class="dstat" style="--accent:${acwrCol}"><div class="dstat-l">Charge 7 jours</div><div class="dstat-v">${ACWR_DATA.charge7j}</div><div class="dstat-s">RE (Relative Effort)</div></div>
-      <div class="dstat" style="--accent:#64748b"><div class="dstat-l">Charge 28 jours / sem.</div><div class="dstat-v">${Math.round(ACWR_DATA.charge28j/4)}</div><div class="dstat-s">RE moyen / semaine</div></div>
-      <div class="dstat" style="--accent:${acwrCol}"><div class="dstat-l">Ratio ACWR</div><div class="dstat-v" style="color:${acwrCol}">${acwr.toFixed(2)}</div><div class="dstat-s">${acwrLabel}</div></div>
-    </div>
-    <div class="rev-coach">${ACWR_DATA.interpretation}</div>
-    <div style="margin-top:14px">${delta(histRe)} ${chartLine(histRe,{color:'#8b5cf6',labels:histLab,annotate:true,h:140})}</div>
-  </div>
-
-  <!-- 5. Volume hebdo -->
-  <div class="kpi"><div class="kpi-t">📈 Ton volume — historique 28 semaines</div><div class="kpi-r">Tes vraies semaines Strava. Le plan prend le relais à la S25.</div>${delta(histKm)} ${chartLine(histKm,{color:'#3b82f6',labels:histLab,fmtY:v=>Math.round(v)+'km',annotate:true,h:150})}</div>
-
-  </div></section>`+dgrpHead('perf','🏆','Performances & objectifs')+renderCrystalBall()+`
-  <!-- 7. Allures d'entraînement -->
-  <div class="kpi"><div class="kpi-t">⏱️ Tes allures d'entraînement</div><div class="kpi-r">Dont le <strong>seuil 30</strong> (proche 10 km) et le <strong>seuil 60</strong> (proche semi). À recaler après le test 10 km (S33).</div><div class="allure-grid">${ALLURES.map(a=>`<div class="allure"><div class="allure-v">${a.val}</div><div class="allure-n">${a.nom}</div><div class="allure-s">${a.sub}</div></div>`).join('')}</div></div>
-
-  <!-- 8. Allures de course + records -->
-  <div class="kpi">
-    <div class="kpi-t">🏆 Performances & projections</div>
-    <div class="kpi-r">Meilleurs efforts réels depuis ton Strava · à comparer avec tes projections actuelles. Le semi 2022 reste ta référence officielle (course).</div>
-    <table style="width:100%;border-collapse:collapse;font-size:.84rem">
-      <thead><tr style="color:var(--texte-trois);font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em">
-        <th style="text-align:left;padding:7px 6px;border-bottom:1px solid var(--gris-clair)">Distance</th>
-        <th style="text-align:center;padding:7px 6px;border-bottom:1px solid var(--gris-clair)">Record / référence</th>
-        <th style="text-align:center;padding:7px 6px;border-bottom:1px solid var(--gris-clair)">Meilleur effort 2026</th>
-        <th style="text-align:right;padding:7px 6px;border-bottom:1px solid var(--gris-clair)">Projeté aujourd'hui</th>
-      </tr></thead>
-      <tbody>${RECORDS_PERF.map((r,i)=>`<tr style="border-bottom:1px solid var(--gris-clair)">
-        <td style="padding:9px 6px;font-weight:800">${r.dist}</td>
-        <td style="padding:9px 6px;text-align:center"><div style="font-weight:700">${r.temps_rec||'—'}</div><div style="font-size:.7rem;color:var(--texte-trois)">${r.record_sub}</div></td>
-        <td style="padding:9px 6px;text-align:center"><div style="font-weight:700;color:#3b82f6">${r.temps_act}</div><div style="font-size:.7rem;color:var(--texte-trois)">${r.actuel_sub}</div></td>
-        <td style="padding:9px 6px;text-align:right"><div style="font-weight:700">${r.actuel}</div></td>
-      </tr>`).join('')}</tbody>
-    </table>
-    <div style="margin-top:14px"><div class="kpi-t" style="font-size:.88rem;margin-bottom:8px">Allures de course estimées (Riegel)</div>
-    <div class="course-grid">${ALLURES_COURSE.map(a=>`<div class="course-row"><span class="course-d">${a.d}</span><span class="course-t">${a.temps}</span><span class="course-a">${a.allure}</span></div>`).join('')}</div></div>
-  </div>
-
-  <!-- 9. Objectifs course -->
-  <div class="kpi">
-    <div class="kpi-t">🎯 Objectifs course</div>
-    <div class="kpi-r">Deux objectifs, deux logiques différentes.</div>
-    <div class="dash-stats">
-      <div class="dstat" style="--accent:#f97316"><div class="dstat-l">J avant Nice</div><div class="dstat-v">J-${cd[0]}</div><div class="dstat-s">Marathon objectif A. · objectif 3h45</div></div>
-      <div class="dstat" style="--accent:#8b5cf6"><div class="dstat-l">J avant SaintExpress</div><div class="dstat-v">J-${cd[1]}</div><div class="dstat-s">45 km night trail 2objectif A.</div></div>
-    </div>
-    <div class="rec-grid" style="margin-top:12px">
-      <div class="rec"><div class="rec-v">3h45</div><div class="rec-l">Marathon objectif</div><div class="rec-s">Marathon objectif A.</div></div>
-      <div class="rec"><div class="rec-v" style="font-size:1.15rem">~3h38-3h42</div><div class="rec-l">Marathon projeté</div><div class="rec-s">depuis ta forme actuelle</div></div>
-      <div class="rec"><div class="rec-v">Plaisir</div><div class="rec-l">Sainté Express 45 km</div><div class="rec-s">2objectif A.</div></div>
-    </div>
-    <div class="rev-coach" style="margin-top:14px">La stratégie : <strong>cibler 3h45 (5:20/km)</strong> et laisser le corps aller chercher 3h38-3h42 si tout va bien le jour J. L'erreur classique sur un premier marathon avec objectif ambitieux = partir sur la projection et exploser aux 35 km. Ici on part prudent et on accélère si le corps l'autorise.</div>
-  </div>
-
-  </div></section>`+dgrpHead('profil','⛰️','Profil & matériel')+`
-<!-- 2. Profil de saison -->
-  <div class="kpi"><div class="kpi-t">⛰️ Le profil de ta saison — plan S25→S53</div><div class="kpi-r">Ta périodisation vue comme une ascension : montée vers le pic 88 km (S42), la vallée USA, puis Nice et la SaintExpress. Touche un sommet pour ouvrir la semaine.</div>${svgMountain()}</div>
-
-  
-  <!-- 10. Chaussures -->
-  <div class="kpi"><div class="kpi-t">🥁 Rotation chaussures</div><div class="kpi-r">Rotation conseillée : récup/easy → Clifton & Gel Pulse (rare), longues → Novablast, qualité → Magic Speed, trail → Cascadia. Chaque séance du plan porte sa paire conseillée.</div>${shoes}</div>
-
-  </div></section>
-  <p class="note-foot">Dashboard alimenté par ta vraie donnée Strava · Mis à jour à chaque séance logée</p>`;
-  dashApplyState();
+/* ===== Cr\u00e9neaux m\u00e9t\u00e9o — popup horaire (identique Lo\u00efc) ===== */
+function _wxStatus(t){
+  if(t<22)return{cls:'wx-ideal',lbl:'\uD83D\uDFE2 Id\u00e9al',c:'#22c55e'};
+  if(t<27)return{cls:'wx-ok',lbl:'\uD83D\uDFE1 OK',c:'#fbbf24'};
+  if(t<32)return{cls:'wx-dur',lbl:'\uD83D\uDFE0 Difficile',c:'#f97316'};
+  return{cls:'wx-evit',lbl:'\uD83D\uDD34 \u00c9viter',c:'#ef4444'};
+}
+function _wxReco(hrs){
+  const ideal=hrs.filter(([h,t])=>t<22);
+  const ok=hrs.filter(([h,t])=>t>=22&&t<27);
+  const mx=Math.max(...hrs.map(x=>x[1]));
+  const peak=(hrs.find(([h,t])=>t===mx)||[null])[0];
+  if(ideal.length)return'<strong>Fen\u00eatre id\u00e9ale :</strong> '+ideal[0][0]+'h\u2013'+(ideal[ideal.length-1][0]+1)+'h (< 22\u00b0C). Pic \u00e0 '+mx+'\u00b0 vers '+peak+'h \u2014 \u00e9viter imp\u00e9rativement.';
+  if(ok.length)return'<strong>Acceptable :</strong> '+ok[0][0]+'h\u2013'+(ok[ok.length-1][0]+1)+'h avec hydratation renforc\u00e9e. Pic \u00e0 '+mx+'\u00b0 vers '+peak+'h.';
+  return'<strong>Journ\u00e9e tr\u00e8s difficile.</strong> Pic \u00e0 '+mx+'\u00b0. R\u00e9duire ou reporter la s\u00e9ance au lendemain matin.';
+}
+function _wxRenderTab(k){
+  const hrs=k==='today'?(window._wxHourly&&window._wxHourly.today):(window._wxHourly&&window._wxHourly.tomorrow);
+  if(!hrs||!hrs.length)return;
+  const mx=Math.max(...hrs.map(x=>x[1])),mn=Math.min(...hrs.map(x=>x[1]));
+  document.getElementById('wx-reco').innerHTML=_wxReco(hrs);
+  document.getElementById('wx-strip').innerHTML=hrs.map(([h,t])=>'<div class="wx-strip-seg" style="background:'+_wxStatus(t).c+'"></div>').join('');
+  document.getElementById('wx-hours').innerHTML=hrs.map(([h,t])=>{
+    const s=_wxStatus(t);const p=mx===mn?50:((t-mn)/(mx-mn)*100).toFixed(0);const hi=s.cls==='wx-ideal'?' wx-hr-hi':'';
+    return'<div class="wx-hr'+hi+'"><span class="wx-hr-t">'+h+'h</span><div class="wx-hr-bw"><div class="wx-hr-b" style="width:'+p+'%;background:'+s.c+'"></div></div><span class="wx-hr-temp">'+t+'\u00b0</span><span class="wx-hr-tag '+s.cls+'">'+s.lbl+'</span></div>';
+  }).join('');
+}
+function openCreneaux(){
+  const data=window._wxHourly;if(!data)return;
+  const t0max=data.today.length?Math.max(...data.today.map(x=>x[1])):null;
+  const t1max=data.tomorrow.length?Math.max(...data.tomorrow.map(x=>x[1])):null;
+  const el0=document.getElementById('wx-t0'),el1=document.getElementById('wx-t1');
+  if(el0&&t0max)el0.textContent='Aujourd\u2019hui \u00b7 '+t0max+'\u00b0';
+  if(el1&&t1max)el1.textContent='Demain \u00b7 '+t1max+'\u00b0';
+  el0&&el0.classList.add('active');el1&&el1.classList.remove('active');
+  document.getElementById('wx-ov').classList.add('open');
+  _wxRenderTab('today');
+}
+function closeCreneaux(){document.getElementById('wx-ov').classList.remove('open');}
+function wxTab(k){
+  document.getElementById('wx-t0').classList.toggle('active',k==='today');
+  document.getElementById('wx-t1').classList.toggle('active',k==='tomorrow');
+  _wxRenderTab(k);
+}
+function initCreneaux(){
+  if(!document.body||typeof document.body.insertAdjacentHTML!=='function')return;
+  if(document.getElementById('wx-ov'))return;
+  document.body.insertAdjacentHTML('beforeend',
+    '<div id="wx-ov" onclick="if(event.target===this)closeCreneaux()">'+
+      '<div id="wx-sheet">'+
+        '<div class="wx-head">'+
+          '<div class="wx-handle"></div>'+
+          '<div class="wx-sheet-title">\uD83C\uDF21\uFE0F Cr\u00e9neaux d\u2019entra\u00eenement</div>'+
+          '<div class="wx-tabs">'+
+            '<div class="wx-tab active" id="wx-t0" onclick="wxTab(\'today\')">Aujourd\u2019hui</div>'+
+            '<div class="wx-tab" id="wx-t1" onclick="wxTab(\'tomorrow\')">Demain</div>'+
+          '</div>'+
+          '<div class="wx-reco" id="wx-reco"></div>'+
+          '<div class="wx-strip" id="wx-strip"></div>'+
+        '</div>'+
+        '<div class="wx-hours" id="wx-hours"></div>'+
+        '<button class="wx-close" onclick="closeCreneaux()">Fermer</button>'+
+      '</div>'+
+    '</div>');
 }
 
-/* ===== MODALE ===== */
-const overlay=document.getElementById('overlay'),boite=document.getElementById('boite'),topbar=document.getElementById('topbar'),contenu=document.getElementById('contenu');
-let segActif=null;
-function ouvrir(){overlay.classList.add('ouverte');document.body.style.overflow='hidden';overlay.scrollTop=0;boite.scrollTop=0;}
-function fermer(){if(typeof ttsStop==='function')ttsStop();overlay.classList.remove('ouverte');document.body.style.overflow='';setTimeout(()=>{contenu.innerHTML='';topbar.innerHTML='';},300);}
-overlay.addEventListener('click',e=>{if(e.target===overlay)fermer()});
-(function(){const to=document.getElementById('theoOverlay');if(to)to.addEventListener('click',e=>{if(e.target===to)closeTheory();});})();
-document.addEventListener('keydown',e=>{if(e.key==='Escape')fermer()});
-const btnFermer='<button class="btn-nav" onclick="fermer()" aria-label="Fermer la fiche">Fermer ✕</button>';
-
-
-function s24Chart(splits){const n=splits.length,W=720,h=190,padL=8,padR=8,padT=26,padB=30;
-  const paces=splits.map(s=>s[0]),hrs=splits.map(s=>s[1]);
-  const spd=paces.map(p=>1000/p);const sMin=Math.min(...spd)*0.94,sMax=Math.max(...spd)*1.03;
-  const hMin=Math.min(...hrs)-6,hMax=Math.max(...hrs)+8;
-  const bw=(W-padL-padR)/n;
-  const bars=splits.map((s,i)=>{const sp=1000/s[0];const bh=(sp-sMin)/(sMax-sMin)*(h-padT-padB);const x=padL+i*bw,y=h-padB-bh;
-    const pm=Math.floor(s[0]/60),ps=Math.round(s[0]%60);
-    return `<rect x="${(x+2).toFixed(1)}" y="${y.toFixed(1)}" width="${(bw-4).toFixed(1)}" height="${bh.toFixed(1)}" rx="3" fill="#3b82f6" opacity=".55"/>
-      <text x="${(x+bw/2).toFixed(1)}" y="${(h-padB+11).toFixed(1)}" font-size="7.6" fill="#94a3b8" text-anchor="middle">${pm}:${String(ps).padStart(2,'0')}</text>
-      <text x="${(x+bw/2).toFixed(1)}" y="${(h-padB+21).toFixed(1)}" font-size="6.8" fill="#cbd5e1" text-anchor="middle">km${i+1}</text>`;}).join('');
-  const HY=v=>padT+(h-padT-padB)*(1-(v-hMin)/(hMax-hMin));
-  const line='M '+hrs.map((v,i)=>`${(padL+i*bw+bw/2).toFixed(1)} ${HY(v).toFixed(1)}`).join(' L ');
-  const hrlab=hrs.map((v,i)=>{if(i===0||i===n-1||v===Math.max(...hrs))return `<text x="${(padL+i*bw+bw/2).toFixed(1)}" y="${(HY(v)-6).toFixed(1)}" font-size="8" font-weight="700" fill="#ef4444" text-anchor="middle">${v}</text>`;return '';}).join('');
-  return `<svg viewBox="0 0 ${W} ${h}" class="chart-svg">${bars}<path d="${line}" fill="none" stroke="#ef4444" stroke-width="2" stroke-linejoin="round"/>${hrlab}
-    <text x="${padL}" y="11" font-size="8.5" fill="#3b82f6" font-weight="700">▮ Allure /km</text><text x="${padL+74}" y="11" font-size="8.5" fill="#ef4444" font-weight="700">— FC moyenne /km</text></svg>`;
-}
-
-/* ===== REWIND hebdo ===== */
-let rwIdx=0,rwCur=null;
-function rwRender(){const r=rwCur;if(!r)return;const s=r.slides[rwIdx];
-  const prog=r.slides.map((_,i)=>`<div class="rw-seg ${i<=rwIdx?'done':''}"></div>`).join('');
-  const card=document.getElementById('rwcard');card.style.background=s.bg;
-  card.innerHTML=`<div class="rw-prog">${prog}</div><button class="rw-close" onclick="event.stopPropagation();rwClose()">\u2715</button>
-    <div class="rw-kicker">${s.kicker}</div><div class="rw-big">${s.big}</div><div class="rw-txt">${s.txt}</div>
-    <div class="rw-hint">tape pour continuer \u00b7 ${rwIdx+1}/${r.slides.length}</div>`;}
-function rwOpen(id){rwCur=REWINDS.find(x=>x.id===id);if(!rwCur)return;rwIdx=0;document.getElementById('rwoverlay').classList.add('on');document.body.style.overflow='hidden';rwRender();
-  try{localStorage.setItem('rw_seen',id);}catch(e){}}
-function rwNext(){if(!rwCur)return;if(rwIdx<rwCur.slides.length-1){rwIdx++;rwRender();}else rwClose();}
-function rwClose(){const o=document.getElementById('rwoverlay');if(o)o.classList.remove('on');document.body.style.overflow='';rwCur=null;}
-function rwAuto(){const last=REWINDS[REWINDS.length-1];if(!last)return;const d=new Date();if(d.getDay()!==1)return;/* 1 = lundi */const wk=isoWeek(d)+'-'+d.getFullYear();try{if(localStorage.getItem('rw_mon')===wk)return;localStorage.setItem('rw_mon',wk);}catch(e){}setTimeout(()=>rwOpen(last.id),900);}
-
-function ouvrirSeanceS24(idx){const r=S24R.runs[idx];if(!r)return;segActif=null;
-  topbar.innerHTML=`<button class="btn-nav" onclick="ouvrirSemaine(24)">‹ Retour semaine 24</button>${btnFermer}`;
-  const metr=Object.entries(r.metriques).map(([k,v])=>`<div class="metrique"><div class="metrique-l">${k}</div><div class="metrique-v">${v}</div></div>`).join('');
-  contenu.innerHTML=`<div class="sd-hero"><div class="hero-badges"><span class="sd-badge" style="background:#22c55e22;color:#15803d">Course à pied</span><span class="st-chip st-fait">Fait ✓</span><span class="seance-tag">${r.tag}</span></div>
-    <h2 class="sd-titre">${r.titre}</h2><p class="sd-sous">Semaine 24 · ${r.date} juin · récupération post-Circaète</p>
-    <div class="sd-metriques">${metr}</div>${r.chaussure?`<div class="shoe-chip">👟 ${r.chaussure}</div>`:''}${prCelebration(r)}</div>
-    <div class="sd-corps">
-    <div class="sd-section">Kilomètre par kilomètre</div><div class="viz-wrap" style="padding:14px">${s24Chart(r.splits)}</div>
-    <div class="sd-section">Lecture de la séance</div><div class="callout callout-obj">${r.lecture}</div>
-    <div class="sd-section">Revue du coach</div><div class="rev-coach">${r.revue}</div></div>`;
-  ouvrir();boite.scrollTop=0;
-}
-
-const S25_CAP=`<strong>Reprise &amp; déblocage.</strong> Le chantier de la semaine, c'est <strong>corriger la zone grise</strong> : footings vraiment faciles (≥ 6:05/km, FC ≤ 144), lignes droites relâchées pour réveiller la foulée, et on relance la structure tout en douceur. Tu arrives <strong>en avance sur la récupération</strong> — dos et jambes OK, aucune douleur — les conditions sont idéales pour repartir proprement. Objectif : 52 km sur 5 séances, zéro précipitation. C'est le socle du bloc de développement qui démarre juste après.`;
-function ouvrirSemaine(num){const s=SEMAINES.find(x=>x.num===num);const ph=PHASES.find(p=>p.id===s.phase);segActif=null;
-  if(num===24){topbar.innerHTML=`<span></span>${btnFermer}`;
-    const runs=S24R.runs.map((r,i)=>`<div class="seance-carte" onclick="ouvrirSeanceS24(${i})"><div class="seance-bande" style="background:#22c55e"></div><div class="seance-idx">${r.date}</div><div class="seance-info"><div class="seance-nom">${r.titre}</div><div class="seance-desc">${r.desc}</div><div class="seance-tags"><span class="st-chip st-fait">Fait ✓</span><span class="seance-tag">${r.tag}</span><span class="cat-badge cat-classique">Classique</span></div></div><div class="seance-fleche">›</div></div>`).join('');
-    contenu.innerHTML=`<div class="sw-hero"><span class="sw-tag" style="background:${COUL[s.phase]}22;color:${COUL[s.phase]}">${ph.nom}</span><h2 class="sw-titre">Semaine ${s.num} — ${s.theme}</h2><p class="sw-sous">Semaine terminée · récupération post-Circaète</p></div>
-      <div class="sw-corps"><div class="callout callout-obj">${s.objectif}</div>
-      <div class="sw-section">Réalisé sur la semaine — ${S24R.runs.length} sorties · ${S24R.km} km</div><div class="seance-liste">${runs}</div>
-      <div style="text-align:center"><button class="rw-btn" onclick="rwOpen('S24')">🎬 Lance le Rewind de ta semaine</button></div><div class="sw-section">Bilan du coach</div><div class="rev-coach">${S24R.revue}</div>
-      <div class="sw-section">🎯 Cap sur la S25</div><div class="callout callout-cap">${S25_CAP}</div>
-      <p class="note-foot" style="margin-top:24px">La reprise structurée démarre maintenant, en S25.</p></div>`;ouvrir();return;}
-  const seances=SEANCES_BY_WEEK[num]||[];const fait=seances.filter(x=>x.realise&&(x.realise.statut==='fait'||x.realise.statut==='partiel')).length;const realKm=seances.reduce((a,x)=>a+((x.realise&&x.realise.km)||0),0);
-  topbar.innerHTML=`<span></span>${btnFermer}`;
-  const liste=seances.map(se=>{const r=se.realise||{statut:'a_faire'};const tags=[stChip(r.statut),`<span class="seance-tag">${se.type}</span>`,catBadge(se.cat),`<span class="rpe-pill"><span class="rpe-dot" style="background:${rpeColor(se.rpe)}"></span>RPE ${se.rpe}</span>`];if(se.chaussure)tags.push(`<span class="seance-shoe">👟 ${se.chaussure.replace("ASICS ","").replace("HOKA ","").replace("Brooks ","")}</span>`);if(se.fit)tags.push('<span class="seance-fit">⌚ .fit</span>');if(se.opt)tags.push('<span class="seance-tag tag-opt">Optionnelle</span>');
-    const rs=r.km?`<div class="seance-desc" style="color:#15803d;font-weight:700;margin-top:3px">✓ ${r.km} km${r.allure?' · '+r.allure:''}</div>`:'';
-    return `<div class="seance-carte" onclick="ouvrirSeance(${num},${se.id})"><div class="seance-bande" style="background:${se.accent}"></div><div class="seance-idx">Séance ${se.num}</div><div class="seance-info"><div class="seance-nom">${se.titre}</div><div class="seance-desc">${se.sous}</div>${rs}<div class="seance-tags">${tags.join('')}</div></div><div class="seance-fleche">›</div></div>`;}).join('');
-  const repPill=s.repartition&&s.repartition!=='—'?`<div class="sw-pill"><div class="sw-pill-l">Répartition</div><div class="sw-pill-v" style="font-size:.74rem">${s.repartition}</div></div>`:'';
-  contenu.innerHTML=`<div class="sw-hero"><span class="sw-tag" style="background:${COUL[s.phase]}22;color:${COUL[s.phase]}">${ph.nom}</span><h2 class="sw-titre">Semaine ${s.num} — ${s.theme}</h2><p class="sw-sous">Semaine type · clique une séance</p><div class="sw-meta"><div class="sw-pill"><div class="sw-pill-l">Volume cible</div><div class="sw-pill-v">${s.km} km</div></div><div class="sw-pill"><div class="sw-pill-l">Réalisé</div><div class="sw-pill-v">${fait}/${seances.length} · ${realKm} km</div></div><div class="sw-pill"><div class="sw-pill-l">Charge</div><div class="sw-pill-v" style="font-size:.84rem">${s.charge}</div></div>${repPill}</div></div><div class="sw-corps"><div class="callout callout-obj">${s.objectif}</div><div class="sw-section">Séances de la semaine</div><div class="seance-liste">${liste}</div>${s.revue?`<div class="sw-section">Revue du coach — bilan de la semaine</div><div class="rev-coach">${s.revue}</div>`:`<div class="realise-empty" style="margin-top:18px"><strong>Revue de la semaine à venir.</strong> Quand la semaine sera bouclée, tu trouveras ici mon bilan complet : volume et charge vs prévu, adhérence, signaux à surveiller, et la décision pour la semaine suivante. Elle alimentera aussi le Journal du coach.</div>`}</div>`;ouvrir();
-}
 /* ===== LOGGING DES SÉANCES ===== */
 const LOG_KEY='runlog_yannis_v1';
 function loadLogs(){try{return JSON.parse(localStorage.getItem(LOG_KEY)||'{}');}catch(e){return {};}}
@@ -1968,98 +1786,8 @@ function renderCal(){
 
 
 /* ===== Créneaux d'entraînement ===== */
-function ouvrirCreneaux(){
-  const ov=document.getElementById('creneauxOverlay');
-  const sh=document.getElementById('creneauxSheet');
-  const ct=document.getElementById('creneaux-contenu');
-  if(!ov||!sh||!ct)return;
-  ct.innerHTML='<div style="padding:20px;color:var(--texte-trois);font-size:.85rem">⏳ Calcul des créneaux optimaux…</div>';
-  ov.classList.add('open');sh.classList.add('open');
-  document.body.style.overflow='hidden';
-  _fetchCreneaux();
-}
-function fermerCreneaux(){
-  const ov=document.getElementById('creneauxOverlay');
-  const sh=document.getElementById('creneauxSheet');
-  if(ov)ov.classList.remove('open');
-  if(sh)sh.classList.remove('open');
-  document.body.style.overflow='';
-}
-async function _fetchCreneaux(){
-  const ct=document.getElementById('creneaux-contenu');if(!ct)return;
-  try{
-    const u='https://api.open-meteo.com/v1/forecast?latitude=45.4347&longitude=4.3900'
-      +'&hourly=temperature_2m,apparent_temperature,precipitation_probability,weather_code'
-      +'&forecast_days=2&timezone=Europe%2FParis';
-    const r=await fetch(u);if(!r.ok)throw 0;
-    const j=await r.json();
-    const now=new Date();
-    const todayKey=now.toISOString().slice(0,10);
-    const tom=new Date(now);tom.setDate(tom.getDate()+1);
-    const tomKey=tom.toISOString().slice(0,10);
-    const byDay={};
-    j.hourly.time.forEach((iso,i)=>{
-      const dk=iso.slice(0,10);
-      if(dk!==todayKey&&dk!==tomKey)return;
-      if(!byDay[dk])byDay[dk]=[];
-      byDay[dk].push({h:new Date(iso).getHours(),temp:j.hourly.temperature_2m[i],app:j.hourly.apparent_temperature[i],pluie:j.hourly.precipitation_probability[i]||0});
-    });
-    const tmaxToday=byDay[todayKey]?Math.max(...byDay[todayKey].map(s=>s.temp)):0;
-    const tmaxTom=byDay[tomKey]?Math.max(...byDay[tomKey].map(s=>s.temp)):0;
-    const barColor=t=>t>=36?"#dc2626":t>=32?"#ea580c":t>=28?"#f97316":t>=24?"#eab308":"#22c55e";
-    const getBadge=s=>{
-      const t=Math.max(s.temp,s.app);
-      if(s.pluie>=70)return["Pluie","cren-warn"];
-      if(t<24)return["\u2705 Id\u00e9al","cren-ok"];
-      if(t<28)return["\uD83D\uDC4C Bon","cren-ok"];
-      if(t<32)return["\u26A0\uFE0F Chaud","cren-warn"];
-      if(t<36)return["\uD83D\uDFE0 Difficile","cren-warn"];
-      return["\uD83D\uDD34 \u00c9viter","cren-bad"];
-    };
-    const renderDay=function(slots,tmax,isToday){
-      const peak=slots.reduce(function(a,b){return b.temp>a.temp?b:a;},slots[0]);
-      let resume="";
-      if(tmax>=32)resume="<div style=\"background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:10px 13px;margin:10px 14px 0;font-size:.82rem;color:#9a3412\"><strong>Acceptable : 5h\u201311h</strong> avec hydratation renforc\u00e9e. Pic \u00e0 "+Math.round(tmax)+"\u00b0 vers "+peak.h+"h.</div>";
-      else if(tmax>=28)resume="<div style=\"background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:10px 13px;margin:10px 14px 0;font-size:.82rem;color:#92400e\"><strong>Chaleur : pr\u00e9f\u00e9rer avant 9h ou apr\u00e8s 18h.</strong> Hydratation renforc\u00e9e.</div>";
-      const barMax=Math.max(...slots.map(function(s){return s.temp;}),35);
-      const barMin=Math.min(...slots.map(function(s){return s.temp;}),10);
-      const nowH=isToday?now.getHours():-1;
-      const rows=slots.map(function(s){
-        const past=isToday&&s.h<nowH;
-        const bg=getBadge(s);
-        const pct=Math.round((s.temp-barMin)/(barMax-barMin)*100);
-        const heure=(s.h<10?"0":"")+s.h+"h";
-        return "<div style=\"display:flex;align-items:center;gap:10px;padding:6px 14px;opacity:"+(past?".4":"1")+";border-bottom:1px solid var(--gris-clair)\">"
-          +"<span style=\"font-size:.82rem;font-weight:700;min-width:30px;color:var(--texte-deux)\">"+heure+"</span>"
-          +"<div style=\"flex:1;height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden\">"
-          +"<div style=\"width:"+pct+"%;height:100%;background:"+barColor(s.temp)+";border-radius:3px\"></div></div>"
-          +"<span style=\"font-size:.82rem;font-weight:800;min-width:28px;color:var(--texte);text-align:right\">"+Math.round(s.temp)+"\u00b0</span>"
-          +"<span style=\"font-size:.66rem;font-weight:800;padding:2px 7px;border-radius:99px;white-space:nowrap\" class=\""+bg[1]+"\">"+bg[0]+"</span>"
-          +"</div>";
-      }).join("");
-      return resume+"<div style=\"margin-top:8px\">"+rows+"</div>";
-    };
-    const JNOMS=["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"];
-    const todayLabel="Aujourd\u2019hui \u00b7 "+Math.round(tmaxToday)+"\u00b0";
-    const tomLabel=JNOMS[tom.getDay()]+" \u00b7 "+Math.round(tmaxTom)+"\u00b0";
-    const todayHtml=byDay[todayKey]?renderDay(byDay[todayKey],tmaxToday,true):"<p style=\"padding:20px;color:var(--texte-trois)\">Donn\u00e9es indisponibles.</p>";
-    const tomHtml=byDay[tomKey]?renderDay(byDay[tomKey],tmaxTom,false):"<p style=\"padding:20px;color:var(--texte-trois)\">Donn\u00e9es indisponibles.</p>";
-    ct.innerHTML=
-      "<div class=\"creneaux-titre\">\uD83C\uDF21\uFE0F Cr\u00e9neaux d\u2019entra\u00eenement</div>"
-      +"<div style=\"display:flex;gap:8px;padding:0 14px;margin-top:4px\">"
-        +"<button id=\"btn-today\" onclick=\"document.getElementById('tab-today').style.display='';document.getElementById('tab-tom').style.display='none';document.getElementById('btn-today').style.cssText='flex:1;padding:9px 12px;border-radius:10px;border:none;background:#f97316;color:#fff;font-weight:700;font-size:.82rem;cursor:pointer';document.getElementById('btn-tom').style.cssText='flex:1;padding:9px 12px;border-radius:10px;border:none;background:#f1f5f9;color:#64748b;font-weight:700;font-size:.82rem;cursor:pointer'\" style=\"flex:1;padding:9px 12px;border-radius:10px;border:none;background:#f97316;color:#fff;font-weight:700;font-size:.82rem;cursor:pointer\">"+todayLabel+"</button>"
-        +"<button id=\"btn-tom\" onclick=\"document.getElementById('tab-tom').style.display='';document.getElementById('tab-today').style.display='none';document.getElementById('btn-tom').style.cssText='flex:1;padding:9px 12px;border-radius:10px;border:none;background:#f97316;color:#fff;font-weight:700;font-size:.82rem;cursor:pointer';document.getElementById('btn-today').style.cssText='flex:1;padding:9px 12px;border-radius:10px;border:none;background:#f1f5f9;color:#64748b;font-weight:700;font-size:.82rem;cursor:pointer'\" style=\"flex:1;padding:9px 12px;border-radius:10px;border:none;background:#f1f5f9;color:#64748b;font-weight:700;font-size:.82rem;cursor:pointer\">"+tomLabel+"</button>"
-      +"</div>"
-      +"<div id=\"tab-today\">"+todayHtml+"</div>"
-      +"<div id=\"tab-tom\" style=\"display:none\">"+tomHtml+"</div>"
-      +"<button onclick=\"fermerCreneaux()\" style=\"display:block;width:calc(100% - 28px);margin:12px 14px;padding:12px;border-radius:12px;border:none;background:var(--gris-fond);color:var(--texte-deux);font-weight:700;font-size:.88rem;cursor:pointer\">Fermer</button>";
-  }catch(e){
-    const ct2=document.getElementById('creneaux-contenu');
-    if(ct2)ct2.innerHTML="<div style=\"padding:20px;color:var(--texte-trois)\">Cr\u00e9neaux indisponibles.</div>";
-  }
-}
 
-hydrateLogs();renderHeader();renderPlan();rwAuto();
+hydrateLogs();initCreneaux();renderHeader();renderPlan();rwAuto();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
 
 </script></body></html>
