@@ -725,6 +725,83 @@ body.nuit .meteo{background:#1b2536;border-color:#334155}
 body.nuit .meteo-days{border-top-color:#334155}
 body.nuit .meteo-day{border-right-color:#334155}
 body.nuit .meteo-adapt{background:#0f1c2e;border-top-color:#334155}
+
+/* ===== Logging & fiche séance ===== */
+.st-chip{font-size:.58rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.st-fait{background:#dcfce7;border:1px solid #bbf7d0;color:#15803d}
+.st-partiel{background:#ffedd5;border:1px solid #fed7aa;color:#9a3412}
+.st-manque{background:#fee2e2;border:1px solid #fecaca;color:#b91c1c}
+.st-a_faire{background:var(--gris-fond);border:1px solid var(--gris-clair);color:var(--texte-trois)}
+.realise-empty{background:var(--gris-fond);border:1px dashed #cbd5e1;border-radius:var(--rayon-lg);padding:16px 18px;font-size:.88rem;color:var(--texte-trois);line-height:1.55}
+.rvp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.rvp-col{background:var(--blanc);border:1px solid var(--gris-clair);border-radius:var(--rayon);padding:12px 14px}
+.rvp-col h5{font-size:.6rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--texte-trois);margin-bottom:8px}
+.rvp-l{display:flex;justify-content:space-between;font-size:.82rem;padding:3px 0;border-bottom:1px solid var(--gris-clair)}
+.rvp-l span:first-child{color:var(--texte-trois)}.rvp-l span:last-child{font-weight:700}
+.rvp-l:last-child{border-bottom:none}
+/* Formulaire de logging */
+.lf-wrap{margin-top:20px;padding-top:18px;border-top:1px dashed var(--gris-clair)}
+.lf-toggle{width:100%;background:transparent;border:1px solid var(--bleu);border-radius:10px;color:var(--bleu);font-weight:700;font-size:.84rem;padding:10px 14px;cursor:pointer;transition:background .18s,color .18s;text-align:center}
+.lf-toggle:hover,.lf-toggle:focus-visible{background:var(--bleu);color:#fff}
+body.nuit .lf-toggle{border-color:#60a5fa;color:#60a5fa}
+body.nuit .lf-toggle:hover{background:#60a5fa;color:#0b1220}
+.logform{margin-top:12px;animation:dgrpIn .2s ease}
+.lf-statut{display:flex;gap:6px;margin-bottom:14px}
+.lf-st{flex:1;padding:8px 4px;border-radius:9px;border:1px solid var(--gris-clair);background:var(--blanc);font-size:.78rem;font-weight:700;color:var(--texte-deux);cursor:pointer;transition:all .15s;text-align:center}
+.lf-st.actif[data-st="fait"]{background:#dcfce7;border-color:#86efac;color:#15803d}
+.lf-st.actif[data-st="partiel"]{background:#fef9c3;border-color:#fde047;color:#a16207}
+.lf-st.actif[data-st="manque"]{background:#fee2e2;border-color:#fca5a5;color:#b91c1c}
+body.nuit .lf-st{background:#1e293b;border-color:#334155;color:var(--texte-deux)}
+body.nuit .lf-st.actif[data-st="fait"]{background:#14532d;border-color:#166534;color:#86efac}
+body.nuit .lf-st.actif[data-st="partiel"]{background:#422006;border-color:#a16207;color:#fde047}
+body.nuit .lf-st.actif[data-st="manque"]{background:#450a0a;border-color:#b91c1c;color:#fca5a5}
+.lf-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.lf-f{display:flex;flex-direction:column;gap:5px;font-size:.78rem;font-weight:700;color:var(--texte-deux)}
+.lf-f input,.lf-f textarea{padding:9px 11px;border:1px solid var(--gris-clair);border-radius:9px;font-size:.88rem;background:var(--blanc);color:var(--texte);transition:border-color .15s;-webkit-appearance:none}
+.lf-f input:focus,.lf-f textarea:focus{border-color:var(--bleu);outline:none}
+body.nuit .lf-f input,body.nuit .lf-f textarea{background:#1e293b;border-color:#334155;color:var(--texte)}
+.lf-comm{margin-bottom:8px}
+.lf-comm textarea{min-height:70px;resize:vertical;font-family:inherit}
+.lf-hint{font-size:.7rem;color:var(--texte-trois);line-height:1.5;margin-bottom:12px}
+.lf-actions{display:flex;gap:8px}
+.lf-save{flex:1;padding:12px;border-radius:11px;background:var(--bleu);color:#fff;font-weight:800;font-size:.9rem;cursor:pointer;border:none;transition:opacity .15s;letter-spacing:.01em}
+.lf-save:active{opacity:.85}
+.lf-clear{padding:12px 14px;border-radius:11px;background:transparent;border:1px solid var(--gris-clair);color:var(--texte-trois);font-size:.82rem;cursor:pointer;font-weight:700;transition:border-color .15s}
+.lf-clear:hover{border-color:var(--gris)}
+@keyframes lfSaved{0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}70%{box-shadow:0 0 0 10px rgba(34,197,94,0)}100%{box-shadow:none}}
+.lf-saved{animation:lfSaved .7s ease}
+/* Débrief coach */
+.cd-debrief{background:var(--gris-fond);border:1px solid var(--gris-clair);border-radius:14px;padding:6px 14px 14px}
+.cd-line{display:flex;gap:11px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--gris-clair);font-size:.85rem;line-height:1.6;color:var(--texte-deux)}
+.cd-line:last-of-type{border-bottom:none}
+.cd-ic{font-size:1.05rem;flex:0 0 auto;line-height:1.4}
+.cd-line.cd-good{color:var(--texte-deux)}
+.cd-line strong{color:var(--texte)}
+.cd-foot{font-size:.7rem;color:var(--texte-trois);line-height:1.5;padding-top:11px;border-top:1px dashed var(--gris-clair);font-style:italic}
+/* Calendrier mensuel */
+.cal-block .kpi-r{margin-bottom:14px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-title{font-weight:800;font-size:1rem;text-transform:capitalize}
+.cal-nav{background:#f1f5f9;border:none;border-radius:10px;width:38px;height:38px;font-size:1.2rem;cursor:pointer;color:#0f172a}
+body.nuit .cal-nav{background:#1e293b;color:var(--texte)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal-dow{text-align:center;font-size:.66rem;font-weight:800;color:#94a3b8;padding-bottom:4px;letter-spacing:.02em}
+.cal-cell{position:relative;aspect-ratio:1;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f8fafc;min-height:38px}
+.cal-empty{background:transparent}
+.cal-num{font-size:.74rem;font-weight:700;color:#475569}
+.cal-muted{color:#cbd5e1;font-weight:600}
+.cal-dot{width:7px;height:7px;border-radius:50%;margin-top:3px}
+.cal-g{background:#dcfce7}.cal-g .cal-num{color:#15803d}.cal-g .cal-dot{background:#22c55e}
+.cal-o{background:#ffedd5}.cal-o .cal-num{color:#c2410c}.cal-o .cal-dot{background:#f97316}
+.cal-x{background:#eef2f6}.cal-x .cal-num{color:#475569}.cal-x .cal-dot{background:#cbd5e1}
+.cal-g,.cal-o,.cal-x{cursor:pointer}
+.cal-today{outline:2px solid #3b82f6;outline-offset:-2px}
+.cal-legend{display:flex;gap:16px;justify-content:center;margin-top:14px;font-size:.72rem;color:#64748b;flex-wrap:wrap}
+.cal-legend span{display:inline-flex;align-items:center;gap:5px}
+.cal-lg{width:11px;height:11px;border-radius:50%;display:inline-block}
+.cal-legend .cal-g{background:#22c55e}.cal-legend .cal-o{background:#f97316}.cal-legend .cal-x{background:#cbd5e1}
+/* Bande colorée à gauche des cartes séance */
+.seance-bande{position:absolute;left:0;top:0;bottom:0;width:5px}
 </style></head>
 <body>
 <a href="#main" class="skip-link">Aller au contenu</a>
@@ -1448,12 +1525,13 @@ function renderDash(){const el=document.getElementById('dash-contenu');
     return `<div><div class="shoe-row"><div class="shoe-name">${g.marque} ${g.modele}</div><div class="shoe-track"><div class="shoe-fill" style="width:${g.km/maxShKm*100}%;background:${col}"></div></div><div class="shoe-km">${g.km} km</div></div>${al}</div>`;}).join('');
 
   setTimeout(renderMeteo,200);
+  setTimeout(renderCal,50);
   el.innerHTML=dashNav()+`<div class="kpi" style="margin:0 0 2px"><div class="kpi-t">\u{1F324}\uFE0F M\u00e9t\u00e9o Saint-\u00c9tienne \u2014 5 jours</div><div class="kpi-r">Conditions actuelles et pr\u00e9visions pour planifier tes sorties</div><div id="meteo-widget"></div></div>`+dgrpHead('cal','📅',"Aujourd'hui & calendrier")+`
   <!-- 0. Calendrier -->
   <div class="kpi cal-block">
     <div class="kpi-t">🗓️ Calendrier d'entraînement</div>
     <div class="kpi-r">Clique un jour coloré pour ouvrir la séance. Vert : réalisé · Orange : prévu non réalisé · Gris : à venir.</div>
-    <div id="cal-inner">${calHTML()}</div>
+    <div id="cal-widget"><div style="padding:10px;color:var(--texte-trois);font-size:.82rem">⏳ Chargement calendrier…</div></div>
   </div>
   </div></section>`+dgrpHead('coach','🧠','Analyse du coach')+`
   <!-- 3. Analyse du coach : zone grise + consignes + journal -->
@@ -2095,6 +2173,148 @@ function initBarre(se){const piste=document.getElementById('piste');if(!piste)re
     e.addEventListener('click',()=>{if(segActif)segActif.classList.remove('actif');if(segActif===e){segActif=null;pan.classList.remove('visible');return;}segActif=e;e.classList.add('actif');dnom.textContent=seg.nom;drole.textContent=seg.role;dgr.innerHTML=`<div><div class="di-label">Durée</div><div class="di-val">${fmt(seg.duree)}</div></div><div><div class="di-label">Bloc</div><div class="di-val">${seg.bloc}</div></div><div><div class="di-label">Début</div><div class="di-val">${fmt(seg.debut)}</div></div><div><div class="di-label">Fin</div><div class="di-val">${fmt(seg.fin)}</div></div>`;pan.classList.add('visible');});
     piste.appendChild(e);});
 }
+
+/* ===== LOGGING DES SÉANCES ===== */
+const LOG_KEY='runlog_yannis_v1';
+function loadLogs(){try{return JSON.parse(localStorage.getItem(LOG_KEY)||'{}');}catch(e){return {};}}
+function saveLogs(o){try{localStorage.setItem(LOG_KEY,JSON.stringify(o));}catch(e){}}
+function logId(wk,id){return wk+'-'+id;}
+function findSeance(wk,id){return(SEANCES_BY_WEEK[String(wk)]||[]).find(x=>String(x.id)===String(id));}
+function hydrateLogs(){
+  const logs=loadLogs();
+  Object.entries(logs).forEach(([k,r])=>{
+    const i=k.indexOf('-');const wk=k.slice(0,i),id=k.slice(i+1);
+    const se=findSeance(wk,id);if(se)se.realise=r;
+  });
+}
+function _parseTime(t){if(!t)return null;const p=String(t).trim().split(':').map(x=>parseInt(x,10));if(!p.length||p.some(isNaN))return null;if(p.length===3)return p[0]*3600+p[1]*60+p[2];if(p.length===2)return p[0]*60+p[1];if(p.length===1)return p[0]*60;return null;}
+function computeAllure(km,temps){const s=_parseTime(temps);if(!s||!km)return'';const sk=s/km;const m=Math.floor(sk/60),x=Math.round(sk%60);return(x===60?(m+1)+':00':m+':'+String(x).padStart(2,'0'))+'/km';}
+let _pendingStatut='fait';
+function lfPickStatut(st){_pendingStatut=st;document.querySelectorAll('.lf-st').forEach(b=>b.classList.toggle('actif',b.dataset.st===st));}
+function lfToggle(wk,id){const f=document.getElementById('logform');if(!f)return;const open=f.style.display==='none';f.style.display=open?'block':'none';const b=document.getElementById('lf-toggle');if(b)b.textContent=open?'Masquer le formulaire':'✎ Logger / modifier le réalisé';if(open)f.scrollIntoView({behavior:'smooth',block:'center'});}
+function _v(id){const e=document.getElementById(id);return e?e.value.trim():'';}
+function logSeance(wk,id){
+  const se=findSeance(wk,id);if(!se)return;
+  const km=parseFloat(_v('lf-km').replace(',','.'))||'';
+  const temps=_v('lf-temps');
+  const allure=(km&&temps)?computeAllure(km,temps):'';
+  const realise={statut:_pendingStatut,km,temps,allure,
+    fc_moy:parseInt(_v('lf-fcmoy'),10)||'',fc_max:parseInt(_v('lf-fcmax'),10)||'',
+    rpe_ressenti:_v('lf-rpe'),commentaire:_v('lf-comm'),
+    revue:(se.realise&&se.realise.revue)||''};
+  const logs=loadLogs();logs[logId(wk,id)]=realise;saveLogs(logs);
+  se.realise=realise;
+  _afterLog(wk,id);
+}
+function unlogSeance(wk,id){const se=findSeance(wk,id);if(!se)return;const logs=loadLogs();delete logs[logId(wk,id)];saveLogs(logs);se.realise={statut:'a_faire'};_afterLog(wk,id);}
+function _afterLog(wk,id){renderHeader();renderPlan();ouvrirSeance(wk,id);setTimeout(()=>{const b=document.querySelector('.lf-save');if(b){b.textContent='Enregistré ✓';b.classList.add('lf-saved');setTimeout(()=>{if(b)b.textContent='Enregistrer';},1800);}},80);}
+function stChip(st){
+  if(st==='fait')return '<span class="st-chip st-fait">Fait ✓</span>';
+  if(st==='partiel')return '<span class="st-chip st-partiel">Partiel</span>';
+  if(st==='manque')return '<span class="st-chip st-manque">Manqué</span>';
+  return '<span class="st-chip st-a_faire">À faire</span>';
+}
+function logForm(wk,se){
+  const r=se.realise||{statut:'a_faire'};const logged=r.statut!=='a_faire';
+  _pendingStatut=logged?r.statut:'fait';
+  const st=[['fait','Fait ✓'],['partiel','Partiel'],['manque','Manqué']].map(s=>`<button type="button" class="lf-st${_pendingStatut===s[0]?' actif':''}" data-st="${s[0]}" onclick="lfPickStatut('${s[0]}')">${s[1]}</button>`).join('');
+  const f=(id,lbl,val,ph,extra='')=>`<label class="lf-f"><span>${lbl}</span><input id="${id}" value="${val!=null&&val!==''?String(val).replace(/"/g,'&quot;'):''}" placeholder="${ph}" ${extra}></label>`;
+  return `<div class="lf-wrap">
+    <button type="button" class="lf-toggle" id="lf-toggle" onclick="lfToggle(${wk},${se.id})">${logged?'✎ Modifier le réalisé':'✎ Logger cette séance'}</button>
+    <div class="logform" id="logform" style="display:none">
+      <div class="lf-statut">${st}</div>
+      <div class="lf-grid">
+        ${f('lf-km','Distance (km)',r.km,'12,5','type="text" inputmode="decimal"')}
+        ${f('lf-temps','Temps',r.temps,'55:00 ou 1:05:00','type="text" inputmode="numeric"')}
+        ${f('lf-fcmoy','FC moy',r.fc_moy,'148','type="text" inputmode="numeric"')}
+        ${f('lf-fcmax','FC max',r.fc_max,'168','type="text" inputmode="numeric"')}
+        ${f('lf-rpe','RPE /10',r.rpe_ressenti,'5','type="text" inputmode="numeric"')}
+      </div>
+      <label class="lf-f lf-comm"><span>Commentaire</span><textarea id="lf-comm" placeholder="Ressenti, conditions, sensations…">${r.commentaire?String(r.commentaire).replace(/</g,'&lt;'):''}</textarea></label>
+      <div class="lf-hint">L'allure se calcule automatiquement depuis distance + temps. La boule de cristal semi-marathon se réactualise à chaque séance qualité loguée.</div>
+      <div class="lf-actions"><button type="button" class="lf-save" onclick="logSeance(${wk},${se.id})">Enregistrer</button>${logged?`<button type="button" class="lf-clear" onclick="unlogSeance(${wk},${se.id})">Réinitialiser</button>`:''}</div>
+    </div></div>`;
+}
+function coachDebrief(num,se){
+  const r=se.realise;if(!r||(r.statut==='a_faire'))return'';
+  const find=[];
+  if(r.statut==='manque')return`<div class="sd-section">📊 Débrief</div><div class="cd-debrief"><div class="cd-line cd-warn"><span class="cd-ic">🟠</span><span><strong>Séance manquée.</strong> Pas de drame — une séance ratée ne casse pas un bloc. L'important c'est la régularité sur la durée, pas la perfection.</span></div></div>`;
+  // Allure : cible vs réalisé
+  const _pacesIn=str=>{if(!str)return[];const m=String(str).match(/\d+:\d{2}/g);return m?m.map(x=>{const[a,b]=x.split(':');return+a*60+ +b;}):[];};
+  const tgt=_pacesIn((se.metriques||{}).Allure);const real=_pacesIn(r.allure)[0];
+  if(real&&tgt.length){
+    const lo=Math.min(...tgt),hi=Math.max(...tgt);
+    if(real<lo-4)find.push(['⚠️','warn',`<strong>Plus rapide que la cible.</strong> Tu visais ${(se.metriques||{}).Allure}, tu as tenu ${r.allure}. Sur un footing facile, c'est le piège de la zone grise. Lâche du lest la prochaine fois.`]);
+    else if(real>hi+6)find.push(['🟠','warn',`<strong>Plus lent que la cible.</strong> Cible ${(se.metriques||{}).Allure}, réalisé ${r.allure}. Fatigue, chaleur ou objectif trop ambitieux ? À surveiller si ça se répète.`]);
+    else find.push(['✅','good',`<strong>Allure dans la cible.</strong> ${r.allure} pour un objectif ${(se.metriques||{}).Allure} — exactement ce qu'il fallait. Le contrôle d'allure, c'est la moitié de la réussite.`]);
+  }
+  // FC vs zones connues de Yannis (FCmax 180)
+  if(r.fc_moy){
+    const fc=+r.fc_moy;const t=se.type||'';
+    const zone=t.includes('EF')||t.includes('Footing')||t.includes('Récup')?[0,144]:t.includes('Seuil')?[150,172]:t.includes('marathon')||t.includes('Allure')?[148,165]:null;
+    if(zone&&zone[1]>0){
+      if(fc>zone[1]+5)find.push(['⚠️','warn',`<strong>FC élevée</strong> (${fc}). Si l'allure était bonne mais la FC haute : chaleur, déshydratation ou fatigue accumulée.${r.fc_max?' Pic à '+r.fc_max+'.':''}`]);
+      else if(zone[0]>0&&fc<zone[0]-5)find.push(['🟠','warn',`<strong>FC sous la zone</strong> (${fc}). La séance était peut-être plus facile que son objectif.`]);
+      else find.push(['✅','good',`<strong>FC dans la zone</strong> (${fc}). Intensité bien dosée.`]);
+    }
+  }
+  // RPE
+  if(r.rpe_ressenti&&se.rpe){const rr=parseInt(r.rpe_ressenti,10);if(!isNaN(rr)){
+    if(rr>=se.rpe+2)find.push(['⚠️','warn',`<strong>Ressenti plus dur que prévu</strong> (RPE ${rr} vs ${se.rpe} attendu). Fatigue ou conditions difficiles ? Si ça persiste, signal pour alléger.`]);
+    else if(rr<=se.rpe-2)find.push(['✅','good',`<strong>Plus facile que prévu</strong> (RPE ${rr} vs ${se.rpe}). Bon signe de fraîcheur et de progression.`]);
+  }}
+  if(!find.length)return'';
+  const lines=find.map(f=>`<div class="cd-line cd-${f[1]}"><span class="cd-ic">${f[0]}</span><span>${f[2]}</span></div>`).join('');
+  return`<div class="sd-section">📊 Débrief du coach</div><div class="cd-debrief">${lines}<div class="cd-foot">Analyse automatique — pour un débrief détaillé d'une séance, écris à Loïc ou note-le en commentaire.</div></div>`;
+}
+function realiseBloc(num,se){
+  const r=se.realise||{statut:'a_faire'};
+  if(r.statut==='a_faire')return`<div class="sd-section">Réalisé & retour</div><div class="realise-empty"><strong>Séance pas encore réalisée.</strong> Log-la ci-dessous dès que c'est fait — la carte passe au vert et la boule de cristal se réactualise automatiquement.</div>${logForm(num,se)}`;
+  const p=se.metriques;
+  const prevu=`<div class="rvp-l"><span>Distance</span><span>${p.Distance||'—'}</span></div><div class="rvp-l"><span>Durée</span><span>${p['Durée']||p['Durée totale']||'—'}</span></div><div class="rvp-l"><span>Allure</span><span>${p.Allure||'—'}</span></div><div class="rvp-l"><span>FC</span><span>${p.FC||'—'}</span></div>`;
+  const reb=`<div class="rvp-l"><span>Distance</span><span>${r.km?r.km+' km':'—'}</span></div><div class="rvp-l"><span>Temps</span><span>${r.temps||'—'}</span></div><div class="rvp-l"><span>Allure</span><span>${r.allure||'—'}</span></div><div class="rvp-l"><span>FC moy/max</span><span>${r.fc_moy?r.fc_moy+(r.fc_max?'/'+r.fc_max:''):'—'}</span></div>`;
+  return`<div class="sd-section">Réalisé vs prévu — ${stChip(r.statut)}</div><div class="rvp"><div class="rvp-col"><h5>Prévu</h5>${prevu}</div><div class="rvp-col"><h5>Réalisé</h5>${reb}</div></div>${coachDebrief(num,se)}${r.commentaire?`<div class="comm-user">« ${r.commentaire} »</div>`:''} ${logForm(num,se)}`;
+}
+
+/* ===== CALENDRIER MENSUEL ===== */
+let _calYear=new Date().getFullYear(),_calMonth=new Date().getMonth();
+function calNav(dir){_calMonth+=dir;if(_calMonth>11){_calMonth=0;_calYear++;}if(_calMonth<0){_calMonth=11;_calYear--;}renderCal();}
+function renderCal(){
+  const el=document.getElementById('cal-widget');if(!el)return;
+  const today=new Date();const t0=new Date(_calYear,_calMonth,1);const dow=t0.getDay()||7;
+  const dmax=new Date(_calYear,_calMonth+1,0).getDate();
+  const MOIS=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const JOURS=['L','M','M','J','V','S','D'];
+  // Construire map date → statut
+  const evs={};
+  Object.entries(SEANCES_BY_WEEK).forEach(([wk,ses])=>{
+    ses.forEach(se=>{
+      if(!se.date)return;
+      const st=(se.realise||{}).statut||'a_faire';
+      const cur=evs[se.date];
+      if(!cur||(cur==='a_faire'&&st!=='a_faire')||(cur==='manque'&&(st==='fait'||st==='partiel')))
+        evs[se.date]={statut:st,wk:parseInt(wk),id:se.id,titre:se.titre};
+    });
+  });
+  const dows=JOURS.map(j=>`<div class="cal-dow">${j}</div>`).join('');
+  let cells='';
+  for(let i=1;i<dow;i++)cells+='<div class="cal-empty"></div>';
+  for(let d=1;d<=dmax;d++){
+    const iso=`${_calYear}-${String(_calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const ev=evs[iso];const isToday=(d===today.getDate()&&_calMonth===today.getMonth()&&_calYear===today.getFullYear());
+    let cls='cal-cell',dot='',onclick='';
+    if(ev){
+      if(ev.statut==='fait'){cls+=' cal-g';onclick=`onclick="ouvrirSeance(${ev.wk},${ev.id})" title="${ev.titre}"`;dot='<div class="cal-dot"></div>';}
+      else if(ev.statut==='partiel'){cls+=' cal-o';onclick=`onclick="ouvrirSeance(${ev.wk},${ev.id})" title="${ev.titre}"`;dot='<div class="cal-dot"></div>';}
+      else if(ev.statut==='manque'){cls+=' cal-x';onclick=`onclick="ouvrirSeance(${ev.wk},${ev.id})" title="${ev.titre}"`;dot='<div class="cal-dot"></div>';}
+      else{cls+=' cal-x';onclick=`onclick="ouvrirSeance(${ev.wk},${ev.id})" title="${ev.titre}"`;}
+    }
+    if(isToday)cls+=' cal-today';
+    cells+=`<button type="button" class="${cls}" ${onclick}><span class="cal-num">${d}</span>${dot}</button>`;
+  }
+  el.innerHTML=`<div class="cal-head"><button type="button" class="cal-nav" onclick="calNav(-1)">‹</button><span class="cal-title">${MOIS[_calMonth]} ${_calYear}</span><button type="button" class="cal-nav" onclick="calNav(1)">›</button></div><div class="cal-grid">${dows}${cells}</div><div class="cal-legend"><span><span class="cal-lg cal-g"></span>Fait</span><span><span class="cal-lg cal-o"></span>Partiel</span><span><span class="cal-lg cal-x"></span>Manqué</span></div>`;
+}
+
 hydrateLogs();renderHeader();renderPlan();rwAuto();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
 
