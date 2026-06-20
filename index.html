@@ -1351,21 +1351,21 @@ function _meteoAlertHtml(level,tmax,tapp){
     '<div class="meteo-alert meteo-alert-x">'+
     '<span class="meteo-alert-ico">🚨</span>'+
     '<div class="meteo-alert-txt"><strong>Canicule extrême — '+t+'°C</strong>'+
-    'Séance à reporter ou remplacer par natation/vélo. Toute sortie running aujourd'hui est déconseillée.'+
+    "Séance à reporter ou remplacer par natation/vélo. Toute sortie running aujourd'hui est déconseillée."+
     '</div></div>'
   );
   if(level==='d')return(
     '<div class="meteo-alert meteo-alert-d">'+
     '<span class="meteo-alert-ico">🔴</span>'+
     '<div class="meteo-alert-txt"><strong>Chaleur dangereuse — '+t+'°C</strong>'+
-    'Sortie uniquement tôt le matin (avant 8h) ou en soirée (après 19h). Allure à −30 %, électrolytes obligatoires dès le km 3, FC plafond −10 bpm.'+
+    "Sortie uniquement tôt le matin (avant 8h) ou en soirée (après 19h). Allure à −30 %, électrolytes obligatoires dès le km 3, FC plafond −10 bpm."+
     '</div></div>'
   );
   return(
     '<div class="meteo-alert meteo-alert-w">'+
     '<span class="meteo-alert-ico">🟡</span>'+
     '<div class="meteo-alert-txt"><strong>Vigilance chaleur — '+t+'°C</strong>'+
-    'Préférer le matin ou le soir. Hydratation renforcée, casquette, allure de sensation — ne pas se fier au chrono.'+
+    "Préférer le matin ou le soir. Hydratation renforcée, casquette, allure de sensation — ne pas se fier au chrono."+
     '</div></div>'
   );
 }
@@ -1374,22 +1374,22 @@ function _meteoAdaptHtml(level){
   if(!level)return'';
   if(level==='x')return(
     '<div class="meteo-adapt">'+
-    '🏊 <strong>Adaptation séance :</strong> report ou cross-training (natation, vélo, renfo en intérieur). '+
-    'Hydratation passive : 500 ml d'eau fraîche toutes les heures au repos.'+
+    "🏊 <strong>Adaptation séance :</strong> report ou cross-training (natation, vélo, renfo en intérieur). "+
+    "Hydratation passive : 500 ml d'eau fraîche toutes les heures au repos."+
     '</div>'
   );
   if(level==='d')return(
     '<div class="meteo-adapt">'+
-    '⏰ <strong>Adaptation séance :</strong> avant 8h ou après 19h uniquement. '+
-    'Allure EF réduite (−30 s/km vs cible), FC plafond −10 bpm, sortie max 60 min, '+
-    'flasque d'eau froide, électrolytes dès le km 3. Abort si ressenti > RPE 8.'+
+    "⏰ <strong>Adaptation séance :</strong> avant 8h ou après 19h uniquement. "+
+    "Allure EF réduite (−30 s/km vs cible), FC plafond −10 bpm, sortie max 60 min, "+
+    "flasque d'eau froide, électrolytes dès le km 3. Abort si ressenti > RPE 8."+
     '</div>'
   );
   return(
     '<div class="meteo-adapt">'+
-    '💧 <strong>Adaptation séance :</strong> privilégier avant 9h ou après 18h. '+
-    'Casquette + crème solaire, hydratation toutes les 15 min, électrolytes si sortie > 60 min. '+
-    'FC = juge de paix, pas le chrono.'+
+    "💧 <strong>Adaptation séance :</strong> privilégier avant 9h ou après 18h. "+
+    "Casquette + crème solaire, hydratation toutes les 15 min, électrolytes si sortie > 60 min. "+
+    "FC = juge de paix, pas le chrono."+
     '</div>'
   );
 }
