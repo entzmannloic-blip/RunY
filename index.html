@@ -695,15 +695,36 @@ body.nuit .cds-go{color:#fb923c}
 .dos-bloc-ico{font-size:1.1rem;flex:0 0 auto;line-height:1.5}
 .dos-bloc strong{color:var(--texte);font-weight:800;display:block;margin-bottom:4px}
 
-/* ===== Widget météo accueil ===== */
-.meteo{display:flex;flex-direction:column;gap:8px;width:100%;background:var(--blanc);border:1px solid var(--gris-clair);border-radius:14px;padding:11px 14px;margin-top:10px}
-.meteo-row{display:flex;align-items:center;gap:12px}
-.meteo-ico{font-size:1.5rem;flex:0 0 auto;line-height:1}
-.meteo-temp{font-family:Georgia,serif;font-size:1.35rem;font-weight:800;color:var(--texte);line-height:1}
-.meteo-temp small{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:.65rem;font-weight:700;color:var(--texte-trois);letter-spacing:.04em;margin-left:4px}
-.meteo-metrics{display:flex;align-items:center;gap:14px;margin-left:auto}
-.meteo-m{display:inline-flex;align-items:center;gap:5px;font-size:.84rem;font-weight:700;color:var(--texte-deux);white-space:nowrap}
+/* ===== Widget météo Saint-Étienne — étendu ===== */
+.meteo{display:flex;flex-direction:column;gap:0;width:100%;background:var(--blanc);border:1px solid var(--gris-clair);border-radius:14px;overflow:hidden;margin-top:10px}
+.meteo-now{display:flex;align-items:center;gap:12px;padding:11px 14px}
+.meteo-ico{font-size:1.6rem;flex:0 0 auto;line-height:1}
+.meteo-temp{font-family:Georgia,serif;font-size:1.42rem;font-weight:800;color:var(--texte);line-height:1}
+.meteo-temp small{font-family:system-ui;font-size:.65rem;font-weight:700;color:var(--texte-trois);letter-spacing:.04em;margin-left:4px}
+.meteo-metrics{display:flex;align-items:center;gap:12px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
+.meteo-m{display:inline-flex;align-items:center;gap:4px;font-size:.8rem;font-weight:700;color:var(--texte-deux);white-space:nowrap}
+.meteo-loc{font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--texte-trois);padding:0 14px 6px;margin-top:-4px}
+.meteo-days{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--gris-clair)}
+.meteo-day{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border-right:1px solid var(--gris-clair);min-width:0}
+.meteo-day:last-child{border-right:none}
+.meteo-day-n{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--texte-trois)}
+.meteo-day-ico{font-size:1.15rem;line-height:1}
+.meteo-day-hi{font-size:.82rem;font-weight:800;color:var(--texte)}
+.meteo-day-lo{font-size:.7rem;color:var(--texte-trois)}
+.meteo-day-pcp{font-size:.6rem;color:#60a5fa;font-weight:700;min-height:.8rem}
+/* Alertes canicule */
+.meteo-alert{display:flex;align-items:flex-start;gap:9px;padding:10px 14px;font-size:.82rem;line-height:1.45;border-top:1px solid transparent}
+.meteo-alert-w{background:#fefce8;border-top-color:#fde68a;color:#92400e}
+.meteo-alert-d{background:#fff7ed;border-top-color:#fed7aa;color:#9a3412}
+.meteo-alert-x{background:#fef2f2;border-top-color:#fecaca;color:#991b1b}
+.meteo-alert-ico{font-size:1.1rem;flex:0 0 auto;line-height:1.4}
+.meteo-alert-txt strong{display:block;margin-bottom:2px}
+.meteo-adapt{padding:8px 14px 11px;border-top:1px solid var(--gris-clair);font-size:.78rem;color:var(--texte-deux);line-height:1.5;background:var(--gris-fond)}
+.meteo-adapt strong{color:var(--texte)}
 body.nuit .meteo{background:#1b2536;border-color:#334155}
+body.nuit .meteo-days{border-top-color:#334155}
+body.nuit .meteo-day{border-right-color:#334155}
+body.nuit .meteo-adapt{background:#0f1c2e;border-top-color:#334155}
 </style></head>
 <body>
 <a href="#main" class="skip-link">Aller au contenu</a>
@@ -982,7 +1003,7 @@ function renderHeader(){
   const _maj=`<div class="vdj-maj">Données à jour au ${MAJ}</div>`;
   document.getElementById('cd-strip').innerHTML=_cd;
   const _cw=`<button class="cw-link" onclick="jumpToWeek(${sc.num})"><span class="cw-pin">📍</span><span class="cw-txt">Tu es en <strong>S${sc.num} · ${sc.theme}</strong></span><span class="cw-arr">voir dans le plan →</span></button>`;
-  document.getElementById('hero-plan').innerHTML=`${_psCard}${_cw}<div id="meteo-widget" class="meteo"><div style="font-size:.75rem;color:var(--texte-trois)">⏳ Météo…</div></div>`;
+  document.getElementById('hero-plan').innerHTML=`${_psCard}${_cw}<div id="meteo-widget" class="meteo"><div style="padding:10px 14px;font-size:.75rem;color:var(--texte-trois)">⏳ Météo Saint-Étienne…</div></div>`;
   renderMeteo();
   document.getElementById('maj-foot').innerHTML=_maj;
   const _ab=document.getElementById('appbar');if(_ab&&document.documentElement)document.documentElement.style.setProperty('--appbar-h',_ab.offsetHeight+'px');
@@ -1222,8 +1243,10 @@ function renderCrystalBall(){
 
 
 
-/* ===== Widget météo Saint-Étienne — Open-Meteo (style page séances) ===== */
-const METEO_LAT=45.4347,METEO_LON=4.3900,METEO_TTL=30*60*1000;
+/* ===== Widget météo Saint-Étienne — étendu avec alertes canicule ===== */
+const METEO_LAT=45.4347,METEO_LON=4.3900,METEO_TTL=20*60*1000;
+const JOURS=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+
 function _meteoEmoji(c){
   if(c===0)return'☀️';
   if(c===1||c===2)return'⛅';
@@ -1235,44 +1258,158 @@ function _meteoEmoji(c){
   if(c>=95)return'⛈️';
   return'🌡️';
 }
+
+/* Niveaux de canicule pour le running */
+function _meteoHeatLevel(tmax,tapp){
+  const t=Math.max(tmax||0,tapp||0);
+  if(t>=38)return'x';   // Canicule extrême — ne pas courir
+  if(t>=32)return'd';   // Dangereux — adapter fortement
+  if(t>=28)return'w';   // Vigilance — précautions
+  return null;
+}
+
+function _meteoAlertHtml(level,tmax,tapp){
+  if(!level)return'';
+  const t=Math.round(Math.max(tmax||0,tapp||0));
+  if(level==='x')return(
+    '<div class="meteo-alert meteo-alert-x">'+
+    '<span class="meteo-alert-ico">🚨</span>'+
+    '<div class="meteo-alert-txt"><strong>Canicule extrême — '+t+'°C</strong>'+
+    'Séance à reporter ou remplacer par natation/vélo. Toute sortie running aujourd'hui est déconseillée.'+
+    '</div></div>'
+  );
+  if(level==='d')return(
+    '<div class="meteo-alert meteo-alert-d">'+
+    '<span class="meteo-alert-ico">🔴</span>'+
+    '<div class="meteo-alert-txt"><strong>Chaleur dangereuse — '+t+'°C</strong>'+
+    'Sortie uniquement tôt le matin (avant 8h) ou en soirée (après 19h). Allure à −30 %, électrolytes obligatoires dès le km 3, FC plafond −10 bpm.'+
+    '</div></div>'
+  );
+  return(
+    '<div class="meteo-alert meteo-alert-w">'+
+    '<span class="meteo-alert-ico">🟡</span>'+
+    '<div class="meteo-alert-txt"><strong>Vigilance chaleur — '+t+'°C</strong>'+
+    'Préférer le matin ou le soir. Hydratation renforcée, casquette, allure de sensation — ne pas se fier au chrono.'+
+    '</div></div>'
+  );
+}
+
+function _meteoAdaptHtml(level){
+  if(!level)return'';
+  if(level==='x')return(
+    '<div class="meteo-adapt">'+
+    '🏊 <strong>Adaptation séance :</strong> report ou cross-training (natation, vélo, renfo en intérieur). '+
+    'Hydratation passive : 500 ml d'eau fraîche toutes les heures au repos.'+
+    '</div>'
+  );
+  if(level==='d')return(
+    '<div class="meteo-adapt">'+
+    '⏰ <strong>Adaptation séance :</strong> avant 8h ou après 19h uniquement. '+
+    'Allure EF réduite (−30 s/km vs cible), FC plafond −10 bpm, sortie max 60 min, '+
+    'flasque d'eau froide, électrolytes dès le km 3. Abort si ressenti > RPE 8.'+
+    '</div>'
+  );
+  return(
+    '<div class="meteo-adapt">'+
+    '💧 <strong>Adaptation séance :</strong> privilégier avant 9h ou après 18h. '+
+    'Casquette + crème solaire, hydratation toutes les 15 min, électrolytes si sortie > 60 min. '+
+    'FC = juge de paix, pas le chrono.'+
+    '</div>'
+  );
+}
+
 function _meteoPaint(d){
   const el=document.getElementById('meteo-widget');if(!el)return;
   const t=(d.temp!==undefined&&!isNaN(+d.temp))?d.temp:d.app;
-  const tempStr=Math.round(t)+'°'+(d.app!==undefined&&Math.round(d.app)!==Math.round(t)?' <small>ressenti '+Math.round(d.app)+'°</small>':'');
-  const precipStr=(d.precip!==undefined?d.precip.toFixed(1)+' mm · ':'')+Math.round(d.rain)+'%';
+  const tRound=Math.round(t);
+  const appRound=d.app!==undefined?Math.round(d.app):null;
+  const tempStr=tRound+'°'+(appRound!==null&&appRound!==tRound?' <small>ressenti '+appRound+'°</small>':'');
+  const precipStr=(d.precip!==undefined?d.precip.toFixed(1)+' mm · ':'')+Math.round(d.rain||0)+'%';
+
+  /* --- Prévisions 5 jours --- */
+  let daysHtml='';
+  if(d.daily&&d.daily.length){
+    daysHtml='<div class="meteo-days">'+d.daily.slice(0,5).map(day=>{
+      const date=new Date(day.date+'T12:00:00');
+      const nomJ=JOURS[date.getDay()];
+      const pcp=day.precip_sum>0?'<div class="meteo-day-pcp">'+day.precip_sum.toFixed(1)+' mm</div>':'<div class="meteo-day-pcp"></div>';
+      return '<div class="meteo-day">'+
+        '<div class="meteo-day-n">'+nomJ+'</div>'+
+        '<div class="meteo-day-ico">'+_meteoEmoji(day.code)+'</div>'+
+        '<div class="meteo-day-hi">'+Math.round(day.tmax)+'°</div>'+
+        '<div class="meteo-day-lo">'+Math.round(day.tmin)+'°</div>'+
+        pcp+
+      '</div>';
+    }).join('')+'</div>';
+  }
+
+  /* --- Alerte canicule --- */
+  const tmax=d.daily&&d.daily[0]?d.daily[0].tmax:t;
+  const level=_meteoHeatLevel(tmax,appRound);
+  const alertHtml=_meteoAlertHtml(level,tmax,appRound);
+  const adaptHtml=_meteoAdaptHtml(level);
+
   el.innerHTML=
-    '<div class="meteo-row">'+
+    '<div class="meteo-now">'+
       '<span class="meteo-ico">'+_meteoEmoji(d.code)+'</span>'+
       '<span class="meteo-temp">'+tempStr+'</span>'+
       '<span class="meteo-metrics">'+
-        '<span class="meteo-m">💨 '+Math.round(d.wind)+' km/h</span>'+
+        '<span class="meteo-m">💨 '+Math.round(d.wind||0)+' km/h</span>'+
         '<span class="meteo-m">🌧️ '+precipStr+'</span>'+
       '</span>'+
-    '</div>';
+    '</div>'+
+    '<div class="meteo-loc">📍 Saint-Étienne</div>'+
+    daysHtml+
+    alertHtml+
+    adaptHtml;
 }
+
 async function renderMeteo(){
   let cached=null;
-  try{cached=JSON.parse(localStorage.getItem('meteo_cache_yannis')||'null');}catch(e){}
+  try{cached=JSON.parse(localStorage.getItem('meteo_cache_yannis_v2')||'null');}catch(e){}
   const cacheOk=cached&&cached.temp!==undefined&&Date.now()-cached.ts<METEO_TTL;
   if(cached)_meteoPaint(cached);
   if(cacheOk)return;
   try{
     const u='https://api.open-meteo.com/v1/forecast?latitude='+METEO_LAT+'&longitude='+METEO_LON+
       '&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation'+
-      '&hourly=precipitation_probability&forecast_days=1&timezone=Europe%2FParis';
+      '&hourly=precipitation_probability'+
+      '&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code'+
+      '&forecast_days=5&timezone=Europe%2FParis';
     const r=await fetch(u);if(!r.ok)throw 0;
     const j=await r.json();
+    /* Probabilité de pluie de l'heure courante */
     let rain=0;
     if(j.hourly&&j.hourly.time&&j.current&&j.current.time){
       const h=j.current.time.slice(0,13);
       const idx=j.hourly.time.findIndex(t=>t.slice(0,13)===h);
       rain=idx>=0?(j.hourly.precipitation_probability[idx]||0):0;
     }
-    const d={ts:Date.now(),temp:j.current.temperature_2m,app:j.current.apparent_temperature,wind:j.current.wind_speed_10m,code:j.current.weather_code,precip:j.current.precipitation||0,rain:rain};
-    try{localStorage.setItem('meteo_cache_yannis',JSON.stringify(d));}catch(e){}
+    /* Prévisions 5 jours */
+    let daily=[];
+    if(j.daily&&j.daily.time){
+      daily=j.daily.time.map((date,i)=>({
+        date,
+        tmax:j.daily.temperature_2m_max[i],
+        tmin:j.daily.temperature_2m_min[i],
+        code:j.daily.weather_code[i],
+        precip_sum:j.daily.precipitation_sum[i]||0
+      }));
+    }
+    const d={
+      ts:Date.now(),
+      temp:j.current.temperature_2m,
+      app:j.current.apparent_temperature,
+      wind:j.current.wind_speed_10m,
+      code:j.current.weather_code,
+      precip:j.current.precipitation||0,
+      rain,
+      daily
+    };
+    try{localStorage.setItem('meteo_cache_yannis_v2',JSON.stringify(d));}catch(e){}
     _meteoPaint(d);
   }catch(e){
-    if(!cached){const el=document.getElementById('meteo-widget');if(el)el.innerHTML='<div style="font-size:.75rem;color:var(--texte-trois)">🌡️ Météo indisponible</div>';}
+    if(!cached){const el=document.getElementById('meteo-widget');if(el)el.innerHTML='<div style="padding:10px 14px;font-size:.75rem;color:var(--texte-trois)">🌡️ Météo indisponible</div>';}
   }
 }
 
