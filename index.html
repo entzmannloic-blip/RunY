@@ -1491,7 +1491,7 @@ function _meteoPaint(d){
   const teff=Math.max(tRound,appRound,tmax||0);
   let creneauxHtml='';
   if(teff>=28){
-    creneauxHtml='<div class="meteo-creneaux">'
+    creneauxHtml='<div class="meteo-creneaux" onclick="ouvrirCreneaux()" role="button" tabindex="0">'
       +'<span class="mc-ico">🌡️</span>'
       +'<div><strong>Créneaux d\'entraînement</strong>'
       +'<div class="mc-sub">Meilleures heures aujourd\'hui et demain</div></div>'
