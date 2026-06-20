@@ -828,6 +828,24 @@ body.nuit .meteo-creneaux{background:#2d1206;border-top-color:#7c2d12}
 body.nuit .meteo-creneaux strong{color:#fdba74}
 body.nuit .mc-sub{color:#94a3b8}
 body.nuit .mc-arr{color:#fb923c}
+
+/* Chip demain canicule (style Loïc) */
+.meteo-demain{font-size:.82rem;color:var(--texte-deux);padding:6px 14px 4px;display:flex;align-items:center;gap:8px}
+.meteo-demain strong{color:var(--texte);font-weight:800}
+.meteo-chip{font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:99px;white-space:nowrap}
+.meteo-chip-x{background:#fee2e2;color:#991b1b}
+.meteo-chip-d{background:#ffedd5;color:#9a3412}
+.meteo-chip-w{background:#fefce8;color:#92400e}
+/* Créneaux d'entraînement — bloc fond orange compact */
+.meteo-creneaux{display:flex;align-items:center;gap:10px;background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:12px 14px;margin:8px 14px 10px;cursor:pointer}
+.mc-ico{font-size:1.2rem;flex:0 0 auto}
+.mc-sub{font-size:.74rem;color:#c2410c;margin-top:1px}
+.mc-arr{margin-left:auto;color:#c2410c;font-weight:800;font-size:1.1rem}
+.meteo-creneaux strong{font-size:.86rem;color:#9a3412;display:block}
+body.nuit .meteo-creneaux{background:#2d1206;border-color:#7c2d12}
+body.nuit .meteo-creneaux strong{color:#fdba74}
+body.nuit .mc-sub{color:#fb923c}
+body.nuit .mc-arr{color:#fb923c}
 </style></head>
 <body>
 <a href="#main" class="skip-link">Aller au contenu</a>
@@ -1428,54 +1446,41 @@ function _meteoPaint(d){
   const tempStr=tRound+'°'+(appRound!==tRound?' <small>ressenti '+appRound+'°</small>':'');
   const precipStr=(d.precip!==undefined?d.precip.toFixed(1)+' mm · ':'')+Math.round(d.rain||0)+'%';
 
-  /* Prévisions 5 jours */
-  const JOURS_COURT=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-  let daysHtml='';
-  if(d.daily&&d.daily.length){
-    daysHtml='<div class="meteo-days">'+d.daily.slice(0,5).map(day=>{
-      const date=new Date(day.date+'T12:00:00');
-      const nomJ=JOURS_COURT[date.getDay()];
-      const pcp=day.precip_sum>0?'<div class="meteo-day-pcp">'+day.precip_sum.toFixed(1)+' mm</div>':'<div class="meteo-day-pcp"></div>';
-      return '<div class="meteo-day">'
-        +'<div class="meteo-day-n">'+nomJ+'</div>'
-        +'<div class="meteo-day-ico">'+_meteoEmoji(day.code)+'</div>'
-        +'<div class="meteo-day-hi">'+Math.round(day.tmax)+'°</div>'
-        +'<div class="meteo-day-lo">'+Math.round(day.tmin)+'°</div>'
-        +pcp
-        +'</div>';
-    }).join('')+'</div>';
+  /* Demain canicule — chip sous la ligne météo */
+  const tmax=d.daily&&d.daily[0]?d.daily[0].tmax:null;
+  const tdem=d.daily&&d.daily[1]?d.daily[1].tmax:null;
+  let demainHtml='';
+  if(tdem!=null){
+    const tdemR=Math.round(tdem);
+    if(tdem>=38){
+      demainHtml='<div class="meteo-demain">Demain <strong>'+tdemR+'°</strong> <span class="meteo-chip meteo-chip-x">🚨 Canicule extrême</span></div>';
+    } else if(tdem>=32){
+      demainHtml='<div class="meteo-demain">Demain <strong>'+tdemR+'°</strong> <span class="meteo-chip meteo-chip-d">⚠️ Canicule</span></div>';
+    } else if(tdem>=28){
+      demainHtml='<div class="meteo-demain">Demain <strong>'+tdemR+'°</strong> <span class="meteo-chip meteo-chip-w">🟡 Chaleur</span></div>';
+    }
   }
 
-  /* Niveau canicule */
-  const tmax=d.daily&&d.daily[0]?d.daily[0].tmax:tRound;
+  /* Créneaux d'entraînement — bloc orange si chaleur */
   const teff=Math.max(tRound,appRound,tmax||0);
-  let alertHtml='',adaptHtml='';
-  if(teff>=38){
-    alertHtml='<div class="meteo-alert meteo-alert-x"><span class="meteo-alert-ico">🚨</span><div class="meteo-alert-txt"><strong>Canicule extrême — '+Math.round(teff)+'°C</strong>Séance à reporter. Toute sortie running est déconseillée.</div></div>';
-    adaptHtml='<div class="meteo-adapt">🏊 <strong>Adaptation :</strong> report ou cross-training intérieur. Hydratation passive toutes les heures.</div>';
-  } else if(teff>=32){
-    alertHtml='<div class="meteo-alert meteo-alert-d"><span class="meteo-alert-ico">🔴</span><div class="meteo-alert-txt"><strong>Chaleur dangereuse — '+Math.round(teff)+'°C</strong>Sortie uniquement avant 8h ou après 19h. Allure −30 %, électrolytes dès le km 3.</div></div>';
-    adaptHtml='<div class="meteo-adapt">⏰ <strong>Adaptation :</strong> avant 8h ou après 19h. Allure EF réduite (−30 s/km), FC plafond −10 bpm, sortie max 60 min, électrolytes dès le km 3.</div>';
-  } else if(teff>=28){
-    alertHtml='<div class="meteo-alert meteo-alert-w"><span class="meteo-alert-ico">🟡</span><div class="meteo-alert-txt"><strong>Vigilance chaleur — '+Math.round(teff)+'°C</strong>Préférer le matin ou le soir. Hydratation renforcée, allure de sensation.</div></div>';
-    adaptHtml='<div class="meteo-adapt">💧 <strong>Adaptation :</strong> avant 9h ou après 18h. Casquette, hydratation toutes les 15 min, électrolytes si sortie > 60 min.</div>';
-  }
-
-  /* Créneaux d'entraînement optimaux */
   let creneauxHtml='';
   if(teff>=28){
-    const delta=teff>=36?'+45s/km':teff>=32?'+30s/km':'+20s/km';
-    const emoji=teff>=36?'🔴':teff>=32?'🟠':'🟡';
-    const msg=teff>=36?'Canicule extrême':teff>=32?'Chaleur dangereuse':'Vigilance chaleur';
     creneauxHtml='<div class="meteo-creneaux">'
-      +'<div class="meteo-creneaux-h"><span class="mc-ico">🌡️</span><div><strong>Créneaux d\'entraînement</strong><div class="mc-sub">Meilleures heures aujourd\'hui et demain</div></div><span class="mc-arr">›</span></div>'
+      +'<span class="mc-ico">🌡️</span>'
+      +'<div><strong>Créneaux d\'entraînement</strong>'
+      +'<div class="mc-sub">Meilleures heures aujourd\'hui et demain</div></div>'
+      +'<span class="mc-arr">›</span>'
       +'</div>';
-    /* Bannière dans la card */
+    /* Bannière dans la card prochaine séance */
+    const delta=teff>=36?'+45s/km':teff>=32?'+30s/km':'+20s/km';
+    const emoji=teff>=36?'🔴':teff>=32?'🟠':'🌡️';
     const _vdjCard=document.getElementById('vdj-heat-badge');
     if(_vdjCard){_vdjCard.style.display='flex';_vdjCard.innerHTML='<span class="vdj-heat-ico">'+emoji+'</span><span class="vdj-heat-txt">'+tRound+'° · allure cible <strong>'+delta+'</strong></span>';}
-    /* Strip compact */
+    /* Strip canicule compact */
+    const emstrip=teff>=36?'🔴':teff>=32?'🟠':'☀️';
+    const msgstrip=teff>=36?'Canicule':teff>=32?'Canicule':teff>=28?'Canicule':'';
     const _strip=document.getElementById('meteo-strip-el');
-    if(_strip){_strip.style.display='flex';_strip.innerHTML='<span>'+emoji+' <strong>'+msg+' · 10j chauds prévus</strong></span><span class="meteo-strip-r">Sorties avant 8h30</span>';}
+    if(_strip){_strip.style.display='flex';_strip.innerHTML='<span>'+emstrip+' <strong>'+msgstrip+' · 10j chauds prévus</strong></span><span class="meteo-strip-r">Sorties avant 8h30</span>';}
   } else {
     const _vdjCard=document.getElementById('vdj-heat-badge');
     if(_vdjCard)_vdjCard.style.display='none';
@@ -1484,7 +1489,7 @@ function _meteoPaint(d){
   }
 
   el.innerHTML=
-    '<div class="meteo-now">'
+    '<div class="meteo-row">'
       +'<span class="meteo-ico">'+_meteoEmoji(d.code)+'</span>'
       +'<span class="meteo-temp">'+tempStr+'</span>'
       +'<span class="meteo-metrics">'
@@ -1492,11 +1497,8 @@ function _meteoPaint(d){
         +'<span class="meteo-m">🌧️ '+precipStr+'</span>'
       +'</span>'
     +'</div>'
-    +'<div class="meteo-loc">📍 Saint-Étienne</div>'
-    +daysHtml
-    +alertHtml
-    +creneauxHtml
-    +adaptHtml;
+    +demainHtml
+    +creneauxHtml;
 }
 
 
