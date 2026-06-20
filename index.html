@@ -1828,7 +1828,7 @@ function ouvrirSemaine(num){const s=SEMAINES.find(x=>x.num===num);const ph=PHASE
     const isSkipped=r.statut==='skipped';
     const isDone=r.statut==='fait'||r.statut==='partiel';
     const _today=new Date();_today.setHours(0,0,0,0);
-    const loggable=!isDone&&!isSkipped&&se.date&&new Date(se.date+'T00:00:00')<=_today;
+    const loggable=false /* Yannis : toujours ouvrir la fiche séance */;
     const tags=[stChip(isSkipped?'skipped':r.statut),`<span class="seance-tag">${se.type}</span>`,catBadge(se.cat),`<span class="rpe-pill"><span class="rpe-dot" style="background:${rpeColor(se.rpe)}"></span>RPE ${se.rpe}</span>`];
     if(se.chaussure)tags.push(`<span class="seance-shoe">👟 ${se.chaussure.replace("ASICS ","").replace("HOKA ","").replace("Brooks ","")}</span>`);
     if(se.fit)tags.push('<span class="seance-fit">⌚ .fit</span>');
