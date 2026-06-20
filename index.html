@@ -816,6 +816,18 @@ body.nuit .lf-f input,body.nuit .lf-f textarea{background:#1e293b;border-color:#
 .meteo-strip-r{font-size:.78rem;color:#c2410c;font-weight:800;white-space:nowrap}
 body.nuit .meteo-strip{background:#2d1206;border-color:#7c2d12;color:#fdba74}
 body.nuit .meteo-strip-r{color:#fb923c}
+
+/* Créneaux entraînement météo */
+.meteo-creneaux{background:#fff7ed;border-top:1px solid #fed7aa;padding:11px 14px;cursor:pointer}
+.meteo-creneaux-h{display:flex;align-items:center;gap:10px}
+.mc-ico{font-size:1.1rem;flex:0 0 auto}
+.mc-sub{font-size:.72rem;color:var(--texte-trois);margin-top:2px}
+.mc-arr{margin-left:auto;color:#c2410c;font-weight:800;font-size:1rem}
+.meteo-creneaux strong{font-size:.86rem;color:#9a3412}
+body.nuit .meteo-creneaux{background:#2d1206;border-top-color:#7c2d12}
+body.nuit .meteo-creneaux strong{color:#fdba74}
+body.nuit .mc-sub{color:#94a3b8}
+body.nuit .mc-arr{color:#fb923c}
 </style></head>
 <body>
 <a href="#main" class="skip-link">Aller au contenu</a>
@@ -1415,35 +1427,78 @@ function _meteoPaint(d){
   const appRound=d.app!==undefined?Math.round(d.app):tRound;
   const tempStr=tRound+'°'+(appRound!==tRound?' <small>ressenti '+appRound+'°</small>':'');
   const precipStr=(d.precip!==undefined?d.precip.toFixed(1)+' mm · ':'')+Math.round(d.rain||0)+'%';
-  /* Bannière canicule dans la card prochaine séance */
+
+  /* Prévisions 5 jours */
+  const JOURS_COURT=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+  let daysHtml='';
+  if(d.daily&&d.daily.length){
+    daysHtml='<div class="meteo-days">'+d.daily.slice(0,5).map(day=>{
+      const date=new Date(day.date+'T12:00:00');
+      const nomJ=JOURS_COURT[date.getDay()];
+      const pcp=day.precip_sum>0?'<div class="meteo-day-pcp">'+day.precip_sum.toFixed(1)+' mm</div>':'<div class="meteo-day-pcp"></div>';
+      return '<div class="meteo-day">'
+        +'<div class="meteo-day-n">'+nomJ+'</div>'
+        +'<div class="meteo-day-ico">'+_meteoEmoji(day.code)+'</div>'
+        +'<div class="meteo-day-hi">'+Math.round(day.tmax)+'°</div>'
+        +'<div class="meteo-day-lo">'+Math.round(day.tmin)+'°</div>'
+        +pcp
+        +'</div>';
+    }).join('')+'</div>';
+  }
+
+  /* Niveau canicule */
   const tmax=d.daily&&d.daily[0]?d.daily[0].tmax:tRound;
   const teff=Math.max(tRound,appRound,tmax||0);
-  const _vdjCard=document.getElementById('vdj-heat-badge');
-  const _strip=document.getElementById('meteo-strip-el');
+  let alertHtml='',adaptHtml='';
+  if(teff>=38){
+    alertHtml='<div class="meteo-alert meteo-alert-x"><span class="meteo-alert-ico">🚨</span><div class="meteo-alert-txt"><strong>Canicule extrême — '+Math.round(teff)+'°C</strong>Séance à reporter. Toute sortie running est déconseillée.</div></div>';
+    adaptHtml='<div class="meteo-adapt">🏊 <strong>Adaptation :</strong> report ou cross-training intérieur. Hydratation passive toutes les heures.</div>';
+  } else if(teff>=32){
+    alertHtml='<div class="meteo-alert meteo-alert-d"><span class="meteo-alert-ico">🔴</span><div class="meteo-alert-txt"><strong>Chaleur dangereuse — '+Math.round(teff)+'°C</strong>Sortie uniquement avant 8h ou après 19h. Allure −30 %, électrolytes dès le km 3.</div></div>';
+    adaptHtml='<div class="meteo-adapt">⏰ <strong>Adaptation :</strong> avant 8h ou après 19h. Allure EF réduite (−30 s/km), FC plafond −10 bpm, sortie max 60 min, électrolytes dès le km 3.</div>';
+  } else if(teff>=28){
+    alertHtml='<div class="meteo-alert meteo-alert-w"><span class="meteo-alert-ico">🟡</span><div class="meteo-alert-txt"><strong>Vigilance chaleur — '+Math.round(teff)+'°C</strong>Préférer le matin ou le soir. Hydratation renforcée, allure de sensation.</div></div>';
+    adaptHtml='<div class="meteo-adapt">💧 <strong>Adaptation :</strong> avant 9h ou après 18h. Casquette, hydratation toutes les 15 min, électrolytes si sortie > 60 min.</div>';
+  }
+
+  /* Créneaux d'entraînement optimaux */
+  let creneauxHtml='';
   if(teff>=28){
     const delta=teff>=36?'+45s/km':teff>=32?'+30s/km':'+20s/km';
     const emoji=teff>=36?'🔴':teff>=32?'🟠':'🟡';
     const msg=teff>=36?'Canicule extrême':teff>=32?'Chaleur dangereuse':'Vigilance chaleur';
+    creneauxHtml='<div class="meteo-creneaux">'
+      +'<div class="meteo-creneaux-h"><span class="mc-ico">🌡️</span><div><strong>Créneaux d\'entraînement</strong><div class="mc-sub">Meilleures heures aujourd\'hui et demain</div></div><span class="mc-arr">›</span></div>'
+      +'</div>';
+    /* Bannière dans la card */
+    const _vdjCard=document.getElementById('vdj-heat-badge');
     if(_vdjCard){_vdjCard.style.display='flex';_vdjCard.innerHTML='<span class="vdj-heat-ico">'+emoji+'</span><span class="vdj-heat-txt">'+tRound+'° · allure cible <strong>'+delta+'</strong></span>';}
+    /* Strip compact */
+    const _strip=document.getElementById('meteo-strip-el');
     if(_strip){_strip.style.display='flex';_strip.innerHTML='<span>'+emoji+' <strong>'+msg+' · 10j chauds prévus</strong></span><span class="meteo-strip-r">Sorties avant 8h30</span>';}
-  }else{
+  } else {
+    const _vdjCard=document.getElementById('vdj-heat-badge');
     if(_vdjCard)_vdjCard.style.display='none';
+    const _strip=document.getElementById('meteo-strip-el');
     if(_strip)_strip.style.display='none';
   }
+
   el.innerHTML=
-    '<div class="meteo-now">'+
-      '<span class="meteo-ico">'+_meteoEmoji(d.code)+'</span>'+
-      '<span class="meteo-temp">'+tempStr+'</span>'+
-      '<span class="meteo-metrics">'+
-        '<span class="meteo-m">💨 '+Math.round(d.wind||0)+' km/h</span>'+
-        '<span class="meteo-m">🌧️ '+precipStr+'</span>'+
-      '</span>'+
-    '</div>'+
-    '<div class="meteo-loc">📍 Saint-Étienne</div>'+
-    daysHtml+
-    alertHtml+
-    adaptHtml;
+    '<div class="meteo-now">'
+      +'<span class="meteo-ico">'+_meteoEmoji(d.code)+'</span>'
+      +'<span class="meteo-temp">'+tempStr+'</span>'
+      +'<span class="meteo-metrics">'
+        +'<span class="meteo-m">💨 '+Math.round(d.wind||0)+' km/h</span>'
+        +'<span class="meteo-m">🌧️ '+precipStr+'</span>'
+      +'</span>'
+    +'</div>'
+    +'<div class="meteo-loc">📍 Saint-Étienne</div>'
+    +daysHtml
+    +alertHtml
+    +creneauxHtml
+    +adaptHtml;
 }
+
 
 async function renderMeteo(){
   let cached=null;
