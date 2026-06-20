@@ -1995,64 +1995,78 @@ async function _fetchCreneaux(){
     const j=await r.json();
     const now=new Date();
     const nowH=now.getHours();
-    /* Regrouper par jour */
+    const todayKey=now.toISOString().slice(0,10);
     const jours={};
-    j.hourly.time.forEach((iso,i)=>{
+    j.hourly.time.forEach((iso,idx)=>{
       const d=new Date(iso);
       const dayKey=iso.slice(0,10);
       const h=d.getHours();
-      /* Ne garder que les heures utiles pour courir : 5h-10h et 18h-21h */
       const matin=h>=5&&h<=10;
       const soir=h>=18&&h<=21;
       if(!matin&&!soir)return;
-      /* Si aujourd'hui, ne pas afficher les heures passées */
-      if(dayKey===now.toISOString().slice(0,10)&&h<=nowH)return;
-      const temp=j.hourly.temperature_2m[i];
-      const app=j.hourly.apparent_temperature[i];
-      const pluie=j.hourly.precipitation_probability[i]||0;
-      const code=j.hourly.weather_code[i];
+      if(dayKey===todayKey&&h<=nowH)return;
+      const temp=j.hourly.temperature_2m[idx];
+      const app=j.hourly.apparent_temperature[idx];
+      const pluie=j.hourly.precipitation_probability[idx]||0;
       if(!jours[dayKey])jours[dayKey]=[];
-      jours[dayKey].push({h,temp,app,pluie,code,matin});
+      jours[dayKey].push({h,temp,app,pluie,matin});
     });
-    /* Rendre */
-    const MOIS=['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
-    const JNOMS=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
-    let html='<div class="creneaux-titre">🌡️ Créneaux d'entraînement</div>'
-      +'<div class="creneaux-sous">Fenêtres optimales — Saint-Étienne · températures fraîches et pluie faible</div>';
+    const JNOMS=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+    const MOIS=['jan','fev','mar','avr','mai','jun','jul','aou','sep','oct','nov','dec'];
+    let out='<div class="creneaux-titre">\u{1F321}\uFE0F Cr\u00E9neaux d\u2019entra\u00EEnement</div>'
+      +'<div class="creneaux-sous">Saint-\u00C9tienne \u00B7 fen\u00EAtres matin et soir</div>';
     const keys=Object.keys(jours).sort().slice(0,2);
-    if(!keys.length){html+='<div style="padding:20px;color:var(--texte-trois)">Aucun créneau disponible sur les prochaines heures.</div>';}
+    if(!keys.length){out+='<div style="padding:20px;color:var(--texte-trois)">Aucun cr\u00E9neau disponible.</div>';}
     keys.forEach(dayKey=>{
       const d=new Date(dayKey+'T12:00:00');
-      const isToday=dayKey===now.toISOString().slice(0,10);
-      const label=isToday?"Aujourd'hui — "+JNOMS[d.getDay()]:JNOMS[d.getDay()]+' '+d.getDate()+' '+MOIS[d.getMonth()];
-      html+='<div class="creneaux-jour"><div class="creneaux-jour-titre">'+label+'</div>';
+      const isToday=dayKey===todayKey;
+      const label=isToday
+        ?("Aujourd\u2019hui \u2014 "+JNOMS[d.getDay()])
+        :(JNOMS[d.getDay()]+' '+d.getDate()+' '+MOIS[d.getMonth()]);
+      out+='<div class="creneaux-jour"><div class="creneaux-jour-titre">'+label+'</div>';
       jours[dayKey].forEach(slot=>{
         const teff=Math.max(slot.temp,slot.app);
         let badge,cls,conseil;
-        if(teff<24&&slot.pluie<40){badge='✅ Idéal';cls='cren-ok';conseil='Conditions optimales — cours à allure cible normale.';}
-        else if(teff<28&&slot.pluie<60){badge='👌 Bon';cls='cren-ok';conseil='Conditions correctes — hydratation normale, allure libre.';}
-        else if(teff<32){badge='⚠️ Chaud';cls='cren-warn';conseil='Sortie possible — allure +15s/km, eau toutes les 15 min.';}
-        else if(teff<36){badge='🟠 Difficile';cls='cren-warn';conseil='Allure −30 %, max 45 min, électrolytes obligatoires.';}
-        else{badge='🔴 Déconseillé';cls='cren-bad';conseil='Report recommandé ou remplacer par renfo en intérieur.';}
-        if(slot.pluie>=70){badge='🌧️ Pluie';cls='cren-warn';conseil='Forte probabilité de pluie ('+slot.pluie+'%) — adapter la tenue.';}
+        if(slot.pluie>=70){
+          badge='\u{1F327}\uFE0F Pluie';cls='cren-warn';
+          conseil='Forte pluie ('+slot.pluie+'%) \u2014 adapter la tenue.';
+        } else if(teff<24){
+          badge='\u2705 Id\u00E9al';cls='cren-ok';
+          conseil='Conditions optimales \u2014 allure cible normale.';
+        } else if(teff<28){
+          badge='\uD83D\uDC4C Bon';cls='cren-ok';
+          conseil='Conditions correctes \u2014 hydratation normale.';
+        } else if(teff<32){
+          badge='\u26A0\uFE0F Chaud';cls='cren-warn';
+          conseil='Allure +15s/km, eau toutes les 15 min.';
+        } else if(teff<36){
+          badge='\uD83D\uDFE0 Difficile';cls='cren-warn';
+          conseil='Allure \u221230 s/km, max 45 min, \u00E9lectrolytes obligatoires.';
+        } else {
+          badge='\uD83D\uDD34 D\u00E9conseill\u00E9';cls='cren-bad';
+          conseil='Report recommand\u00E9 ou renfo en int\u00E9rieur.';
+        }
         const heure=(slot.h<10?'0':'')+slot.h+'h00';
         const plage=slot.matin?'Matin':'Soir';
-        html+='<div class="cren-slot">'
-          +'<div class="cren-slot-heure">'+heure+'<div style="font-size:.6rem;font-weight:600;color:var(--texte-trois);margin-top:1px">'+plage+'</div></div>'
+        out+='<div class="cren-slot">'
+          +'<div class="cren-slot-heure">'+heure
+          +'<div style="font-size:.6rem;font-weight:600;color:var(--texte-trois);margin-top:1px">'+plage+'</div></div>'
           +'<div class="cren-slot-info">'
-            +'<div class="cren-slot-temp">'+Math.round(slot.temp)+'° <span style="color:var(--texte-trois);font-size:.74rem">ressenti '+Math.round(slot.app)+'°</span>'+(slot.pluie>20?' · 🌧️ '+slot.pluie+'%':'')+'</div>'
-            +'<div class="cren-slot-conseil">'+conseil+'</div>'
+          +'<div class="cren-slot-temp">'+Math.round(slot.temp)+'\u00B0'
+          +' <span style="color:var(--texte-trois);font-size:.74rem">ressenti '+Math.round(slot.app)+'\u00B0</span>'
+          +(slot.pluie>20?' \u00B7 '+slot.pluie+'%':'')+'</div>'
+          +'<div class="cren-slot-conseil">'+conseil+'</div>'
           +'</div>'
           +'<span class="cren-slot-badge '+cls+'">'+badge+'</span>'
           +'</div>';
       });
-      html+='</div>';
+      out+='</div>';
     });
-    html+='<div class="creneaux-note">Créneaux calculés depuis Open-Meteo · Saint-Étienne (45.43°N, 4.39°E). Matin : 5h→10h · Soir : 18h→21h. Seuils canicule : vigilance ≥28°C, dangereux ≥32°C.</div>';
-    ct.innerHTML=html;
-  }catch(e){
+    out+='<div class="creneaux-note">Open-Meteo \u00B7 Saint-\u00C9tienne. Matin 5h\u219210h \u00B7 Soir 18h\u219221h.</div>';
+    ct.innerHTML=out;
+  } catch(e){
     const ct2=document.getElementById('creneaux-contenu');
-    if(ct2)ct2.innerHTML='<div style="padding:20px;color:var(--texte-trois)">Impossible de charger les créneaux (connexion requise).</div>';
+    if(ct2)ct2.innerHTML='<div style="padding:20px;color:var(--texte-trois)">Cr\u00E9neaux indisponibles.</div>';
   }
 }
 hydrateLogs();renderHeader();renderPlan();rwAuto();
