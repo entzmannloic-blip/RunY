@@ -805,6 +805,17 @@ body.nuit .lf-f input,body.nuit .lf-f textarea{background:#1e293b;border-color:#
 /* Dossiers course — styles spécifiques Yannis */
 .dos-stat-v{font-family:Georgia,serif;font-size:1.02rem;font-weight:700;line-height:1.1}
 .dos-stat-l{font-size:.56rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;opacity:.86;margin-top:3px}
+
+/* Bannière météo dans card prochaine séance */
+.vdj-heat{display:flex;align-items:center;gap:9px;background:rgba(194,65,12,.18);border-radius:11px;padding:8px 12px;margin-top:12px;font-size:.8rem;font-weight:700;color:#fcd9b6}
+.vdj-heat-ico{font-size:1rem;flex:0 0 auto}
+.vdj-heat-txt{flex:1;min-width:0}
+.vdj-heat-allure{background:rgba(194,65,12,.35);border-radius:6px;padding:2px 8px;font-size:.75rem;font-weight:800;color:#fed7aa;white-space:nowrap;margin-left:auto}
+/* Bandeau canicule compact sous la card */
+.meteo-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:10px 15px;font-size:.82rem;font-weight:700;color:#9a3412;margin-top:0}
+.meteo-strip-r{font-size:.78rem;color:#c2410c;font-weight:800;white-space:nowrap}
+body.nuit .meteo-strip{background:#2d1206;border-color:#7c2d12;color:#fdba74}
+body.nuit .meteo-strip-r{color:#fb923c}
 </style></head>
 <body>
 <a href="#main" class="skip-link">Aller au contenu</a>
@@ -1071,7 +1082,7 @@ function renderHeader(){
     const _se=_ps.se;
     const _fit=_se.fit?`<a class="vdj-fit" href="${_se.fit}" download onclick="event.stopPropagation()">⌚ Télécharger la séance</a>`:'';
     const _dist=(_se.metriques&&_se.metriques.Distance)?' · '+_se.metriques.Distance:'';
-    _psCard=`<div class="vdj" onclick="ouvrirSeance(${_ps.wk},${_se.id})"><div class="vdj-lbl">Prochaine séance · ${_lbl}</div><div class="vdj-t">${_se.titre}</div><div class="vdj-s">${_se.type}${_dist} · S${_ps.wk}</div>${_fit}</div>`;
+    _psCard=`<div class="vdj" onclick="ouvrirSeance(${_ps.wk},${_se.id})"><div class="vdj-lbl">Prochaine séance · ${_lbl}</div><div class="vdj-t">${_se.titre}</div><div class="vdj-s">${_se.type}${_dist} · S${_ps.wk}</div>${_fit}<div class="vdj-heat" id="vdj-heat-badge" style="display:none"></div></div>`;
   }
   let _cd='';
   if(RACES&&RACES.length){
@@ -1082,7 +1093,7 @@ function renderHeader(){
   const _maj=`<div class="vdj-maj">Données à jour au ${MAJ}</div>`;
   document.getElementById('cd-strip').innerHTML=_cd;
   const _cw=`<button class="cw-link" onclick="jumpToWeek(${sc.num})"><span class="cw-pin">📍</span><span class="cw-txt">Tu es en <strong>S${sc.num} · ${sc.theme}</strong></span><span class="cw-arr">voir dans le plan →</span></button>`;
-  document.getElementById('hero-plan').innerHTML=`${_psCard}${_cw}<div id="meteo-widget" class="meteo"><div style="padding:10px 14px;font-size:.75rem;color:var(--texte-trois)">⏳ Météo Saint-Étienne…</div></div>`;
+  document.getElementById('hero-plan').innerHTML=`${_psCard}<div class="meteo-strip" id="meteo-strip-el" style="display:none"></div>${_cw}<div id="meteo-widget" class="meteo"><div style="padding:10px 14px;font-size:.75rem;color:var(--texte-trois)">⏳ Météo Saint-Étienne…</div></div>`;
   renderMeteo();
   document.getElementById('maj-foot').innerHTML=_maj;
   const _ab=document.getElementById('appbar');if(_ab&&document.documentElement)document.documentElement.style.setProperty('--appbar-h',_ab.offsetHeight+'px');
@@ -1401,33 +1412,24 @@ function _meteoPaint(d){
   const el=document.getElementById('meteo-widget');if(!el)return;
   const t=(d.temp!==undefined&&!isNaN(+d.temp))?d.temp:d.app;
   const tRound=Math.round(t);
-  const appRound=d.app!==undefined?Math.round(d.app):null;
-  const tempStr=tRound+'°'+(appRound!==null&&appRound!==tRound?' <small>ressenti '+appRound+'°</small>':'');
+  const appRound=d.app!==undefined?Math.round(d.app):tRound;
+  const tempStr=tRound+'°'+(appRound!==tRound?' <small>ressenti '+appRound+'°</small>':'');
   const precipStr=(d.precip!==undefined?d.precip.toFixed(1)+' mm · ':'')+Math.round(d.rain||0)+'%';
-
-  /* --- Prévisions 5 jours --- */
-  let daysHtml='';
-  if(d.daily&&d.daily.length){
-    daysHtml='<div class="meteo-days">'+d.daily.slice(0,5).map(day=>{
-      const date=new Date(day.date+'T12:00:00');
-      const nomJ=JOURS[date.getDay()];
-      const pcp=day.precip_sum>0?'<div class="meteo-day-pcp">'+day.precip_sum.toFixed(1)+' mm</div>':'<div class="meteo-day-pcp"></div>';
-      return '<div class="meteo-day">'+
-        '<div class="meteo-day-n">'+nomJ+'</div>'+
-        '<div class="meteo-day-ico">'+_meteoEmoji(day.code)+'</div>'+
-        '<div class="meteo-day-hi">'+Math.round(day.tmax)+'°</div>'+
-        '<div class="meteo-day-lo">'+Math.round(day.tmin)+'°</div>'+
-        pcp+
-      '</div>';
-    }).join('')+'</div>';
+  /* Bannière canicule dans la card prochaine séance */
+  const tmax=d.daily&&d.daily[0]?d.daily[0].tmax:tRound;
+  const teff=Math.max(tRound,appRound,tmax||0);
+  const _vdjCard=document.getElementById('vdj-heat-badge');
+  const _strip=document.getElementById('meteo-strip-el');
+  if(teff>=28){
+    const delta=teff>=36?'+45s/km':teff>=32?'+30s/km':'+20s/km';
+    const emoji=teff>=36?'🔴':teff>=32?'🟠':'🟡';
+    const msg=teff>=36?'Canicule extrême':teff>=32?'Chaleur dangereuse':'Vigilance chaleur';
+    if(_vdjCard){_vdjCard.style.display='flex';_vdjCard.innerHTML='<span class="vdj-heat-ico">'+emoji+'</span><span class="vdj-heat-txt">'+tRound+'° · allure cible <strong>'+delta+'</strong></span>';}
+    if(_strip){_strip.style.display='flex';_strip.innerHTML='<span>'+emoji+' <strong>'+msg+' · 10j chauds prévus</strong></span><span class="meteo-strip-r">Sorties avant 8h30</span>';}
+  }else{
+    if(_vdjCard)_vdjCard.style.display='none';
+    if(_strip)_strip.style.display='none';
   }
-
-  /* --- Alerte canicule --- */
-  const tmax=d.daily&&d.daily[0]?d.daily[0].tmax:t;
-  const level=_meteoHeatLevel(tmax,appRound);
-  const alertHtml=_meteoAlertHtml(level,tmax,appRound);
-  const adaptHtml=_meteoAdaptHtml(level);
-
   el.innerHTML=
     '<div class="meteo-now">'+
       '<span class="meteo-ico">'+_meteoEmoji(d.code)+'</span>'+
