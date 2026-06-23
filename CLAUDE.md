@@ -1,5 +1,6 @@
 # CLAUDE.md — RunY (coaching running de Yannis)
 > Lu en premier par Claude Code. Base = shell refondu de l'app Running, données = Yannis.
+> 🎯 **Pour adapter l'app à Yannis : lire `docs/INDIVIDUALISATION.md`** (intake à lui faire passer, carte brique par brique, méthodo Strava pour le Cockpit).
 
 ## Identité
 **App** : RunY — plan d'entraînement personnel de **Yannis**
@@ -30,7 +31,8 @@ Push : commit atomique via Git Data API (GET ref → GET commit → POST tree �
 ## Pour mettre à jour le plan / les données de Yannis
 Éditer `src/data_src.json` (clés : SBW = plan par semaine, RACES, SEMAINES, GEAR, ZONES_FC, ALLURES, DOSSIERS, PROFIL, HIST, RECORDS…), puis rebuild + push. Une séance loggée = remplir `realise:{statut:"fait",km,temps,allure,fc_moy,fc_max,...}` sur la séance concernée dans SBW.
 
-## À individualiser (laissé en squelette)
+## À individualiser (laissé en squelette) — détail complet dans docs/INDIVIDUALISATION.md
+> ⚠️ Point P0 : le **Cockpit** (`_CK` dans app.js) affiche encore les données de **Loïc** — à régénérer depuis le Strava de Yannis (méthodo dans le guide).
 - `PALMARES` = [] (courses passées à remplir)
 - Chaussures `GEAR` et zones `ZONES_FC` : vérifier/ajuster pour Yannis
 - `CHANGELOG` : historique propre à RunY
